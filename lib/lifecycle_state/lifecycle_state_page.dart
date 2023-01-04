@@ -1,0 +1,88 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+class LifecyleStatePage extends StatefulWidget {
+  const LifecyleStatePage({Key? key}) : super(key: key);
+
+  @override
+  State<LifecyleStatePage> createState() => _LifecyleStatePageState();
+}
+
+class _LifecyleStatePageState extends State<LifecyleStatePage>
+    with WidgetsBindingObserver {
+  String stateLifecylce = '';
+
+  int _start = const Duration(seconds: 5).inSeconds;
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  void _startTime(Timer? timer) {
+    const oneSec = Duration(seconds: 1);
+    timer = Timer.periodic(oneSec, (timer) {
+      _start--;
+    });
+  }
+
+  void _initTime(Timer? timer) {
+    _start = const Duration(seconds: 5).inSeconds;
+    if (timer != null) {
+      timer.cancel();
+    }
+  }
+
+  void _toDoTimerTimeout() {
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: null,
+      body: SizedBox.expand(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const Text('Lifecycles State Flutter'),
+          const SizedBox(
+            height: 24,
+          ),
+          Text(
+            stateLifecylce,
+            style: const TextStyle(
+              fontSize: 24,
+              color: Colors.red,
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    Timer? _timer;
+    print('Lifecyles State Flutter :::: $state');
+    if (state == AppLifecycleState.paused) {
+      stateLifecylce = 'Lifecycle is Paused';
+      _startTime(_timer);
+    } else if (state == AppLifecycleState.resumed) {
+      stateLifecylce = 'Lifecycle is Resumed';
+
+      if (_start > const Duration(seconds: 0).inSeconds) {
+        // Let user continue using app
+        print('AppLifecycle timer didnt complete');
+      } else {
+        print('AppLifecycle timer timeout');
+        if (mounted) {
+          _toDoTimerTimeout();
+        }
+      }
+      _initTime(_timer);
+    }
+
+    super.didChangeAppLifecycleState(state);
+  }
+}

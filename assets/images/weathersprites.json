@@ -1,0 +1,94 @@
+{"frames": [
+
+  {
+    "filename": "flake-0.png",
+    "frame": {"x":2,"y":2,"w":128,"h":140},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":16,"y":23,"w":128,"h":140},
+    "sourceSize": {"w":128,"h":128},
+    "pivot": {"x":0.5,"y":0.5}
+  },
+  {
+    "filename": "flake-1.png",
+    "frame": {"x":128,"y":2,"w":140,"h":128},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":2,"y":26,"w":140,"h":128},
+    "sourceSize": {"w":140,"h":128},
+    "pivot": {"x":0.5,"y":0.5}
+  },
+  {
+    "filename": "flake-2.png",
+    "frame": {"x":315,"y":2,"w":200,"h":128},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":10,"y":10,"w":200,"h":128},
+    "sourceSize": {"w":128,"h":128},
+    "pivot": {"x":0.5,"y":0.5}
+  },
+  {
+    "filename": "flake-3.png",
+    "frame": {"x":530,"y":2,"w":90,"h":128},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":4,"y":2,"w":90,"h":128},
+    "sourceSize": {"w":128,"h":128},
+    "pivot": {"x":0.5,"y":0.5}
+  },
+  {
+    "filename": "flake-4.png",
+    "frame": {"x":620,"y":2,"w":140,"h":120},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":10,"y":2,"w":140,"h":120},
+    "sourceSize": {"w":128,"h":128},
+    "pivot": {"x":0.5,"y":0.5}
+  },
+  {
+    "filename": "flake-5.png",
+    "frame": {"x":760,"y":2,"w":140,"h":145},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":2,"y":2,"w":140,"h":145},
+    "sourceSize": {"w":128,"h":128},
+    "pivot": {"x":0.5,"y":0.5}
+  },
+  {
+    "filename": "flake-6.png",
+    "frame": {"x":900,"y":2,"w":100,"h":100},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":2,"y":2,"w":100,"h":100},
+    "sourceSize": {"w":100,"h":128},
+    "pivot": {"x":0.5,"y":0.5}
+  },
+  {
+    "filename": "flake-7.png",
+    "frame": {"x":1000,"y":2,"w":100,"h":100},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":2,"y":2,"w":100,"h":100},
+    "sourceSize": {"w":100,"h":128},
+    "pivot": {"x":0.5,"y":0.5}
+  },
+  {
+    "filename": "flake-8.png",
+    "frame": {"x":1100,"y":2,"w":80,"h":128},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":2,"y":2,"w":80,"h":128},
+    "sourceSize": {"w":80,"h":128},
+    "pivot": {"x":0.5,"y":0.5}
+  }],
+  "meta": {
+    "app": "http://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "canh_hoa.png",
+    "format": "RGBA8888",
+    "size": {"w":1242,"h":175},
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:711136d922eda0cdd3d11aaaf95d6fc2:1fe4592857278d700656e6f8716be9ac:2db98550bdf1ac32c037383913645b5a$"
+  }
+  }
+  
