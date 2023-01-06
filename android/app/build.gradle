@@ -26,11 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 31
-
-    defaultConfig {
-        minSdkVersion 16
-    }
+    compileSdkVersion 33
     lintOptions {
         disable 'InvalidPackage'
     }
@@ -60,6 +56,8 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        minSdkVersion 21
+        targetSdkVersion 33
     }
 
     buildTypes {
