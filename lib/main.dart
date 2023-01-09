@@ -7,8 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'common/user_management.dart';
 import 'custom_package/home_packages.dart';
 import 'define_go_router.dart';
-import 'go_router_page/go_router_page.dart';
-import 'lifecycle_state/lifecycle_state_page.dart';
 import 'roll_paper_roll.dart/main_holiday.dart';
 import 'tool_tip/tool_tip_demo.dart';
 import 'validation_textfield/validation_textfield_page.dart';
@@ -88,11 +86,10 @@ class OptionWidget extends StatelessWidget {
           OptionButton(
             label: 'Lifecycles State',
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) {
-                  return const LifecyleStatePage();
-                },
-              ));
+              context.goNamed('lifecycle-state', params: {
+                "id": '955',
+                "name": "All 4 things",
+              });
             },
           ),
           OptionButton(
@@ -120,7 +117,9 @@ class OptionWidget extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) {
-                  return const ValidationTextFieldPage();
+                  return ValidationTextFieldPage(
+                    argumentObject: ArgumentObject(955, "Tuan"),
+                  );
                 },
               ));
             },
@@ -129,6 +128,21 @@ class OptionWidget extends StatelessWidget {
             label: 'Go Router',
             onPressed: () {
               context.goNamed('go-router');
+            },
+          ),
+          OptionButton(
+            label: 'Carousel Slider',
+            onPressed: () {
+              context.goNamed(RouteName.carouselSliderPage, extra: {
+                "arg1": "The Billionaire's Accidental  Bride",
+                "arg2": "All 4 things",
+              });
+            },
+          ),
+          OptionButton(
+            label: 'Navigation Bar 3.0',
+            onPressed: () {
+              context.goNamed(RouteName.navigationBarPage);
             },
           ),
         ],

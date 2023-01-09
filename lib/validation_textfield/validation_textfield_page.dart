@@ -7,8 +7,17 @@ import 'validation_textfield_bloc/validation_textfield_bloc.dart';
 
 enum FieldError { Empty, Invalid, None }
 
+class ArgumentObject {
+  final int id;
+  final String name;
+
+  ArgumentObject(this.id, this.name);
+}
+
 class ValidationTextFieldPage extends StatefulWidget {
-  const ValidationTextFieldPage({Key? key}) : super(key: key);
+  final ArgumentObject argumentObject;
+  const ValidationTextFieldPage({Key? key, required this.argumentObject})
+      : super(key: key);
 
   @override
   State<ValidationTextFieldPage> createState() =>
@@ -64,6 +73,8 @@ class _ValidationTextFieldPageState extends State<ValidationTextFieldPage> {
               margin: const EdgeInsets.only(left: 20, right: 20, top: 100),
               child: Column(
                 children: [
+                  Text(
+                      "ArgumentObject: \n ID: ${widget.argumentObject.id.toString()}\n Name:  ${widget.argumentObject.name} "),
                   TextField(
                     controller: _emailController,
                     style: TextStyle(

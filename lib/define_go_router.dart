@@ -6,14 +6,21 @@ import 'package:animation_demo/tool_tip/tool_tip_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'carousel_slider_page/carousel_slider_page.dart';
 import 'common/user_management.dart';
 import 'custom_package/home_packages.dart';
 import 'go_router_page/go_router_page.dart';
 import 'lifecycle_state/lifecycle_state_page.dart';
 import 'main.dart';
+import 'navigation_bar/navigation_bar_page.dart';
 import 'page_view/page_view.dart';
 import 'roll_paper_roll.dart/main_holiday.dart';
 import 'validation_textfield/validation_textfield_page.dart';
+
+class RouteName {
+  static const String carouselSliderPage = 'carousel-slider';
+  static const String navigationBarPage = 'navigation-bar';
+}
 
 final GoRouter router = GoRouter(
   navigatorKey: UserManagement().navigatorKey,
@@ -46,10 +53,16 @@ final GoRouter router = GoRouter(
           builder: (context, state) => const GameHolidays(),
         ),
         GoRoute(
-          path: "lifecycle-state",
-          name: "lifecycle-state",
-          builder: (context, state) => const LifecyleStatePage(),
-        ),
+            path: "lifecycle-state/:id/:name",
+            name: "lifecycle-state",
+            builder: (context, state) {
+              final id = state.params["id"] ?? '0';
+              final name = state.params["name"] ?? '';
+              return LifecyleStatePage(
+                id: id,
+                name: name,
+              );
+            }),
         GoRoute(
           path: "custom-package",
           name: "custom-package",
@@ -61,15 +74,36 @@ final GoRouter router = GoRouter(
           builder: (context, state) => const TooltipDemo(),
         ),
         GoRoute(
-          path: "validated-textfield",
-          name: "validated-textfield",
-          builder: (context, state) => const ValidationTextFieldPage(),
-        ),
+            path: "validated-textfield",
+            name: "validated-textfield",
+            builder: (context, state) {
+              final argument = state.extra as ArgumentObject;
+              return ValidationTextFieldPage(
+                argumentObject: argument,
+              );
+            }),
         GoRoute(
             path: "go-router",
             name: "go-router",
             builder: (context, state) => const GoRouterPage(),
             routes: subGoRouter),
+        GoRoute(
+          path: "carousel-slider",
+          name: RouteName.carouselSliderPage,
+          builder: (context, state) {
+            final argumentExtra = state.extra as Map<String, String>;
+            return CarouselSliderPage(
+              argument: argumentExtra,
+            );
+          },
+        ),
+        GoRoute(
+          path: "navigation-bar",
+          name: RouteName.navigationBarPage,
+          builder: (context, state) {
+            return const NavigationBarPage();
+          },
+        ),
       ],
     ),
   ],
