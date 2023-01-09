@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class LifecyleStatePage extends StatefulWidget {
-  const LifecyleStatePage({Key? key}) : super(key: key);
+  final String id;
+  final String name;
+  const LifecyleStatePage({Key? key, required this.id, required this.name})
+      : super(key: key);
 
   @override
   State<LifecyleStatePage> createState() => _LifecyleStatePageState();
@@ -45,10 +48,12 @@ class _LifecyleStatePageState extends State<LifecyleStatePage>
       appBar: null,
       body: SizedBox.expand(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text('ID ${widget.id}'),
+          const SizedBox(height: 24),
+          Text('Name ${widget.name}'),
+          const SizedBox(height: 24),
           const Text('Lifecycles State Flutter'),
-          const SizedBox(
-            height: 24,
-          ),
+          const SizedBox(height: 24),
           Text(
             stateLifecylce,
             style: const TextStyle(
