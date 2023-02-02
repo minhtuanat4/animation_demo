@@ -1,3 +1,4 @@
+import 'package:animation_demo/flutter_test/home_test_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_detail_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_info_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_update_page.dart';
@@ -9,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'carousel_slider_page/carousel_slider_page.dart';
 import 'common/user_management.dart';
 import 'custom_package/home_packages.dart';
+import 'flutter_slidable_page/flutter_slidable_page.dart';
 import 'go_router_page/go_router_page.dart';
 import 'lifecycle_state/lifecycle_state_page.dart';
 import 'main.dart';
@@ -20,6 +22,8 @@ import 'validation_textfield/validation_textfield_page.dart';
 class RouteName {
   static const String carouselSliderPage = 'carousel-slider';
   static const String navigationBarPage = 'navigation-bar';
+  static const String homeTestPage = 'home-test';
+  static const String flutterSlidale = 'flutter-slidable';
 }
 
 final GoRouter router = GoRouter(
@@ -102,6 +106,20 @@ final GoRouter router = GoRouter(
           name: RouteName.navigationBarPage,
           builder: (context, state) {
             return const NavigationBarPage();
+          },
+        ),
+        GoRoute(
+          path: RouteName.homeTestPage,
+          name: RouteName.homeTestPage,
+          builder: (context, state) {
+            return const HomeTestPage();
+          },
+        ),
+        GoRoute(
+          path: RouteName.flutterSlidale,
+          name: RouteName.flutterSlidale,
+          builder: (context, state) {
+            return const FlutterSlidablePage();
           },
         ),
       ],

@@ -62,8 +62,7 @@ class OptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: ListView(
         children: [
           OptionButton(
               label: 'Page View Animation',
@@ -143,6 +142,18 @@ class OptionWidget extends StatelessWidget {
             label: 'Navigation Bar 3.0',
             onPressed: () {
               context.goNamed(RouteName.navigationBarPage);
+            },
+          ),
+          OptionButton(
+            label: 'Home Test Page',
+            onPressed: () {
+              context.goNamed(RouteName.homeTestPage);
+            },
+          ),
+          OptionButton(
+            label: 'Flutter Slidable',
+            onPressed: () {
+              context.goNamed(RouteName.flutterSlidale);
             },
           ),
         ],
