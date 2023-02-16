@@ -1,3 +1,4 @@
+import 'package:animation_demo/custom_progress_indicator/custom_progress_indicator.dart';
 import 'package:animation_demo/flutter_test/home_test_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_detail_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_info_page.dart';
@@ -10,6 +11,8 @@ import 'package:go_router/go_router.dart';
 import 'carousel_slider_page/carousel_slider_page.dart';
 import 'common/user_management.dart';
 import 'custom_package/home_packages.dart';
+import 'draw_verticle/draw_verticle_page.dart';
+import 'flame_game/my_game.dart';
 import 'flutter_slidable_page/flutter_slidable_page.dart';
 import 'go_router_page/go_router_page.dart';
 import 'lifecycle_state/lifecycle_state_page.dart';
@@ -24,6 +27,9 @@ class RouteName {
   static const String navigationBarPage = 'navigation-bar';
   static const String homeTestPage = 'home-test';
   static const String flutterSlidale = 'flutter-slidable';
+  static const String drawVerticePage = 'draw-vertice-page';
+  static const String myGame = 'my_game';
+  static const String customProgressIndicator = 'custom_progress_indicator';
 }
 
 final GoRouter router = GoRouter(
@@ -120,6 +126,27 @@ final GoRouter router = GoRouter(
           name: RouteName.flutterSlidale,
           builder: (context, state) {
             return const FlutterSlidablePage();
+          },
+        ),
+        GoRoute(
+          path: RouteName.drawVerticePage,
+          name: RouteName.drawVerticePage,
+          builder: (context, state) {
+            return const DrawVerticePage();
+          },
+        ),
+        GoRoute(
+          path: RouteName.myGame,
+          name: RouteName.myGame,
+          builder: (context, state) {
+            return const MyGame();
+          },
+        ),
+        GoRoute(
+          path: RouteName.customProgressIndicator,
+          name: RouteName.customProgressIndicator,
+          builder: (context, state) {
+            return const CustomProgressIndicator();
           },
         ),
       ],

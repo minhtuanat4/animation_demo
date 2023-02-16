@@ -156,6 +156,30 @@ class OptionWidget extends StatelessWidget {
               context.goNamed(RouteName.flutterSlidale);
             },
           ),
+          OptionButton(
+            label: 'Draw Vertice',
+            onPressed: () {
+              context.goNamed(
+                RouteName.drawVerticePage,
+              );
+            },
+          ),
+          OptionButton(
+            label: 'Flame Game',
+            onPressed: () {
+              context.goNamed(
+                RouteName.myGame,
+              );
+            },
+          ),
+          OptionButton(
+            label: 'Custom Progress Indicator',
+            onPressed: () {
+              context.goNamed(
+                RouteName.customProgressIndicator,
+              );
+            },
+          ),
         ],
       ),
     );
