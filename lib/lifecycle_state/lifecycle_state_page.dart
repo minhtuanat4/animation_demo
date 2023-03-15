@@ -17,10 +17,18 @@ class _LifecyleStatePageState extends State<LifecyleStatePage>
   String stateLifecylce = '';
 
   int _start = const Duration(seconds: 5).inSeconds;
+  late Timer _timerFirstObject;
   @override
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addObserver(this);
+    _timerFirstObject = Timer(
+      const Duration(seconds: 4),
+      () {
+        print('Ontick NOT provider.isClicked ');
+        // removeFirstItemSelected(firstObject);
+      },
+    );
     super.initState();
   }
 
@@ -52,13 +60,21 @@ class _LifecyleStatePageState extends State<LifecyleStatePage>
           const SizedBox(height: 24),
           Text('Name ${widget.name}'),
           const SizedBox(height: 24),
-          const Text('Lifecycles State Flutter'),
+          GestureDetector(
+              onTap: () {
+                print('Cancel _timerFirstObject');
+                _timerFirstObject.cancel();
+              },
+              child: const Text('Lifecycles State Flutter')),
           const SizedBox(height: 24),
-          Text(
-            stateLifecylce,
-            style: const TextStyle(
-              fontSize: 24,
-              color: Colors.red,
+          GestureDetector(
+            onTap: () {},
+            child: Text(
+              stateLifecylce,
+              style: const TextStyle(
+                fontSize: 24,
+                color: Colors.red,
+              ),
             ),
           ),
         ]),

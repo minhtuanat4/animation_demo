@@ -180,6 +180,22 @@ class OptionWidget extends StatelessWidget {
               );
             },
           ),
+          OptionButton(
+            label: 'Pikachu Game',
+            onPressed: () {
+              context.goNamed(
+                RouteName.pikachuGame,
+              );
+            },
+          ),
+          OptionButton(
+            label: 'Pikachu Flame Game',
+            onPressed: () {
+              context.goNamed(
+                RouteName.pikachuFlameGame,
+              );
+            },
+          ),
         ],
       ),
     );

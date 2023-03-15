@@ -1,4 +1,5 @@
 import 'package:animation_demo/custom_progress_indicator/custom_progress_indicator.dart';
+import 'package:animation_demo/flame_game/pikachu/pikachu_game.dart';
 import 'package:animation_demo/flutter_test/home_test_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_detail_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_info_page.dart';
@@ -13,6 +14,7 @@ import 'common/user_management.dart';
 import 'custom_package/home_packages.dart';
 import 'draw_verticle/draw_verticle_page.dart';
 import 'flame_game/my_game.dart';
+import 'flame_game/pikachu_flame_game/intro_pikachu_flame_game.dart';
 import 'flutter_slidable_page/flutter_slidable_page.dart';
 import 'go_router_page/go_router_page.dart';
 import 'lifecycle_state/lifecycle_state_page.dart';
@@ -30,6 +32,8 @@ class RouteName {
   static const String drawVerticePage = 'draw-vertice-page';
   static const String myGame = 'my_game';
   static const String customProgressIndicator = 'custom_progress_indicator';
+  static const String pikachuGame = 'pikachu-game';
+  static const String pikachuFlameGame = 'pikachu-flame-game';
 }
 
 final GoRouter router = GoRouter(
@@ -147,6 +151,20 @@ final GoRouter router = GoRouter(
           name: RouteName.customProgressIndicator,
           builder: (context, state) {
             return const CustomProgressIndicator();
+          },
+        ),
+        GoRoute(
+          path: RouteName.pikachuGame,
+          name: RouteName.pikachuGame,
+          builder: (context, state) {
+            return const TableDemoWidget();
+          },
+        ),
+        GoRoute(
+          path: RouteName.pikachuFlameGame,
+          name: RouteName.pikachuFlameGame,
+          builder: (context, state) {
+            return const PikachuMap();
           },
         ),
       ],
