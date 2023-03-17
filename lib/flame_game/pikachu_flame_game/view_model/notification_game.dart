@@ -13,9 +13,9 @@ extension NotificationGame on PikachuMapState {
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('No more pair Pikachu'),
+                Text('No more pair Pikachus'),
                 Text(
-                    'Would you like to minus one turn to change position Pikachu?'),
+                    '''Would you like to minus one turn to change Pikachus's position ?'''),
               ],
             ),
           ),
@@ -27,12 +27,12 @@ extension NotificationGame on PikachuMapState {
                 shuffleMatrix();
               },
             ),
-            TextButton(
-              child: const Text('No'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
+            // TextButton(
+            //   child: const Text('No'),
+            //   onPressed: () {
+            //     Navigator.of(context).pop();
+            //   },
+            // ),
           ],
         );
       },
@@ -68,7 +68,7 @@ extension NotificationGame on PikachuMapState {
   Future<void> noticeSamePikachu() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Notice'),

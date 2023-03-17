@@ -26,18 +26,33 @@ extension InitPikachu on PikachuMapState {
   static int pikachuLength = listAssetImage.length;
 
   int randomPikachu() {
-    var value = Random().nextInt(pikachuLength - 12);
-
+    var value = Random().nextInt(pikachuLength - 11);
+    if (value == 5 || value == 7) {
+      value++;
+    }
     return value + 6;
   }
 
   int caculateRow(int lengthMatrix) {
-    for (var i = 4; i <= 8; i = i + 2) {
-      if (lengthMatrix == pow(i, 2)) {
-        return i;
-      }
+    switch (lengthMatrix) {
+      case 36:
+        return 6;
+      case 40:
+        return 5;
+      case 48:
+        return 6;
+      case 56:
+        return 7;
+
+      default:
+        return 4;
     }
-    return 4;
+    // for (var i = 4; i <= 8; i = i + 2) {
+    //   if (lengthMatrix == pow(i, 2)) {
+    //     return i;
+    //   }
+    // }
+    // return 4;
   }
 
   List<PikachuObj> initPikachu(int count) {
