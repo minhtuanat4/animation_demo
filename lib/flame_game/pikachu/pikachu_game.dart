@@ -101,7 +101,7 @@ class _TableDemoWidgetState extends State<TableDemoWidget>
               builder: (context, itemIsDisplay, child) {
                 return Column(
                   children: [
-                    Row(children: <Widget>[
+                    Row(children: const <Widget>[
                       CardGame(
                         index: 1,
                         image:
@@ -122,7 +122,7 @@ class _TableDemoWidgetState extends State<TableDemoWidget>
                     const SizedBox(
                       height: 10,
                     ),
-                    Row(children: <Widget>[
+                    Row(children: const <Widget>[
                       CardGame(
                         index: 4,
                         id: 2,

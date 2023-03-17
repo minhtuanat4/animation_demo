@@ -8,6 +8,7 @@ import 'package:animation_demo/go_router_page/secure_setups/secure_setups_page.d
 import 'package:animation_demo/tool_tip/tool_tip_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import 'carousel_slider_page/carousel_slider_page.dart';
 import 'common/user_management.dart';
@@ -15,6 +16,7 @@ import 'custom_package/home_packages.dart';
 import 'draw_verticle/draw_verticle_page.dart';
 import 'flame_game/my_game.dart';
 import 'flame_game/pikachu_flame_game/intro_pikachu_flame_game.dart';
+import 'flame_game/pikachu_flame_game/provider/pikachu_pr.dart';
 import 'flutter_slidable_page/flutter_slidable_page.dart';
 import 'go_router_page/go_router_page.dart';
 import 'lifecycle_state/lifecycle_state_page.dart';
@@ -164,7 +166,14 @@ final GoRouter router = GoRouter(
           path: RouteName.pikachuFlameGame,
           name: RouteName.pikachuFlameGame,
           builder: (context, state) {
-            return const PikachuMap();
+            return MultiProvider(
+              providers: [
+                ChangeNotifierProvider(create: (context) => PikachuPR()),
+              ],
+              builder: (context, child) {
+                return const PikachuMap();
+              },
+            );
           },
         ),
       ],

@@ -3,10 +3,10 @@ import 'dart:math';
 import 'intro_pikachu_flame_game.dart';
 
 enum CheckLoop {
-  no_first,
-  no_last,
-  no_first_last,
-  has_first_last,
+  noFirst,
+  noLast,
+  noFirstLast,
+  hasFirstLast,
 }
 
 bool checkLineY(num xFirst, num xSecond, num y,
@@ -14,14 +14,14 @@ bool checkLineY(num xFirst, num xSecond, num y,
   final x1 = min(xFirst, xSecond);
   final x2 = max(xFirst, xSecond);
   switch (checkLoop) {
-    case CheckLoop.no_first_last:
+    case CheckLoop.noFirstLast:
       for (var x = x1 + 1; x <= x2 - 1; x++) {
         if (pikachuMap[x.toInt()][y.toInt()].isActive) {
           return false;
         }
       }
       break;
-    case CheckLoop.has_first_last:
+    case CheckLoop.hasFirstLast:
       for (var x = x1; x <= x2; x++) {
         if (pikachuMap[x.toInt()][y.toInt()].isActive) {
           return false;
@@ -38,14 +38,14 @@ bool checkLineX(num yFirst, num ySecond, num x,
   final y1 = min(yFirst, ySecond);
   final y2 = max(yFirst, ySecond);
   switch (checkLoop) {
-    case CheckLoop.no_first_last:
+    case CheckLoop.noFirstLast:
       for (var y = y1 + 1; y <= y2 - 1; y++) {
         if (pikachuMap[x.toInt()][y.toInt()].isActive) {
           return false;
         }
       }
       break;
-    case CheckLoop.has_first_last:
+    case CheckLoop.hasFirstLast:
       for (var y = y1; y <= y2; y++) {
         if (pikachuMap[x.toInt()][y.toInt()].isActive) {
           return false;
@@ -111,10 +111,12 @@ int checkRectY(Point point1, Point point2, List<List<PikachuObj>> pikachuMap) {
   pikachuMap[x1.toInt()][y1.toInt()].isActive = false;
   pikachuMap[x2.toInt()][y2.toInt()].isActive = false;
   for (var x = x1; x <= x2; x++) {
-    if ((checkLineY(x1, x, y1, pikachuMap, CheckLoop.has_first_last) &&
-        checkLineX(y1, y2, x, pikachuMap, CheckLoop.has_first_last) &&
-        checkLineY(x, x2, y2, pikachuMap, CheckLoop.has_first_last))) {
+    if ((checkLineY(x1, x, y1, pikachuMap, CheckLoop.hasFirstLast) &&
+        checkLineX(y1, y2, x, pikachuMap, CheckLoop.hasFirstLast) &&
+        checkLineY(x, x2, y2, pikachuMap, CheckLoop.hasFirstLast))) {
       print('X : $x ');
+      pikachuMap[x1.toInt()][y1.toInt()].isActive = true;
+      pikachuMap[x2.toInt()][y2.toInt()].isActive = true;
       return x.toInt();
     }
   }
@@ -137,10 +139,12 @@ int checkRectX(Point point1, Point point2, List<List<PikachuObj>> pikachuMap) {
   pikachuMap[x1.toInt()][y1.toInt()].isActive = false;
   pikachuMap[x2.toInt()][y2.toInt()].isActive = false;
   for (var y = y1; y <= y2; y++) {
-    if (checkLineX(y1, y, x1, pikachuMap, CheckLoop.has_first_last) &&
-        checkLineY(x1, x2, y, pikachuMap, CheckLoop.has_first_last) &&
-        checkLineX(y, y2, x2, pikachuMap, CheckLoop.has_first_last)) {
+    if (checkLineX(y1, y, x1, pikachuMap, CheckLoop.hasFirstLast) &&
+        checkLineY(x1, x2, y, pikachuMap, CheckLoop.hasFirstLast) &&
+        checkLineX(y, y2, x2, pikachuMap, CheckLoop.hasFirstLast)) {
       print('Y : $y ');
+      pikachuMap[x1.toInt()][y1.toInt()].isActive = true;
+      pikachuMap[x2.toInt()][y2.toInt()].isActive = true;
       return y.toInt();
     }
   }
@@ -196,10 +200,12 @@ int checkMoreLineY(Point point1, Point point2,
     x = pointMin.x;
   }
 
-  if (checkLineY(x1, x2, col, pikachuMap, CheckLoop.has_first_last)) {
+  if (checkLineY(x1, x2, col, pikachuMap, CheckLoop.hasFirstLast)) {
     while (pikachuMap[x.toInt()][y1.toInt()].isActive != true &&
         pikachuMap[x.toInt()][y2.toInt()].isActive != true) {
-      if (checkLineX(y1, y2, x, pikachuMap, CheckLoop.no_first_last)) {
+      if (checkLineX(y1, y2, x, pikachuMap, CheckLoop.noFirstLast)) {
+        pikachuMap[x1.toInt()][y1.toInt()].isActive = true;
+        pikachuMap[x2.toInt()][y2.toInt()].isActive = true;
         return x.toInt();
       }
       x += type;
@@ -230,10 +236,12 @@ int checkMoreLineX(Point point1, Point point2,
     y = pointMin.y;
     row = pointMax.x;
   }
-  if (checkLineX(y1, y2, row, pikachuMap, CheckLoop.has_first_last)) {
+  if (checkLineX(y1, y2, row, pikachuMap, CheckLoop.hasFirstLast)) {
     while (pikachuMap[x1.toInt()][y.toInt()].isActive != true &&
         pikachuMap[x2.toInt()][y.toInt()].isActive != true) {
-      if (checkLineY(x1, x2, y, pikachuMap, CheckLoop.no_first_last)) {
+      if (checkLineY(x1, x2, y, pikachuMap, CheckLoop.noFirstLast)) {
+        pikachuMap[x1.toInt()][y1.toInt()].isActive = true;
+        pikachuMap[x2.toInt()][y2.toInt()].isActive = true;
         return y.toInt();
       }
       y += type;
@@ -251,18 +259,18 @@ List<Point> myPoint(Point point1, Point point2,
     print('checkLineY');
 
     if (checkLineX(
-        point1.y, point2.y, point1.x, pikachuMap, CheckLoop.no_first_last)) {
+        point1.y, point2.y, point1.x, pikachuMap, CheckLoop.noFirstLast)) {
       return [point1, point2];
     } else {
       int tmp = -1;
 
       if ((tmp = checkLineYHasMore(point1.y, point2.y, point1.x, pikachuMap,
-              CheckLoop.no_first_last, 1, totalRow)) !=
+              CheckLoop.noFirstLast, 1, totalRow)) !=
           -1) {
         print('checkLineYHasMore 1');
         return [point1, Point(tmp, point1.y), Point(tmp, point2.y), point2];
       } else if ((tmp = checkLineYHasMore(point1.y, point2.y, point1.x,
-              pikachuMap, CheckLoop.no_first_last, -1, totalRow)) !=
+              pikachuMap, CheckLoop.noFirstLast, -1, totalRow)) !=
           -1) {
         print('checkLineYHasMore -1');
         return [point1, Point(tmp, point1.y), Point(tmp, point2.y), point2];
@@ -272,18 +280,18 @@ List<Point> myPoint(Point point1, Point point2,
     print('checkLineX');
 
     if (checkLineY(
-        point1.x, point2.x, point1.y, pikachuMap, CheckLoop.no_first_last)) {
+        point1.x, point2.x, point1.y, pikachuMap, CheckLoop.noFirstLast)) {
       return [point1, point2];
     } else {
       int tmp = -1;
 
       if ((tmp = checkLineXHasMore(point1.x, point2.x, point1.y, pikachuMap,
-              CheckLoop.no_first_last, 1, totalColumn)) !=
+              CheckLoop.noFirstLast, 1, totalColumn)) !=
           -1) {
         print('checkLineXHasMore 1');
         return [point1, Point(point1.x, tmp), Point(point2.x, tmp), point2];
       } else if ((tmp = checkLineXHasMore(point1.x, point2.x, point1.y,
-              pikachuMap, CheckLoop.no_first_last, -1, totalColumn)) !=
+              pikachuMap, CheckLoop.noFirstLast, -1, totalColumn)) !=
           -1) {
         print('checkLineXHasMore -1');
         return [point1, Point(point1.x, tmp), Point(point2.x, tmp), point2];

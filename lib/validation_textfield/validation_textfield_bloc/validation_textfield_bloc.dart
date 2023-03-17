@@ -1,6 +1,7 @@
-import 'package:animation_demo/validation_textfield/validation_textfield_page.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+
+import 'package:animation_demo/validation_textfield/validation_textfield_page.dart';
 
 part 'validation_textfield_event.dart';
 part 'validation_textfield_state.dart';

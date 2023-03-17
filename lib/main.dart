@@ -64,132 +64,132 @@ class OptionWidget extends StatelessWidget {
     return SizedBox.expand(
       child: ListView(
         children: [
+          // OptionButton(
+          //     label: 'Page View Animation',
+          //     onPressed: () {
+          //       Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (context) {
+          //           return const MyPageView();
+          //         },
+          //       ));
+          //     }),
+          // OptionButton(
+          //     label: 'Holiday Game',
+          //     onPressed: () {
+          //       Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (context) {
+          //           return const GameHolidays();
+          //         },
+          //       ));
+          //     }),
+          // OptionButton(
+          //   label: 'Lifecycles State',
+          //   onPressed: () {
+          //     context.goNamed('lifecycle-state', params: {
+          //       "id": '955',
+          //       "name": "All 4 things",
+          //     });
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Custom Package',
+          //   onPressed: () {
+          //     Navigator.of(context).push(MaterialPageRoute(
+          //       builder: (context) {
+          //         return const HomePackages();
+          //       },
+          //     ));
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Demo Tooltip',
+          //   onPressed: () {
+          //     Navigator.of(context).push(MaterialPageRoute(
+          //       builder: (context) {
+          //         return const TooltipDemo();
+          //       },
+          //     ));
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Custom Validate Textfield',
+          //   onPressed: () {
+          //     Navigator.of(context).push(MaterialPageRoute(
+          //       builder: (context) {
+          //         return ValidationTextFieldPage(
+          //           argumentObject: ArgumentObject(955, "Tuan"),
+          //         );
+          //       },
+          //     ));
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Go Router',
+          //   onPressed: () {
+          //     context.goNamed('go-router');
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Carousel Slider',
+          //   onPressed: () {
+          //     context.goNamed(RouteName.carouselSliderPage, extra: {
+          //       "arg1": "The Billionaire's Accidental  Bride",
+          //       "arg2": "All 4 things",
+          //     });
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Navigation Bar 3.0',
+          //   onPressed: () {
+          //     context.goNamed(RouteName.navigationBarPage);
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Home Test Page',
+          //   onPressed: () {
+          //     context.goNamed(RouteName.homeTestPage);
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Flutter Slidable',
+          //   onPressed: () {
+          //     context.goNamed(RouteName.flutterSlidale);
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Draw Vertice',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.drawVerticePage,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Flame Game',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.myGame,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Custom Progress Indicator',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.customProgressIndicator,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Pikachu Game',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.pikachuGame,
+          //     );
+          //   },
+          // ),
           OptionButton(
-              label: 'Page View Animation',
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) {
-                    return const MyPageView();
-                  },
-                ));
-              }),
-          OptionButton(
-              label: 'Holiday Game',
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) {
-                    return const GameHolidays();
-                  },
-                ));
-              }),
-          OptionButton(
-            label: 'Lifecycles State',
-            onPressed: () {
-              context.goNamed('lifecycle-state', params: {
-                "id": '955',
-                "name": "All 4 things",
-              });
-            },
-          ),
-          OptionButton(
-            label: 'Custom Package',
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) {
-                  return const HomePackages();
-                },
-              ));
-            },
-          ),
-          OptionButton(
-            label: 'Demo Tooltip',
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) {
-                  return const TooltipDemo();
-                },
-              ));
-            },
-          ),
-          OptionButton(
-            label: 'Custom Validate Textfield',
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) {
-                  return ValidationTextFieldPage(
-                    argumentObject: ArgumentObject(955, "Tuan"),
-                  );
-                },
-              ));
-            },
-          ),
-          OptionButton(
-            label: 'Go Router',
-            onPressed: () {
-              context.goNamed('go-router');
-            },
-          ),
-          OptionButton(
-            label: 'Carousel Slider',
-            onPressed: () {
-              context.goNamed(RouteName.carouselSliderPage, extra: {
-                "arg1": "The Billionaire's Accidental  Bride",
-                "arg2": "All 4 things",
-              });
-            },
-          ),
-          OptionButton(
-            label: 'Navigation Bar 3.0',
-            onPressed: () {
-              context.goNamed(RouteName.navigationBarPage);
-            },
-          ),
-          OptionButton(
-            label: 'Home Test Page',
-            onPressed: () {
-              context.goNamed(RouteName.homeTestPage);
-            },
-          ),
-          OptionButton(
-            label: 'Flutter Slidable',
-            onPressed: () {
-              context.goNamed(RouteName.flutterSlidale);
-            },
-          ),
-          OptionButton(
-            label: 'Draw Vertice',
-            onPressed: () {
-              context.goNamed(
-                RouteName.drawVerticePage,
-              );
-            },
-          ),
-          OptionButton(
-            label: 'Flame Game',
-            onPressed: () {
-              context.goNamed(
-                RouteName.myGame,
-              );
-            },
-          ),
-          OptionButton(
-            label: 'Custom Progress Indicator',
-            onPressed: () {
-              context.goNamed(
-                RouteName.customProgressIndicator,
-              );
-            },
-          ),
-          OptionButton(
-            label: 'Pikachu Game',
-            onPressed: () {
-              context.goNamed(
-                RouteName.pikachuGame,
-              );
-            },
-          ),
-          OptionButton(
-            label: 'Pikachu Flame Game',
+            label: 'Pikachu Game Ver 1.0',
             onPressed: () {
               context.goNamed(
                 RouteName.pikachuFlameGame,

@@ -14,11 +14,11 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Custom Progress Indicator'),
+          title: const Text('Custom Progress Indicator'),
         ),
         body: Row(
           children: [
-            Text('LibProgressIndicator '),
+            const Text('LibProgressIndicator '),
             Expanded(
               child: LibProgressIndicator(
                 onChanged: (value) {},

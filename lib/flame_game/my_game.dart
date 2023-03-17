@@ -34,7 +34,7 @@ class CollidableObject extends PositionComponent
     await super.onLoad();
     final hitbox = CircleHitbox(
         radius: 24,
-        position: Offset(100, 200).toVector2(),
+        position: const Offset(100, 200).toVector2(),
         anchor: Anchor.center)
       ..renderShape = true;
     await add(hitbox);
@@ -58,7 +58,8 @@ class CollidableObject extends PositionComponent
     super.onCollision(intersectionPoints, other);
 
     if (other is CollidableObject2) {
-      final collidableObject2 = CollidableObject3(positionObj: Offset(0, 200));
+      final collidableObject2 =
+          CollidableObject3(positionObj: const Offset(0, 200));
       gameRef.add(collidableObject2);
     }
   }

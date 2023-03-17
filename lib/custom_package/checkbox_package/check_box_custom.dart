@@ -34,7 +34,7 @@ class CheckBoxFormField extends FormField<bool> {
                         onChanged: onChangedHandler,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     label,
@@ -64,9 +64,4 @@ class CheckBoxFormField extends FormField<bool> {
 class _CheckBoxFormFieldState extends FormFieldState<bool> {
   @override
   CheckBoxFormField get widget => super.widget as CheckBoxFormField;
-
-  @override
-  void didChange(bool? value) {
-    super.didChange(value);
-  }
 }

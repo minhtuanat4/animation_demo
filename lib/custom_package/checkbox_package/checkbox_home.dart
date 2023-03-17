@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import 'check_box_custom.dart';
 
@@ -16,7 +14,7 @@ class _CheckBoxHomeState extends State<CheckBoxHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('CheckBox Custom')),
+      appBar: AppBar(title: const Text('CheckBox Custom')),
       body: SizedBox.expand(
         child: CheckBoxFormField(
           isChecked: isChecked,

@@ -101,15 +101,15 @@ class _DrawVerticePageState extends State<DrawVerticePage>
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "Data",
                 style: TextStyle(color: Colors.white),
               ),
               Container(
                   width: MediaQuery.of(context).size.width / 3,
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   height: 50,
-                  child: LinearProgressIndicator()),
+                  child: const LinearProgressIndicator()),
             ],
           )
         ],
