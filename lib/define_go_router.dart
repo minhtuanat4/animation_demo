@@ -1,5 +1,5 @@
 import 'package:animation_demo/custom_progress_indicator/custom_progress_indicator.dart';
-import 'package:animation_demo/flame_game/pikachu/pikachu_game.dart';
+import 'package:animation_demo/flame_game/flip_flop_game/provider/pikachu_pr.dart';
 import 'package:animation_demo/flutter_test/home_test_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_detail_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_info_page.dart';
@@ -14,6 +14,7 @@ import 'carousel_slider_page/carousel_slider_page.dart';
 import 'common/user_management.dart';
 import 'custom_package/home_packages.dart';
 import 'draw_verticle/draw_verticle_page.dart';
+import 'flame_game/flip_flop_game/intro_flip_flop_game.dart';
 import 'flame_game/my_game.dart';
 import 'flame_game/pikachu_flame_game/intro_pikachu_flame_game.dart';
 import 'flame_game/pikachu_flame_game/provider/pikachu_pr.dart';
@@ -34,7 +35,7 @@ class RouteName {
   static const String drawVerticePage = 'draw-vertice-page';
   static const String myGame = 'my_game';
   static const String customProgressIndicator = 'custom_progress_indicator';
-  static const String pikachuGame = 'pikachu-game';
+  static const String flipFlopGame = 'flip-flop-game';
   static const String pikachuFlameGame = 'pikachu-flame-game';
 }
 
@@ -156,10 +157,12 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
-          path: RouteName.pikachuGame,
-          name: RouteName.pikachuGame,
+          path: RouteName.flipFlopGame,
+          name: RouteName.flipFlopGame,
           builder: (context, state) {
-            return const TableDemoWidget();
+            return MultiProvider(providers: [
+              ChangeNotifierProvider(create: (context) => FlipFlopPR()),
+            ], child: const FlipFlopGamePage());
           },
         ),
         GoRoute(

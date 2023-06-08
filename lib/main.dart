@@ -1,15 +1,11 @@
-import 'package:animation_demo/page_view/page_view.dart';
+import 'package:animation_demo/blocs/flip_flop_game_bloc/flip_flop_game_bloc.dart';
 import 'package:animation_demo/validation_textfield/validation_textfield_bloc/validation_textfield_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'common/user_management.dart';
-import 'custom_package/home_packages.dart';
 import 'define_go_router.dart';
-import 'roll_paper_roll.dart/main_holiday.dart';
-import 'tool_tip/tool_tip_demo.dart';
-import 'validation_textfield/validation_textfield_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,13 +20,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     UserManagement().navigatorKey = _navigatorKey;
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => ValidationTextfieldBloc())],
-      child: MaterialApp.router(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+      providers: [
+        BlocProvider(create: (context) => FlipFlopGameBloc()),
+      ],
+      child: MultiBlocProvider(
+        providers: [BlocProvider(create: (_) => ValidationTextfieldBloc())],
+        child: MaterialApp.router(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          routerConfig: router,
         ),
-        routerConfig: router,
       ),
     );
   }
@@ -180,14 +181,14 @@ class OptionWidget extends StatelessWidget {
           //     );
           //   },
           // ),
-          // OptionButton(
-          //   label: 'Pikachu Game',
-          //   onPressed: () {
-          //     context.goNamed(
-          //       RouteName.pikachuGame,
-          //     );
-          //   },
-          // ),
+          OptionButton(
+            label: 'Flip Flop Game',
+            onPressed: () {
+              context.goNamed(
+                RouteName.flipFlopGame,
+              );
+            },
+          ),
           OptionButton(
             label: 'Pikachu Game Ver 1.0',
             onPressed: () {
