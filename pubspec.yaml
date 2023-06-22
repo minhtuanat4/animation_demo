@@ -32,14 +32,17 @@ dependencies:
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5
   flame: 1.6.0
+  fpjs_pro_plugin: 1.5.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
   flutter_slidable: 2.0.0
+  device_info_plus: ^3.2.3
   go_router: 6.0.0
   overlay_tooltip: ^0.2.1
   provider: ^6.0.5
   spritewidget: 2.0.1
+  flutter_native_splash: 2.2.19
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -49,11 +52,26 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
+flutter_native_splash:
+    color: "#ffffff"
+    image: assets/images/icon_vtcpay.png
+    branding: assets/images/logo.png
+    color_dark: "#121212"
+    image_dark: assets/images/icon_vtcpay.png
+    branding_dark: assets/images/logo.png
+    android_12:
+      image: assets/images/icon_vtcpay.png
+      icon_background_color: "#ffffff"
+      image_dark: assets/images/icon_vtcpay.png
+      icon_background_color_dark: "#121212"
+    web: false
 flutter:
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
+
+
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
@@ -63,8 +81,10 @@ flutter:
     - assets/images/weathersprites.json
     - assets/images/icon-rain.png
     - assets/images/weathersprites.png
-
     - assets/images/foggy_bg.jpeg
+    - assets/images/ic_logo_vtc_vi.png
+    - assets/images/icon_vtcpay.png
+    - assets/images/logo.png
     - assets/images/ice_bg.jpeg
     - assets/images/river_bg.jpeg
     - assets/images/roll_paper_roll/home_view_1.jpg
@@ -105,6 +125,7 @@ flutter:
     - assets/images/canh_hoa_9.png
     - assets/images/river_bg.jpeg
     - assets/images/river_bg.jpeg
+  
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
@@ -126,5 +147,6 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

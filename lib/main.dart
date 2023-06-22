@@ -1,14 +1,21 @@
+import 'dart:io';
+
 import 'package:animation_demo/blocs/flip_flop_game_bloc/flip_flop_game_bloc.dart';
 import 'package:animation_demo/validation_textfield/validation_textfield_bloc/validation_textfield_bloc.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:fpjs_pro_plugin/fpjs_pro_plugin.dart';
 import 'package:go_router/go_router.dart';
 
 import 'common/user_management.dart';
 import 'define_go_router.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(MyApp());
 }
 
@@ -48,6 +55,44 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
+  void initState() {
+    initialization();
+    _initFingerprint();
+    _getId();
+    super.initState();
+  }
+
+  void initialization() async {
+    // This is where you can initialize the resources needed by your app while
+    // the splash screen is displayed.  Remove the following example because
+    // delaying the user experience is a bad design practice!
+    // ignore_for_file: avoid_print
+
+    print('ready in 1...');
+    await Future.delayed(const Duration(seconds: 1));
+    print('go!');
+    FlutterNativeSplash.remove();
+  }
+
+  void _initFingerprint() async {
+    await FpjsProPlugin.initFpjs('h63wEGPjvm4X0mABm3tS');
+  }
+
+  Future<String?> _getId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      // import 'dart:io'
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      print('object ' + iosDeviceInfo.identifierForVendor.toString());
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else if (Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.androidId; // unique ID on Android
+    }
+    return 'null';
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -59,6 +104,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class OptionWidget extends StatelessWidget {
   const OptionWidget({Key? key}) : super(key: key);
+  Future<void> identify() async {
+    try {
+      final visitorId = await FpjsProPlugin.getVisitorId();
+      final deviceData = await FpjsProPlugin.getVisitorData();
+      print('Visitor ID: ${visitorId}');
+      print('Device data: ${deviceData}');
+    } on PlatformException catch (e) {
+      // process the error
+      print('PlatformException ' + e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -197,6 +253,12 @@ class OptionWidget extends StatelessWidget {
               );
             },
           ),
+          OptionButton(
+            label: 'Finger.com',
+            onPressed: () {
+              identify();
+            },
+          ),
         ],
       ),
     );
@@ -218,10 +280,13 @@ class OptionButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
       width: double.infinity,
       child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12)),
-          onPressed: onPressed,
-          child: Text(label)),
+        style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 12)),
+        onPressed: onPressed,
+        child: Text(
+          label,
+        ),
+      ),
     );
   }
 }
