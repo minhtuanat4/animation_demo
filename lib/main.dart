@@ -203,6 +203,15 @@ class OptionWidget extends StatelessWidget {
               });
             },
           ),
+
+          OptionButton(
+            label: 'Animated List',
+            onPressed: () {
+              context.goNamed(
+                RouteName.animatedListPage,
+              );
+            },
+          ),
           // OptionButton(
           //   label: 'Navigation Bar 3.0',
           //   onPressed: () {

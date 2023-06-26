@@ -1,3 +1,4 @@
+import 'package:animation_demo/animated_list/animated_list_page.dart';
 import 'package:animation_demo/custom_progress_indicator/custom_progress_indicator.dart';
 import 'package:animation_demo/flame_game/flip_flop_game/provider/pikachu_pr.dart';
 import 'package:animation_demo/flutter_test/home_test_page.dart';
@@ -37,6 +38,7 @@ class RouteName {
   static const String customProgressIndicator = 'custom_progress_indicator';
   static const String flipFlopGame = 'flip-flop-game';
   static const String pikachuFlameGame = 'pikachu-flame-game';
+  static const String animatedListPage = 'animated-list-page';
 }
 
 final GoRouter router = GoRouter(
@@ -163,6 +165,13 @@ final GoRouter router = GoRouter(
             return MultiProvider(providers: [
               ChangeNotifierProvider(create: (context) => FlipFlopPR()),
             ], child: const FlipFlopGamePage());
+          },
+        ),
+        GoRoute(
+          path: RouteName.animatedListPage,
+          name: RouteName.animatedListPage,
+          builder: (context, state) {
+            return const AnimatedListPage();
           },
         ),
         GoRoute(
