@@ -16,6 +16,14 @@ import 'define_go_router.dart';
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  ErrorWidget.builder = (details) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('''There's happened error'''),
+      ),
+      body: const Center(child: Text('Error')),
+    );
+  };
   runApp(MyApp());
 }
 
@@ -139,15 +147,15 @@ class OptionWidget extends StatelessWidget {
           //         },
           //       ));
           //     }),
-          // OptionButton(
-          //   label: 'Lifecycles State',
-          //   onPressed: () {
-          //     context.goNamed('lifecycle-state', params: {
-          //       "id": '955',
-          //       "name": "All 4 things",
-          //     });
-          //   },
-          // ),
+          OptionButton(
+            label: 'Lifecycles State',
+            onPressed: () {
+              context.goNamed('lifecycle-state', params: {
+                "id": '955',
+                "name": "All 4 things",
+              });
+            },
+          ),
           // OptionButton(
           //   label: 'Custom Package',
           //   onPressed: () {
@@ -186,27 +194,27 @@ class OptionWidget extends StatelessWidget {
           //     context.goNamed('go-router');
           //   },
           // ),
-          // OptionButton(
-          //   label: 'Carousel Slider',
-          //   onPressed: () {
-          //     context.goNamed(RouteName.carouselSliderPage, extra: {
-          //       "arg1": "The Billionaire's Accidental  Bride",
-          //       "arg2": "All 4 things",
-          //     });
-          //   },
-          // ),
+          OptionButton(
+            label: 'Carousel Slider',
+            onPressed: () {
+              context.goNamed(RouteName.carouselSliderPage, extra: {
+                "arg1": "The Billionaire's Accidental  Bride",
+                "arg2": "All 4 things",
+              });
+            },
+          ),
           // OptionButton(
           //   label: 'Navigation Bar 3.0',
           //   onPressed: () {
           //     context.goNamed(RouteName.navigationBarPage);
           //   },
           // ),
-          // OptionButton(
-          //   label: 'Home Test Page',
-          //   onPressed: () {
-          //     context.goNamed(RouteName.homeTestPage);
-          //   },
-          // ),
+          OptionButton(
+            label: 'Home Test Page',
+            onPressed: () {
+              context.goNamed(RouteName.homeTestPage);
+            },
+          ),
           // OptionButton(
           //   label: 'Flutter Slidable',
           //   onPressed: () {
