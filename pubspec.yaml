@@ -41,6 +41,7 @@ dependencies:
   fpjs_pro_plugin: 1.5.0
   get: ^4.6.5
   go_router: 6.0.0
+  http: 0.13.5
   overlay_tooltip: ^0.2.1
   provider: ^6.0.5
   spritewidget: 2.0.1

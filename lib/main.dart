@@ -21,7 +21,10 @@ void main() {
       appBar: AppBar(
         title: const Text('''There's happened error'''),
       ),
-      body: const Center(child: Text('Error')),
+      body: Center(
+        child:
+            Text('''There's happened error ${details.exceptionAsString()}'''),
+      ),
     );
   };
   runApp(MyApp());
@@ -123,6 +126,8 @@ class OptionWidget extends StatelessWidget {
       print('PlatformException ' + e.toString());
     }
   }
+
+  static MethodChannel methodChannel = const MethodChannel('animation_demo');
 
   @override
   Widget build(BuildContext context) {
@@ -274,6 +279,12 @@ class OptionWidget extends StatelessWidget {
             label: 'Finger.com',
             onPressed: () {
               identify();
+            },
+          ),
+          OptionButton(
+            label: 'Invoke Method Channel',
+            onPressed: () {
+              methodChannel.invokeMethod('openVC');
             },
           ),
         ],

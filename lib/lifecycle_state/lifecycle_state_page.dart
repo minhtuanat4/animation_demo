@@ -50,6 +50,7 @@ class _LifecyleStatePageState extends State<LifecyleStatePage>
     Navigator.of(context).pop();
   }
 
+  final a = null;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +68,7 @@ class _LifecyleStatePageState extends State<LifecyleStatePage>
               },
               child: const Text('Lifecycles State Flutter')),
           const SizedBox(height: 24),
+          Text(a),
           GestureDetector(
             onTap: () {},
             child: Text(
