@@ -6,6 +6,7 @@ import 'package:animation_demo/go_router_page/account_info/account_detail_page.d
 import 'package:animation_demo/go_router_page/account_info/account_info_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_update_page.dart';
 import 'package:animation_demo/go_router_page/secure_setups/secure_setups_page.dart';
+import 'package:animation_demo/render_object_page/render_object_page.dart';
 import 'package:animation_demo/tool_tip/tool_tip_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -39,6 +40,7 @@ class RouteName {
   static const String flipFlopGame = 'flip-flop-game';
   static const String pikachuFlameGame = 'pikachu-flame-game';
   static const String animatedListPage = 'animated-list-page';
+  static const String renderObjectPage = 'render-object-page';
 }
 
 final GoRouter router = GoRouter(
@@ -186,6 +188,13 @@ final GoRouter router = GoRouter(
                 return const PikachuMap();
               },
             );
+          },
+        ),
+        GoRoute(
+          path: RouteName.renderObjectPage,
+          name: RouteName.renderObjectPage,
+          builder: (context, state) {
+            return const RenderObjectPage();
           },
         ),
       ],

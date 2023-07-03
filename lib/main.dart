@@ -287,6 +287,14 @@ class OptionWidget extends StatelessWidget {
               methodChannel.invokeMethod('openVC');
             },
           ),
+          OptionButton(
+            label: 'Render Object Page',
+            onPressed: () {
+              context.goNamed(
+                RouteName.renderObjectPage,
+              );
+            },
+          ),
         ],
       ),
     );
