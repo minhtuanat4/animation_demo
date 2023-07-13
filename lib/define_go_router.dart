@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import 'carousel_slider_page/carousel_slider_page.dart';
 import 'common/user_management.dart';
+import 'cupertino_slide_segments_control/cupertino_slide_segments_control.dart';
 import 'custom_package/home_packages.dart';
 import 'draw_verticle/draw_verticle_page.dart';
 import 'flame_game/flip_flop_game/intro_flip_flop_game.dart';
@@ -41,6 +42,8 @@ class RouteName {
   static const String pikachuFlameGame = 'pikachu-flame-game';
   static const String animatedListPage = 'animated-list-page';
   static const String renderObjectPage = 'render-object-page';
+  static const String cupertinoSlideSegmentsControl =
+      'cupertino-slide-segments-control';
 }
 
 final GoRouter router = GoRouter(
@@ -195,6 +198,13 @@ final GoRouter router = GoRouter(
           name: RouteName.renderObjectPage,
           builder: (context, state) {
             return const RenderObjectPage();
+          },
+        ),
+        GoRoute(
+          path: RouteName.cupertinoSlideSegmentsControl,
+          name: RouteName.cupertinoSlideSegmentsControl,
+          builder: (context, state) {
+            return const CupertinoSlideSegmentsControl();
           },
         ),
       ],

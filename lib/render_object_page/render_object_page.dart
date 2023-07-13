@@ -1,7 +1,7 @@
 import 'dart:math';
+import 'package:flutter/src/semantics/semantics.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/semantics/semantics.dart';
 
 class RenderObjectPage extends StatefulWidget {
   const RenderObjectPage({super.key});
@@ -256,7 +256,7 @@ class MessageBubbleRenderBox extends RenderBox {
   void describeSemanticsConfiguration(SemanticsConfiguration config) {
     config.isSemanticBoundary = true;
     config.textDirection = _textDirection;
-    config.label = '$text at $texdSendAt';
+    config.label = '$text at $_texdSendAt';
     super.describeSemanticsConfiguration(config);
   }
 }

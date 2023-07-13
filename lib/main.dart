@@ -295,6 +295,14 @@ class OptionWidget extends StatelessWidget {
               );
             },
           ),
+          OptionButton(
+            label: 'CupertinoSlideSegmentsControl',
+            onPressed: () {
+              context.goNamed(
+                RouteName.cupertinoSlideSegmentsControl,
+              );
+            },
+          ),
         ],
       ),
     );
