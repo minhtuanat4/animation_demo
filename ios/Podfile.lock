@@ -8,12 +8,21 @@ PODS:
   - fpjs_pro_plugin (1.5.0):
     - FingerprintPro (~> 2.1.8)
     - Flutter
+  - image_picker_ios (0.0.1):
+    - Flutter
+  - permission_handler_apple (9.1.1):
+    - Flutter
+  - scan (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - fpjs_pro_plugin (from `.symlinks/plugins/fpjs_pro_plugin/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - scan (from `.symlinks/plugins/scan/ios`)
 
 SPEC REPOS:
   trunk:
@@ -28,6 +37,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   fpjs_pro_plugin:
     :path: ".symlinks/plugins/fpjs_pro_plugin/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
+  scan:
+    :path: ".symlinks/plugins/scan/ios"
 
 SPEC CHECKSUMS:
   device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
@@ -35,7 +50,10 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   fpjs_pro_plugin: c9fafa1af168859daeeacd0202d09dd0dc780339
+  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
+  scan: aea35bb4aa59ccc8839c576a18cd57c7d492cc86
 
-PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
+PODFILE CHECKSUM: 5f7531b41bcef103264c00c983c83f460eb54c97
 
 COCOAPODS: 1.12.1

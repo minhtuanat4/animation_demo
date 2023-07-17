@@ -13,6 +13,19 @@ import 'package:go_router/go_router.dart';
 import 'common/user_management.dart';
 import 'define_go_router.dart';
 
+// List<DateTime> getDaysInBetween(DateTime startDate, DateTime endDate) {
+//   List<DateTime> days = [];
+//   for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+//     days.add(startDate.add(Duration(days: i)));
+//   }
+//   return days;
+// }
+
+// List<DateTime> getDaysInBetween(DateTime startDate, DateTime endDate) {
+//   final daysToGenerate = endDate.difference(startDate).inDays + 1;
+//   return List.generate(daysToGenerate, (i) => startDate.add(Duration(days: i)));
+// }
+
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -300,6 +313,22 @@ class OptionWidget extends StatelessWidget {
             onPressed: () {
               context.goNamed(
                 RouteName.cupertinoSlideSegmentsControl,
+              );
+            },
+          ),
+          OptionButton(
+            label: 'Custom Animated Bottom Bar',
+            onPressed: () {
+              context.goNamed(
+                RouteName.customAnimatedBottomBar,
+              );
+            },
+          ),
+          OptionButton(
+            label: 'Scan Image QR Page',
+            onPressed: () {
+              context.goNamed(
+                RouteName.scanImageQRPage,
               );
             },
           ),

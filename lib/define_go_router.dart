@@ -1,3 +1,4 @@
+import 'package:animation_demo/animated_bottom_bar/animated_bottom_bar_page.dart';
 import 'package:animation_demo/animated_list/animated_list_page.dart';
 import 'package:animation_demo/custom_progress_indicator/custom_progress_indicator.dart';
 import 'package:animation_demo/flame_game/flip_flop_game/provider/pikachu_pr.dart';
@@ -7,6 +8,7 @@ import 'package:animation_demo/go_router_page/account_info/account_info_page.dar
 import 'package:animation_demo/go_router_page/account_info/account_update_page.dart';
 import 'package:animation_demo/go_router_page/secure_setups/secure_setups_page.dart';
 import 'package:animation_demo/render_object_page/render_object_page.dart';
+import 'package:animation_demo/scan_image_qr/scan_image_qr_page.dart';
 import 'package:animation_demo/tool_tip/tool_tip_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -42,6 +44,8 @@ class RouteName {
   static const String pikachuFlameGame = 'pikachu-flame-game';
   static const String animatedListPage = 'animated-list-page';
   static const String renderObjectPage = 'render-object-page';
+  static const String customAnimatedBottomBar = 'custom-animated-bottom-bar';
+  static const String scanImageQRPage = 'scan-image-qr-page';
   static const String cupertinoSlideSegmentsControl =
       'cupertino-slide-segments-control';
 }
@@ -205,6 +209,20 @@ final GoRouter router = GoRouter(
           name: RouteName.cupertinoSlideSegmentsControl,
           builder: (context, state) {
             return const CupertinoSlideSegmentsControl();
+          },
+        ),
+        GoRoute(
+          path: RouteName.customAnimatedBottomBar,
+          name: RouteName.customAnimatedBottomBar,
+          builder: (context, state) {
+            return const AnimatedBottomBarPage();
+          },
+        ),
+        GoRoute(
+          path: RouteName.scanImageQRPage,
+          name: RouteName.scanImageQRPage,
+          builder: (context, state) {
+            return const ScanImageQRPage();
           },
         ),
       ],
