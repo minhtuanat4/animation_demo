@@ -332,6 +332,14 @@ class OptionWidget extends StatelessWidget {
               );
             },
           ),
+          OptionButton(
+            label: 'PaintOptionPage',
+            onPressed: () {
+              context.goNamed(
+                RouteName.paintOptionPage,
+              );
+            },
+          ),
         ],
       ),
     );

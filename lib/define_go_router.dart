@@ -18,6 +18,9 @@ import 'carousel_slider_page/carousel_slider_page.dart';
 import 'common/user_management.dart';
 import 'cupertino_slide_segments_control/cupertino_slide_segments_control.dart';
 import 'custom_package/home_packages.dart';
+import 'custom_paint/options/card_hidden_animation_page.dart';
+import 'custom_paint/options/draw_arcto_page.dart';
+import 'custom_paint/paint_option_page.dart';
 import 'draw_verticle/draw_verticle_page.dart';
 import 'flame_game/flip_flop_game/intro_flip_flop_game.dart';
 import 'flame_game/my_game.dart';
@@ -46,6 +49,10 @@ class RouteName {
   static const String renderObjectPage = 'render-object-page';
   static const String customAnimatedBottomBar = 'custom-animated-bottom-bar';
   static const String scanImageQRPage = 'scan-image-qr-page';
+  static const String paintOptionPage = 'paint-option-page';
+  static const String drawArctoPage = 'paintOptionPage/draw-arcto-page';
+  static const String cardHiddenAnimationPage =
+      'paintOptionPage/card-hidden-animation-page';
   static const String cupertinoSlideSegmentsControl =
       'cupertino-slide-segments-control';
 }
@@ -75,6 +82,22 @@ final GoRouter router = GoRouter(
           name: "animation-page",
           builder: (context, state) => const MyPageView(),
         ),
+        GoRoute(
+            path: RouteName.paintOptionPage,
+            name: RouteName.paintOptionPage,
+            builder: (context, state) => const PaintOptionPage(),
+            routes: [
+              GoRoute(
+                name: RouteName.drawArctoPage,
+                path: RouteName.drawArctoPage,
+                builder: (context, state) => const DrawArcToPage(),
+              ),
+              GoRoute(
+                name: RouteName.cardHiddenAnimationPage,
+                path: RouteName.cardHiddenAnimationPage,
+                builder: (context, state) => const CardHiddenAnimationPage(),
+              ),
+            ]),
         GoRoute(
           path: "holiday-game",
           name: "holiday-game",
