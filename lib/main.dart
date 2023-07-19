@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:animation_demo/blocs/flip_flop_game_bloc/flip_flop_game_bloc.dart';
+import 'package:animation_demo/firebase_options.dart';
 import 'package:animation_demo/validation_textfield/validation_textfield_bloc/validation_textfield_bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,9 +30,25 @@ import 'define_go_router.dart';
 //   return List.generate(daysToGenerate, (i) => startDate.add(Duration(days: i)));
 // }
 
-void main() {
+// Toggle this to cause an async error to be thrown during initialization
+// and to test that runZonedGuarded() catches the error
+const _kShouldTestAsyncErrorOnInit = false;
+
+// Toggle this for testing Crashlytics in your app locally.
+const _kTestingCrashlytics = true;
+
+Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
   ErrorWidget.builder = (details) {
     return Scaffold(
       appBar: AppBar(
@@ -338,6 +358,20 @@ class OptionWidget extends StatelessWidget {
               context.goNamed(
                 RouteName.paintOptionPage,
               );
+            },
+          ),
+          OptionButton(
+            label: 'FlutterHookExample',
+            onPressed: () {
+              context.goNamed(
+                RouteName.flutterHookExample,
+              );
+            },
+          ),
+          OptionButton(
+            label: 'Test Throw Exeption',
+            onPressed: () {
+              throw Exception();
             },
           ),
         ],

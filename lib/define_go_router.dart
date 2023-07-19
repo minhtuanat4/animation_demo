@@ -26,6 +26,7 @@ import 'flame_game/flip_flop_game/intro_flip_flop_game.dart';
 import 'flame_game/my_game.dart';
 import 'flame_game/pikachu_flame_game/intro_pikachu_flame_game.dart';
 import 'flame_game/pikachu_flame_game/provider/pikachu_pr.dart';
+import 'flutter_hook_example/flutter_hook_page.dart';
 import 'flutter_slidable_page/flutter_slidable_page.dart';
 import 'go_router_page/go_router_page.dart';
 import 'lifecycle_state/lifecycle_state_page.dart';
@@ -53,6 +54,7 @@ class RouteName {
   static const String drawArctoPage = 'paintOptionPage/draw-arcto-page';
   static const String cardHiddenAnimationPage =
       'paintOptionPage/card-hidden-animation-page';
+  static const String flutterHookExample = 'flutter-hook-example';
   static const String cupertinoSlideSegmentsControl =
       'cupertino-slide-segments-control';
 }
@@ -82,6 +84,11 @@ final GoRouter router = GoRouter(
           name: "animation-page",
           builder: (context, state) => const MyPageView(),
         ),
+        // GoRoute(
+        //   path: RouteName.flutterHookExample,
+        //   name: RouteName.flutterHookExample,
+        //   builder: (context, state) => const FlutterHookExample(),
+        // ),
         GoRoute(
             path: RouteName.paintOptionPage,
             name: RouteName.paintOptionPage,
