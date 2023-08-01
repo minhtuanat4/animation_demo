@@ -3,18 +3,28 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.15'
+        // classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
     }
 }
+// plugins {
+//   // ...
 
+//   // Add the dependency for the Google services Gradle plugin
+//   id 'com.google.gms.google-services' version '4.3.15' apply false
+
+// }
 allprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter()
     }
 }
 

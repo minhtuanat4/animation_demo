@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "873201450154",
+    "project_id": "animation-demo-3bc8b",
+    "storage_bucket": "animation-demo-3bc8b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873201450154:android:5e0d1a1a0b7e8eaf9624d3",
+        "android_client_info": {
+          "package_name": "com.example.animation_demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "873201450154-26l4lc5s7ddfa7dc70ic2fi6kb6lfrrr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSphT1eMQwJwMOSMEwiqjjxWYhf8P7uAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "873201450154-26l4lc5s7ddfa7dc70ic2fi6kb6lfrrr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "873201450154-3j0mnpl5auu4973vvorckr9n4e4tk2iv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mobile.vtc.smartAgent.alpha"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
