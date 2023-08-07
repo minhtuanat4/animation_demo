@@ -15,6 +15,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'carousel_slider_page/carousel_slider_page.dart';
+import 'chart_page/bar_chart_page.dart';
 import 'common/user_management.dart';
 import 'cupertino_slide_segments_control/cupertino_slide_segments_control.dart';
 import 'custom_package/home_packages.dart';
@@ -26,7 +27,6 @@ import 'flame_game/flip_flop_game/intro_flip_flop_game.dart';
 import 'flame_game/my_game.dart';
 import 'flame_game/pikachu_flame_game/intro_pikachu_flame_game.dart';
 import 'flame_game/pikachu_flame_game/provider/pikachu_pr.dart';
-import 'flutter_hook_example/flutter_hook_page.dart';
 import 'flutter_slidable_page/flutter_slidable_page.dart';
 import 'go_router_page/go_router_page.dart';
 import 'lifecycle_state/lifecycle_state_page.dart';
@@ -52,6 +52,7 @@ class RouteName {
   static const String scanImageQRPage = 'scan-image-qr-page';
   static const String paintOptionPage = 'paint-option-page';
   static const String drawArctoPage = 'paintOptionPage/draw-arcto-page';
+  static const String barChartPage = 'bar-chart-page';
   static const String cardHiddenAnimationPage =
       'paintOptionPage/card-hidden-animation-page';
   static const String flutterHookExample = 'flutter-hook-example';
@@ -83,6 +84,11 @@ final GoRouter router = GoRouter(
           path: "animation-page",
           name: "animation-page",
           builder: (context, state) => const MyPageView(),
+        ),
+        GoRoute(
+          path: RouteName.barChartPage,
+          name: RouteName.barChartPage,
+          builder: (context, state) => const ColumnChartPage(),
         ),
         // GoRoute(
         //   path: RouteName.flutterHookExample,

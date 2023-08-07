@@ -51,6 +51,8 @@ dependencies:
   overlay_tooltip: ^0.2.1
   permission_handler: 10.4.3
   provider: ^6.0.5
+  # fl_chart: 0.60.0
+  syncfusion_flutter_charts: 22.2.7
   scan: 1.6.0
   spritewidget: 2.0.1
   firebase_analytics: 10.4.4

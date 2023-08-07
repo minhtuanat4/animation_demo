@@ -374,6 +374,14 @@ class OptionWidget extends StatelessWidget {
               throw Exception();
             },
           ),
+          OptionButton(
+            label: 'Bar Chart Page',
+            onPressed: () {
+              context.goNamed(
+                RouteName.barChartPage,
+              );
+            },
+          ),
         ],
       ),
     );
