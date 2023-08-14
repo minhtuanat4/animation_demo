@@ -417,10 +417,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mobile.vtc.smartAgent.alpha;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobile.vtc.smartAgent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = VTCPay_dev_06122022;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = VTCPay_Dev_Alpha10052023;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = VTCPay_dev_10052023;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -552,10 +552,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mobile.vtc.smartAgent.alpha;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobile.vtc.smartAgent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = VTCPay_dev_06122022;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = VTCPay_Dev_Alpha10052023;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = VTCPay_dev_10052023;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -581,10 +581,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mobile.vtc.smartAgent.alpha;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobile.vtc.smartAgent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = VTCPay_dev_06122022;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = VTCPay_Dev_Alpha10052023;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = VTCPay_dev_10052023;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

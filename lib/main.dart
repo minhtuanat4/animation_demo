@@ -73,16 +73,14 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => FlipFlopGameBloc()),
+        BlocProvider(create: (_) => ValidationTextfieldBloc())
       ],
-      child: MultiBlocProvider(
-        providers: [BlocProvider(create: (_) => ValidationTextfieldBloc())],
-        child: MaterialApp.router(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          routerConfig: router,
+      child: MaterialApp.router(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
+        routerConfig: router,
       ),
     );
   }
@@ -185,15 +183,15 @@ class OptionWidget extends StatelessWidget {
           //         },
           //       ));
           //     }),
-          OptionButton(
-            label: 'Lifecycles State',
-            onPressed: () {
-              context.goNamed('lifecycle-state', params: {
-                "id": '955',
-                "name": "All 4 things",
-              });
-            },
-          ),
+          // OptionButton(
+          //   label: 'Lifecycles State',
+          //   onPressed: () {
+          //     context.goNamed('lifecycle-state', params: {
+          //       "id": '955',
+          //       "name": "All 4 things",
+          //     });
+          //   },
+          // ),
           // OptionButton(
           //   label: 'Custom Package',
           //   onPressed: () {
@@ -232,36 +230,36 @@ class OptionWidget extends StatelessWidget {
           //     context.goNamed('go-router');
           //   },
           // ),
-          OptionButton(
-            label: 'Carousel Slider',
-            onPressed: () {
-              context.goNamed(RouteName.carouselSliderPage, extra: {
-                "arg1": "The Billionaire's Accidental  Bride",
-                "arg2": "All 4 things",
-              });
-            },
-          ),
+          // OptionButton(
+          //   label: 'Carousel Slider',
+          //   onPressed: () {
+          //     context.goNamed(RouteName.carouselSliderPage, extra: {
+          //       "arg1": "The Billionaire's Accidental  Bride",
+          //       "arg2": "All 4 things",
+          //     });
+          //   },
+          // ),
 
-          OptionButton(
-            label: 'Animated List',
-            onPressed: () {
-              context.goNamed(
-                RouteName.animatedListPage,
-              );
-            },
-          ),
+          // OptionButton(
+          //   label: 'Animated List',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.animatedListPage,
+          //     );
+          //   },
+          // ),
           // OptionButton(
           //   label: 'Navigation Bar 3.0',
           //   onPressed: () {
           //     context.goNamed(RouteName.navigationBarPage);
           //   },
           // ),
-          OptionButton(
-            label: 'Home Test Page',
-            onPressed: () {
-              context.goNamed(RouteName.homeTestPage);
-            },
-          ),
+          // OptionButton(
+          //   label: 'Home Test Page',
+          //   onPressed: () {
+          //     context.goNamed(RouteName.homeTestPage);
+          //   },
+          // ),
           // OptionButton(
           //   label: 'Flutter Slidable',
           //   onPressed: () {
@@ -292,14 +290,14 @@ class OptionWidget extends StatelessWidget {
           //     );
           //   },
           // ),
-          OptionButton(
-            label: 'Flip Flop Game',
-            onPressed: () {
-              context.goNamed(
-                RouteName.flipFlopGame,
-              );
-            },
-          ),
+          // OptionButton(
+          //   label: 'Flip Flop Game',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.flipFlopGame,
+          //     );
+          //   },
+          // ),
           OptionButton(
             label: 'Pikachu Game Ver 1.0',
             onPressed: () {
@@ -309,79 +307,85 @@ class OptionWidget extends StatelessWidget {
             },
           ),
           OptionButton(
-            label: 'Finger.com',
+            label: 'RotateScaleAnimationPage',
             onPressed: () {
-              identify();
+              context.goNamed(RouteName.rotateScaleAnimationPage);
             },
           ),
-          OptionButton(
-            label: 'Invoke Method Channel',
-            onPressed: () {
-              methodChannel.invokeMethod('openVC');
-            },
-          ),
-          OptionButton(
-            label: 'Render Object Page',
-            onPressed: () {
-              context.goNamed(
-                RouteName.renderObjectPage,
-              );
-            },
-          ),
-          OptionButton(
-            label: 'CupertinoSlideSegmentsControl',
-            onPressed: () {
-              context.goNamed(
-                RouteName.cupertinoSlideSegmentsControl,
-              );
-            },
-          ),
-          OptionButton(
-            label: 'Custom Animated Bottom Bar',
-            onPressed: () {
-              context.goNamed(
-                RouteName.customAnimatedBottomBar,
-              );
-            },
-          ),
-          OptionButton(
-            label: 'Scan Image QR Page',
-            onPressed: () {
-              context.goNamed(
-                RouteName.scanImageQRPage,
-              );
-            },
-          ),
-          OptionButton(
-            label: 'PaintOptionPage',
-            onPressed: () {
-              context.goNamed(
-                RouteName.paintOptionPage,
-              );
-            },
-          ),
-          OptionButton(
-            label: 'FlutterHookExample',
-            onPressed: () {
-              context.goNamed(
-                RouteName.flutterHookExample,
-              );
-            },
-          ),
-          OptionButton(
-            label: 'Test Throw Exeption',
-            onPressed: () {
-              throw Exception();
-            },
-          ),
-          OptionButton(
-            label: 'Bar Chart Page',
-            onPressed: () {
-              context.goNamed(
-                RouteName.barChartPage,
-              );
-            },
-          ),
+          // OptionButton(
+          //   label: 'Finger.com',
+          //   onPressed: () {
+          //     identify();
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Invoke Method Channel',
+          //   onPressed: () {
+          //     methodChannel.invokeMethod('openVC');
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Render Object Page',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.renderObjectPage,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'CupertinoSlideSegmentsControl',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.cupertinoSlideSegmentsControl,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Custom Animated Bottom Bar',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.customAnimatedBottomBar,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Scan Image QR Page',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.scanImageQRPage,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'PaintOptionPage',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.paintOptionPage,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'FlutterHookExample',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.flutterHookExample,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Test Throw Exeption',
+          //   onPressed: () {
+          //     throw Exception();
+          //   },
+          // ),
+          // OptionButton(
+          //   label: 'Bar Chart Page',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.barChartPage,
+          //     );
+          //   },
+          // ),
         ],
       ),
     );

@@ -34,6 +34,7 @@ import 'main.dart';
 import 'navigation_bar/navigation_bar_page.dart';
 import 'page_view/page_view.dart';
 import 'roll_paper_roll.dart/main_holiday.dart';
+import 'rotate_scale_animation.dart/rotate_scale_animation_page.dart';
 import 'validation_textfield/validation_textfield_page.dart';
 
 class RouteName {
@@ -53,6 +54,7 @@ class RouteName {
   static const String paintOptionPage = 'paint-option-page';
   static const String drawArctoPage = 'paintOptionPage/draw-arcto-page';
   static const String barChartPage = 'bar-chart-page';
+  static const String rotateScaleAnimationPage = 'rotate-scale-animation-page';
   static const String cardHiddenAnimationPage =
       'paintOptionPage/card-hidden-animation-page';
   static const String flutterHookExample = 'flutter-hook-example';
@@ -89,6 +91,11 @@ final GoRouter router = GoRouter(
           path: RouteName.barChartPage,
           name: RouteName.barChartPage,
           builder: (context, state) => const ColumnChartPage(),
+        ),
+        GoRoute(
+          path: RouteName.rotateScaleAnimationPage,
+          name: RouteName.rotateScaleAnimationPage,
+          builder: (context, state) => const RotateScaleAnimationPage(),
         ),
         // GoRoute(
         //   path: RouteName.flutterHookExample,
