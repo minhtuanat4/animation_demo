@@ -1,6 +1,7 @@
 import 'package:animation_demo/animated_bottom_bar/animated_bottom_bar_page.dart';
 import 'package:animation_demo/animated_list/animated_list_page.dart';
 import 'package:animation_demo/custom_progress_indicator/custom_progress_indicator.dart';
+import 'package:animation_demo/draw_canvas/draw_progress_bar.dart';
 import 'package:animation_demo/flame_game/flip_flop_game/provider/pikachu_pr.dart';
 import 'package:animation_demo/flutter_test/home_test_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_detail_page.dart';
@@ -58,6 +59,7 @@ class RouteName {
   static const String cardHiddenAnimationPage =
       'paintOptionPage/card-hidden-animation-page';
   static const String flutterHookExample = 'flutter-hook-example';
+  static const String drawProgressBar = 'draw_progress_bar';
   static const String cupertinoSlideSegmentsControl =
       'cupertino-slide-segments-control';
 }
@@ -91,6 +93,11 @@ final GoRouter router = GoRouter(
           path: RouteName.barChartPage,
           name: RouteName.barChartPage,
           builder: (context, state) => const ColumnChartPage(),
+        ),
+        GoRoute(
+          path: RouteName.drawProgressBar,
+          name: RouteName.drawProgressBar,
+          builder: (context, state) => SampleAnimation(),
         ),
         GoRoute(
           path: RouteName.rotateScaleAnimationPage,

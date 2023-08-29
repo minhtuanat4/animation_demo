@@ -312,6 +312,12 @@ class OptionWidget extends StatelessWidget {
               context.goNamed(RouteName.rotateScaleAnimationPage);
             },
           ),
+          OptionButton(
+            label: RouteName.drawProgressBar,
+            onPressed: () {
+              context.goNamed(RouteName.drawProgressBar);
+            },
+          ),
           // OptionButton(
           //   label: 'Finger.com',
           //   onPressed: () {
