@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:after_layout/after_layout.dart';
-import 'package:animation_demo/flame_game/pikachu_flame_game/view_model/check_pikachu_map.dart';
 import 'package:animation_demo/flame_game/pikachu_flame_game/view_model/click_pikachu_box.dart';
 import 'package:animation_demo/flame_game/pikachu_flame_game/view_model/init_matrix.dart';
 import 'package:animation_demo/flame_game/pikachu_flame_game/view_model/init_pikachu.dart';

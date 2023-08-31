@@ -1,6 +1,6 @@
 import 'package:animation_demo/model/person_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'grade_model.g.dart';
 
 @JsonSerializable()

@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:path_drawing/path_drawing.dart';
 
 // class DrawProgressBar extends StatefulWidget {
 //   const DrawProgressBar({super.key});
@@ -116,7 +115,7 @@ import 'package:path_drawing/path_drawing.dart';
 // }
 
 class SampleAnimation extends StatefulWidget {
-  SampleAnimation();
+  const SampleAnimation({super.key});
 
   @override
   State<StatefulWidget> createState() {

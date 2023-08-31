@@ -1,3 +1,4 @@
+import 'package:animation_demo/common/utils.dart';
 import 'package:flutter/material.dart';
 
 class UserManagement {
@@ -12,4 +13,23 @@ class UserManagement {
     navigatorKey = null;
   }
   GlobalKey<NavigatorState>? navigatorKey;
+
+  Future<int?> getCurrentID() async {
+    return await Utils.readData(
+      'currentIdSqflite',
+    );
+  }
+
+  void setCurrentID({int? data}) {
+    if (data == null) {
+      Utils.removeData(
+        'currentIdSqflite',
+      );
+    } else {
+      Utils.saveData(
+        'currentIdSqflite',
+        data,
+      );
+    }
+  }
 }

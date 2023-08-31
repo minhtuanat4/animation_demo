@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:animation_demo/blocs/flip_flop_game_bloc/flip_flop_game_bloc.dart';
 import 'package:animation_demo/firebase_options.dart';
+import 'package:animation_demo/sqlite_example/sqlite_hepler.dart';
 import 'package:animation_demo/validation_textfield/validation_textfield_bloc/validation_textfield_bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -101,7 +102,13 @@ class _MyHomePageState extends State<MyHomePage> {
     initialization();
     _initFingerprint();
     _getId();
+    initDatabase();
     super.initState();
+  }
+
+  Future<void> initDatabase() async {
+    await NewsProvider().getPathData();
+    await NewsProvider().initOpenDababase();
   }
 
   void initialization() async {
@@ -316,6 +323,12 @@ class OptionWidget extends StatelessWidget {
             label: RouteName.drawProgressBar,
             onPressed: () {
               context.goNamed(RouteName.drawProgressBar);
+            },
+          ),
+          OptionButton(
+            label: RouteName.sqlitePage,
+            onPressed: () async {
+              context.goNamed(RouteName.sqlitePage);
             },
           ),
           // OptionButton(

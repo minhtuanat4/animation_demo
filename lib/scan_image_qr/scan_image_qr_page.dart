@@ -1,12 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
-// import 'package:scan/scan.dart';
-
-import '../popup_common.dart';
-import '../utils.dart';
 
 class ScanImageQRPage extends StatefulWidget {
   const ScanImageQRPage({super.key});

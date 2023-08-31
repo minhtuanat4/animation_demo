@@ -35,22 +35,27 @@ class _HomePackagesState extends State<HomePackages> {
 class OptionButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
+  final double kVertical;
   const OptionButton({
     Key? key,
     required this.label,
     required this.onPressed,
+    this.kVertical = 8,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 40, vertical: kVertical),
       width: double.infinity,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12)),
+              padding: EdgeInsets.symmetric(vertical: kVertical)),
           onPressed: onPressed,
-          child: Text(label)),
+          child: Text(
+            label,
+            softWrap: true,
+          )),
     );
   }
 }

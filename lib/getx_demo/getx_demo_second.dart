@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +15,7 @@ void main() {
       // GetPage with custom transitions and bindings
       GetPage(
         name: '/second',
-        page: () => Second(),
+        page: () => const Second(),
         transition: Transition.cupertino,
         binding: SampleBind(),
       ),
@@ -24,7 +23,7 @@ void main() {
       GetPage(
         name: '/third',
         transition: Transition.cupertino,
-        page: () => Third(),
+        page: () => const Third(),
       ),
     ],
   ));
@@ -234,6 +233,8 @@ class Second extends VtcBasicPage<ControllerX> {
 }
 
 class Third extends GetView<ControllerX> {
+  const Third({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

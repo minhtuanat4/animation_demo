@@ -47,7 +47,7 @@ class ButtonFactory extends StatelessWidget {
       onTap: () {},
       child: Container(
         height: 180,
-        margin: EdgeInsets.only(bottom: 12),
+        margin: const EdgeInsets.only(bottom: 12),
         child: ElevatedButton(onPressed: () {}, child: Text(text)),
       ),
     );

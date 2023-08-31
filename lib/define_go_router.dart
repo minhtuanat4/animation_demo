@@ -36,6 +36,7 @@ import 'navigation_bar/navigation_bar_page.dart';
 import 'page_view/page_view.dart';
 import 'roll_paper_roll.dart/main_holiday.dart';
 import 'rotate_scale_animation.dart/rotate_scale_animation_page.dart';
+import 'sqlite_example/sqlite_page.dart';
 import 'validation_textfield/validation_textfield_page.dart';
 
 class RouteName {
@@ -62,6 +63,7 @@ class RouteName {
   static const String drawProgressBar = 'draw_progress_bar';
   static const String cupertinoSlideSegmentsControl =
       'cupertino-slide-segments-control';
+  static const String sqlitePage = 'sqlite-page';
 }
 
 final GoRouter router = GoRouter(
@@ -95,9 +97,14 @@ final GoRouter router = GoRouter(
           builder: (context, state) => const ColumnChartPage(),
         ),
         GoRoute(
+          path: RouteName.sqlitePage,
+          name: RouteName.sqlitePage,
+          builder: (context, state) => const SqlitePage(),
+        ),
+        GoRoute(
           path: RouteName.drawProgressBar,
           name: RouteName.drawProgressBar,
-          builder: (context, state) => SampleAnimation(),
+          builder: (context, state) => const SampleAnimation(),
         ),
         GoRoute(
           path: RouteName.rotateScaleAnimationPage,

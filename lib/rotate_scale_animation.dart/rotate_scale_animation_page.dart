@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class RotateScaleAnimationPage extends StatefulWidget {
   const RotateScaleAnimationPage({super.key});

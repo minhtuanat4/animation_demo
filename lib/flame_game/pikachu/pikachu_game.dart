@@ -99,9 +99,9 @@ class _TableDemoWidgetState extends State<TableDemoWidget>
           child: Selector<TableDemoProvider, List<bool>>(
               selector: (_, pr) => pr.itemIsDisplay,
               builder: (context, itemIsDisplay, child) {
-                return Column(
+                return const Column(
                   children: [
-                    Row(children: const <Widget>[
+                    Row(children: <Widget>[
                       CardGame(
                         index: 1,
                         image:
@@ -119,10 +119,10 @@ class _TableDemoWidgetState extends State<TableDemoWidget>
                         id: 1,
                       ),
                     ]),
-                    const SizedBox(
+                    SizedBox(
                       height: 10,
                     ),
-                    Row(children: const <Widget>[
+                    Row(children: <Widget>[
                       CardGame(
                         index: 4,
                         id: 2,

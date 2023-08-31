@@ -48,7 +48,7 @@ class _ColumnChartPageState extends State<ColumnChartPage> {
                     borderWidth: 2,
                     // Aligns the chart title to left
                     alignment: ChartAlignment.center,
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                       color: Colors.red,
                       fontFamily: 'Roboto',
                       fontStyle: FontStyle.italic,
