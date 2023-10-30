@@ -102,38 +102,38 @@ class _TableDemoWidgetState extends State<TableDemoWidget>
                 return Column(
                   children: [
                     Row(children: <Widget>[
-                      CardGame(
+                      const CardGame(
                         index: 1,
                         image:
                             'assets/images/roll_paper_roll/icon_facebook.png',
                         id: 1,
                       ),
-                      CardGame(
+                      const CardGame(
                         index: 2,
                         id: 2,
                       ),
-                      CardGame(
+                      const CardGame(
                         index: 3,
                         image:
                             'assets/images/roll_paper_roll/icon_facebook.png',
                         id: 1,
                       ),
                     ]),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(children: <Widget>[
-                      CardGame(
+                      const CardGame(
                         index: 4,
                         id: 2,
                       ),
-                      CardGame(
+                      const CardGame(
                         index: 5,
                         image:
                             'assets/images/roll_paper_roll/icon_facebook.png',
                         id: 1,
                       ),
-                      CardGame(
+                      const CardGame(
                         index: 6,
                         id: 2,
                       ),

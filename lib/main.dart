@@ -346,7 +346,7 @@ class OptionWidget extends StatelessWidget {
           OptionButton(
             label: RouteName.paintHolePage,
             onPressed: () async {
-              context.goNamed(RouteName.multiAnimation);
+              context.goNamed(RouteName.paintHolePage);
             },
           ),
           // OptionButton(
@@ -393,14 +393,14 @@ class OptionWidget extends StatelessWidget {
           //     );
           //   },
           // ),
-          // OptionButton(
-          //   label: 'PaintOptionPage',
-          //   onPressed: () {
-          //     context.goNamed(
-          //       RouteName.paintOptionPage,
-          //     );
-          //   },
-          // ),
+          OptionButton(
+            label: 'PaintOptionPage',
+            onPressed: () {
+              context.goNamed(
+                RouteName.paintOptionPage,
+              );
+            },
+          ),
           // OptionButton(
           //   label: 'FlutterHookExample',
           //   onPressed: () {

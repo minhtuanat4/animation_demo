@@ -12,7 +12,7 @@ extension NotificationGame on PikachuMapState {
           title: const Text('Notice'),
           content: SingleChildScrollView(
             child: ListBody(
-              children: <Widget>[
+              children: const <Widget>[
                 Text('No more pair Pikachus'),
                 Text(
                     '''Would you like to minus one turn to change Pikachus's position ?'''),
@@ -47,7 +47,7 @@ extension NotificationGame on PikachuMapState {
         return AlertDialog(
           title: const Text('Notice'),
           content: SingleChildScrollView(
-            child: ListBody(children: <Widget>[
+            child: ListBody(children: const <Widget>[
               Text('You WIN WIN WIN'),
             ]),
           ),
@@ -74,7 +74,7 @@ extension NotificationGame on PikachuMapState {
           title: const Text('Notice'),
           content: SingleChildScrollView(
             child: ListBody(
-              children: <Widget>[
+              children: const <Widget>[
                 Text('Dont pick same pikachu'),
               ],
             ),
