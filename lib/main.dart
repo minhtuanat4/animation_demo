@@ -331,6 +331,18 @@ class OptionWidget extends StatelessWidget {
               context.goNamed(RouteName.sqlitePage);
             },
           ),
+          OptionButton(
+            label: RouteName.accountInfoHoang,
+            onPressed: () async {
+              context.goNamed(RouteName.accountInfoHoang);
+            },
+          ),
+          OptionButton(
+            label: RouteName.multiAnimation,
+            onPressed: () async {
+              context.goNamed(RouteName.multiAnimation);
+            },
+          ),
           // OptionButton(
           //   label: 'Finger.com',
           //   onPressed: () {

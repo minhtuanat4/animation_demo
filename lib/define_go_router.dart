@@ -1,3 +1,4 @@
+import 'package:animation_demo/account_demo/account_demo_page.dart';
 import 'package:animation_demo/animated_bottom_bar/animated_bottom_bar_page.dart';
 import 'package:animation_demo/animated_list/animated_list_page.dart';
 import 'package:animation_demo/custom_progress_indicator/custom_progress_indicator.dart';
@@ -8,6 +9,7 @@ import 'package:animation_demo/go_router_page/account_info/account_detail_page.d
 import 'package:animation_demo/go_router_page/account_info/account_info_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_update_page.dart';
 import 'package:animation_demo/go_router_page/secure_setups/secure_setups_page.dart';
+import 'package:animation_demo/multi_animation/multi_animation_page.dart';
 import 'package:animation_demo/render_object_page/render_object_page.dart';
 import 'package:animation_demo/scan_image_qr/scan_image_qr_page.dart';
 import 'package:animation_demo/tool_tip/tool_tip_demo.dart';
@@ -64,6 +66,8 @@ class RouteName {
   static const String cupertinoSlideSegmentsControl =
       'cupertino-slide-segments-control';
   static const String sqlitePage = 'sqlite-page';
+  static const String accountInfoHoang = 'account-info-hoang';
+  static const String multiAnimation = 'multi-animation';
 }
 
 final GoRouter router = GoRouter(
@@ -97,9 +101,19 @@ final GoRouter router = GoRouter(
           builder: (context, state) => const ColumnChartPage(),
         ),
         GoRoute(
+          path: RouteName.multiAnimation,
+          name: RouteName.multiAnimation,
+          builder: (context, state) => const MultiAnimation(),
+        ),
+        GoRoute(
           path: RouteName.sqlitePage,
           name: RouteName.sqlitePage,
           builder: (context, state) => const SqlitePage(),
+        ),
+        GoRoute(
+          path: RouteName.accountInfoHoang,
+          name: RouteName.accountInfoHoang,
+          builder: (context, state) => const AccountInfo(),
         ),
         GoRoute(
           path: RouteName.drawProgressBar,
