@@ -99,7 +99,7 @@ class _TableDemoWidgetState extends State<TableDemoWidget>
           child: Selector<TableDemoProvider, List<bool>>(
               selector: (_, pr) => pr.itemIsDisplay,
               builder: (context, itemIsDisplay, child) {
-                return const Column(
+                return Column(
                   children: [
                     Row(children: <Widget>[
                       CardGame(
