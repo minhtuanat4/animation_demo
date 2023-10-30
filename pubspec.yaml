@@ -46,7 +46,7 @@ dependencies:
   intl: 0.18.0
   go_router: 6.0.0
   http: 0.13.5
-  json_annotation: ^4.8.1
+  # json_annotation: ^4.8.1
   json_serializable: 6.6.0
   overlay_tooltip: ^0.2.1
   path_drawing: ^1.0.1
@@ -55,7 +55,7 @@ dependencies:
   provider: ^6.0.5
   shared_preferences: ^2.2.1
   spritewidget: 2.0.1
-  sqflite: ^2.3.0
+  # sqflite: ^2.3.0
   syncfusion_flutter_charts: 22.2.7
 
 dev_dependencies:

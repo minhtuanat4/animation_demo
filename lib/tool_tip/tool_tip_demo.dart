@@ -232,7 +232,7 @@ class _TooltipDemoState extends State<TooltipDemo> {
             borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.all(15),
         margin: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-        child: const Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

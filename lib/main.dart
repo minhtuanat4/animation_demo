@@ -102,14 +102,14 @@ class _MyHomePageState extends State<MyHomePage> {
     initialization();
     _initFingerprint();
     _getId();
-    initDatabase();
+    // initDatabase();
     super.initState();
   }
 
-  Future<void> initDatabase() async {
-    await NewsProvider().getPathData();
-    await NewsProvider().initOpenDababase();
-  }
+  // Future<void> initDatabase() async {
+  //   await NewsProvider().getPathData();
+  //   await NewsProvider().initOpenDababase();
+  // }
 
   void initialization() async {
     // This is where you can initialize the resources needed by your app while
@@ -339,6 +339,12 @@ class OptionWidget extends StatelessWidget {
           ),
           OptionButton(
             label: RouteName.multiAnimation,
+            onPressed: () async {
+              context.goNamed(RouteName.multiAnimation);
+            },
+          ),
+          OptionButton(
+            label: RouteName.paintHolePage,
             onPressed: () async {
               context.goNamed(RouteName.multiAnimation);
             },

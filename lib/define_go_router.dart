@@ -1,4 +1,3 @@
-import 'package:animation_demo/account_demo/account_demo_page.dart';
 import 'package:animation_demo/animated_bottom_bar/animated_bottom_bar_page.dart';
 import 'package:animation_demo/animated_list/animated_list_page.dart';
 import 'package:animation_demo/custom_progress_indicator/custom_progress_indicator.dart';
@@ -24,6 +23,7 @@ import 'cupertino_slide_segments_control/cupertino_slide_segments_control.dart';
 import 'custom_package/home_packages.dart';
 import 'custom_paint/options/card_hidden_animation_page.dart';
 import 'custom_paint/options/draw_arcto_page.dart';
+import 'custom_paint/paint_hole_page/paint_hole_page.dart';
 import 'custom_paint/paint_option_page.dart';
 import 'draw_verticle/draw_verticle_page.dart';
 import 'flame_game/flip_flop_game/intro_flip_flop_game.dart';
@@ -68,6 +68,7 @@ class RouteName {
   static const String sqlitePage = 'sqlite-page';
   static const String accountInfoHoang = 'account-info-hoang';
   static const String multiAnimation = 'multi-animation';
+  static const String paintHolePage = 'paint-hole-page';
 }
 
 final GoRouter router = GoRouter(
@@ -101,20 +102,21 @@ final GoRouter router = GoRouter(
           builder: (context, state) => const ColumnChartPage(),
         ),
         GoRoute(
+          path: RouteName.paintHolePage,
+          name: RouteName.paintHolePage,
+          builder: (context, state) => PaintHolePage(),
+        ),
+        GoRoute(
           path: RouteName.multiAnimation,
           name: RouteName.multiAnimation,
           builder: (context, state) => const MultiAnimation(),
         ),
-        GoRoute(
-          path: RouteName.sqlitePage,
-          name: RouteName.sqlitePage,
-          builder: (context, state) => const SqlitePage(),
-        ),
-        GoRoute(
-          path: RouteName.accountInfoHoang,
-          name: RouteName.accountInfoHoang,
-          builder: (context, state) => const AccountInfo(),
-        ),
+        // GoRoute(
+        //   path: RouteName.sqlitePage,
+        //   name: RouteName.sqlitePage,
+        //   builder: (context, state) => const SqlitePage(),
+        // ),
+
         GoRoute(
           path: RouteName.drawProgressBar,
           name: RouteName.drawProgressBar,
