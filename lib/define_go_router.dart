@@ -1,5 +1,6 @@
 import 'package:animation_demo/animated_bottom_bar/animated_bottom_bar_page.dart';
 import 'package:animation_demo/animated_list/animated_list_page.dart';
+import 'package:animation_demo/base_page/my_first_base_page.dart';
 import 'package:animation_demo/custom_progress_indicator/custom_progress_indicator.dart';
 import 'package:animation_demo/draw_canvas/draw_progress_bar.dart';
 import 'package:animation_demo/flame_game/flip_flop_game/provider/pikachu_pr.dart';
@@ -38,7 +39,6 @@ import 'navigation_bar/navigation_bar_page.dart';
 import 'page_view/page_view.dart';
 import 'roll_paper_roll.dart/main_holiday.dart';
 import 'rotate_scale_animation.dart/rotate_scale_animation_page.dart';
-import 'sqlite_example/sqlite_page.dart';
 import 'validation_textfield/validation_textfield_page.dart';
 
 class RouteName {
@@ -69,6 +69,7 @@ class RouteName {
   static const String accountInfoHoang = 'account-info-hoang';
   static const String multiAnimation = 'multi-animation';
   static const String paintHolePage = 'paint-hole-page';
+  static const String myFirstBasePage = 'my-first-base-page';
 }
 
 final GoRouter router = GoRouter(
@@ -100,6 +101,11 @@ final GoRouter router = GoRouter(
           path: RouteName.barChartPage,
           name: RouteName.barChartPage,
           builder: (context, state) => const ColumnChartPage(),
+        ),
+        GoRoute(
+          path: RouteName.myFirstBasePage,
+          name: RouteName.myFirstBasePage,
+          builder: (context, state) => const MyFirstBasePage(),
         ),
         GoRoute(
           path: RouteName.paintHolePage,

@@ -401,6 +401,14 @@ class OptionWidget extends StatelessWidget {
               );
             },
           ),
+          OptionButton(
+            label: RouteName.myFirstBasePage,
+            onPressed: () {
+              context.goNamed(
+                RouteName.myFirstBasePage,
+              );
+            },
+          ),
           // OptionButton(
           //   label: 'FlutterHookExample',
           //   onPressed: () {
