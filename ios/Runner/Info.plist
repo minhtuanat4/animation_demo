@@ -53,10 +53,24 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Chúng tôi truy cập camera của bạn để sử dụng chức năng chụp ảnh và quét mã QR. Vui lòng đồng ý để tiếp tục.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Chúng tôi sử dụng danh bạ của bạn để gợi ý khi chuyển tiền và nạp tiền, cập nhật thay đổi đầu số nhà mạng. Vui lòng đồng ý để tiếp tục.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Sử dụng FaceID để đăng nhập nhanh chóng hơn.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Chúng tôi sử dụng vị trí của bạn để cung cấp dịch vụ phù hợp với địa điểm của bạn</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Chúng tôi sử dụng vị trí của bạn để cung cấp dịch vụ phù hợp với địa điểm của bạn</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Chúng tôi sử dụng vị trí của bạn để cung cấp dịch vụ phù hợp với địa điểm của bạn</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Chúng tôi truy cập microphone của bạn để sử dụng chức năng quay video. Vui lòng đồng ý để tiếp tục.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Allow $(PRODUCT_NAME) access to your photo library to upload your profile picture?</string>
+	<string>Chúng tôi sử dụng chức năng chụp ảnh màn hình để giúp bạn lưu thông tin thẻ</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow $(PRODUCT_NAME) access to your photo library to upload your profile picture?</string>
+	<string>Chúng tôi sử dụng thư viện ảnh của bạn để cập nhật cho thông tin cá nhân và định danh ví. Vui lòng đồng ý để tiếp tục.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -80,5 +94,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>

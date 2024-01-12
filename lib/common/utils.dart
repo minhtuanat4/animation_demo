@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:animation_demo/getx_demo/common/user_management.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class Utils {
   static Future<bool> saveData(String key, Object? value) async {
@@ -13,6 +17,59 @@ class Utils {
     } catch (e) {
       return Future<bool>.value(true);
     }
+  }
+
+  static Size getSizes(GlobalKey key) {
+    try {
+      final renderBoxRed = key.currentContext!.findRenderObject() as RenderBox;
+      final sizeRed = renderBoxRed.size;
+      return sizeRed;
+    } catch (e) {
+      return Size.zero;
+    }
+  }
+
+  static Future<String> genOrGetGuid() async {
+    var aGuid = await UserManagement().getAGuid();
+    if (aGuid == null || aGuid.isEmpty) {
+      const uuid = Uuid();
+      aGuid = uuid.v4();
+      UserManagement().setAGuid(data: aGuid);
+    }
+    return aGuid;
+  }
+
+  static Future<bool> checkNetwork() async {
+    var isConnected = false;
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        isConnected = true;
+      }
+    } on SocketException catch (_) {
+      isConnected = false;
+    }
+    return isConnected;
+  }
+
+  static String? cleanUpVietnamese(String? input) {
+    if (input == null) {
+      return null;
+    }
+    var res = input;
+    const before =
+        'áàảãạ ăắằẳẵặ âấầẩẫậ ÁÀẢÃẠ ĂẮẰẲẴẶ ÂẤẦẨẪẬ đ Đ éèẻẽẹ êếềểễệ ÉÈẺẼẸ ÊẾỀỂỄỆ íìỉĩị ÍÌỈĨỊ óòỏõọ ôốồổỗộ ơớờởỡợ ÓÒỎÕỌ ÔỐỒỔỖỘ ƠỚỜỞỠỢ úùủũụ ưứừửữự ÚÙỦŨỤ ƯỨỪỬỮỰ ýỳỷỹỵ ÝỲỶỸỴ';
+    const after =
+        'aaaaa aaaaaa aaaaaa AAAAA AAAAAA AAAAAA d D eeeee eeeeee EEEEE EEEEEE iiiii IIIII ooooo oooooo oooooo OOOOO OOOOOO OOOOOO uuuuu uuuuuu UUUUU UUUUUU yyyyy YYYYY';
+
+    for (var i = 0; i < before.length; i++) {
+      final b = before.substring(i, i + 1);
+      final a = after.substring(i, i + 1);
+      if (!b.contains(' ')) {
+        res = res.replaceAll(b, a);
+      }
+    }
+    return res;
   }
 
   // ignore: avoid_positional_boolean_parameters

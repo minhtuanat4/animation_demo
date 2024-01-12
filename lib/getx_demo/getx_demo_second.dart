@@ -1,270 +1,97 @@
+import 'package:animation_demo/common/definition_color.dart';
+import 'package:animation_demo/common/definition_theme.dart';
+import 'package:animation_demo/getx_demo/common/app_config.dart';
+import 'package:animation_demo/getx_demo/common/user_management.dart';
+import 'package:animation_demo/getx_demo/controller/loading_controller.dart';
+import 'package:animation_demo/getx_demo/root_page.dart';
+import 'package:animation_demo/getx_demo/ui/second_page/controller/second_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import 'common/my_translaions.dart';
+import 'router/router.dart' as getpages;
+import 'service/api_service.dart';
+
 void main() {
-  runApp(GetMaterialApp(
-    // It is not mandatory to use named routes, but dynamic urls are interesting.
-    initialRoute: '/home',
-    theme: ThemeData(primarySwatch: Colors.blue),
-    defaultTransition: Transition.native,
-    translations: MyTranslations(),
-    locale: const Locale('pt', 'BR'),
-    getPages: [
-      //Simple GetPage
-      GetPage(name: '/home', page: () => const First()),
-      // GetPage with custom transitions and bindings
-      GetPage(
-        name: '/second',
-        page: () => const Second(),
-        transition: Transition.cupertino,
-        binding: SampleBind(),
-      ),
-      // GetPage with default transitions
-      GetPage(
-        name: '/third',
-        transition: Transition.cupertino,
-        page: () => const Third(),
-      ),
-    ],
-  ));
+  AppConfig();
+
+  runApp(const MyApp());
 }
 
-abstract class VtcBasicPage<T extends GetxController> extends GetView<T> {
-  const VtcBasicPage({super.key});
+class RootPageController extends GetxController {
+  bool _isFirst = false;
+  bool get isFirst => _isFirst;
 
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: onWillPop,
-      child: Scaffold(
-        appBar: appBarCustom(context),
-        body: body(context),
-        floatingActionButton: floatingButtons(),
-      ),
-    );
-  }
-
-  Widget floatingButtons() => const SizedBox();
-  Future<bool> onWillPop() => Future.value(true);
-  AppBar? appBarCustom(BuildContext context);
-  Widget? body(BuildContext context);
-}
-
-class MyTranslations extends Translations {
-  @override
-  Map<String, Map<String, String>> get keys => {
-        'en': {
-          'title': 'Hello World %s',
-        },
-        'en_US': {
-          'title': 'Hello World from US',
-        },
-        'pt': {
-          'title': 'Olá de Portugal',
-        },
-        'pt_BR': {
-          'title': 'Olá do Brasil',
-        },
-      };
-}
-
-class ControllerCount extends GetxController {
-  int count = 0;
-  void increment() {
-    count++;
-    // use update method to update all count variables
+  set isFirst(bool value) {
+    _isFirst = value;
     update();
   }
 }
 
-class First extends VtcBasicPage<GetxController> {
-  const First({super.key});
-
+class RootPageBinding extends Bindings {
   @override
-  AppBar? appBarCustom(BuildContext context) {
-    return AppBar(
-      leading: IconButton(
-        icon: const Icon(Icons.add),
-        onPressed: () {
-          Get.snackbar("Hi", "I'm modern snackbar");
-        },
-      ),
-      title: Text("title".trArgs(['John'])),
-    );
-  }
-
-  @override
-  Future<bool> onWillPop() {
-    print('BACK BACK BACK BACK BACK');
-    return super.onWillPop();
-  }
-
-  @override
-  Widget floatingButtons() {
-    return FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Get.find<ControllerCount>().increment();
-        });
-  }
-
-  @override
-  Widget? body(BuildContext context) {
-    return Material(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GetBuilder<ControllerCount>(
-                init: ControllerCount(),
-                // You can initialize your controller here the first time. Don't use init in your other GetBuilders of same controller
-                builder: (_) => Text(
-                      'clicks: ${_.count}',
-                    )),
-            ElevatedButton(
-              child: const Text('Next Route'),
-              onPressed: () {
-                Get.toNamed('/second');
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Change locale to English'),
-              onPressed: () {
-                Get.updateLocale(const Locale('en', 'UK'));
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+  void dependencies() {
+    Get.put(UserManagement());
+    Get.put(RootPageController());
+    Get.put(LoadingCtroller());
+    Get.put(ApiService());
   }
 }
 
-class Second extends VtcBasicPage<ControllerX> {
-  const Second({super.key});
-
-  @override
-  Future<bool> onWillPop() {
-    print('BACK BACK BACK BACK BACK');
-    return super.onWillPop();
-  }
-
-  @override
-  AppBar? appBarCustom(BuildContext context) {
-    return AppBar(
-      title: const Text('second Route'),
-    );
-  }
-
-  @override
-  Widget? body(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Obx(
-            () {
-              print("count1 rebuild");
-              return Text('${controller.count1}');
-            },
-          ),
-          Obx(
-            () {
-              print("count2 rebuild");
-              return Text('${controller.count2}');
-            },
-          ),
-          Obx(() {
-            print("sum rebuild");
-            return Text('${controller.sum}');
-          }),
-          Obx(
-            () => Text('Name: ${controller.user.value.name}'),
-          ),
-          Obx(
-            () => Text('Age: ${controller.user.value.age}'),
-          ),
-          ElevatedButton(
-            child: const Text("Go to last page"),
-            onPressed: () {
-              Get.toNamed('/third', arguments: 'arguments of second');
-            },
-          ),
-          ElevatedButton(
-            child: const Text("Back page and open snackbar"),
-            onPressed: () {
-              Get.back();
-              Get.snackbar(
-                'User 123',
-                'Successfully created',
-                colorText: Colors.black,
-                backgroundColor: Colors.white,
-              );
-            },
-          ),
-          ElevatedButton(
-            child: const Text("Increment"),
-            onPressed: () {
-              controller.increment();
-            },
-          ),
-          ElevatedButton(
-            child: const Text("Increment"),
-            onPressed: () {
-              controller.increment2();
-            },
-          ),
-          ElevatedButton(
-            child: const Text("Update name"),
-            onPressed: () {
-              controller.updateUser();
-            },
-          ),
-          ElevatedButton(
-            child: const Text("Dispose worker"),
-            onPressed: () {
-              controller.disposeWorker();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class Third extends GetView<ControllerX> {
-  const Third({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        controller.incrementList();
-      }),
-      appBar: AppBar(
-        title: Text("Third ${Get.arguments}"),
+    // Get.put(() => AppConfig());
+    final appConfig = Get.put(AppConfig());
+    // Get.put(VerifyCodeController('ControllerSecondPage'));
+    return GetMaterialApp(
+      // It is not mandatory to use named routes, but dynamic urls are interesting.
+      initialRoute: '/',
+      // localizationsDelegates: const [
+      //   // GlobalMaterialLocalizations.delegate,
+      //   // GlobalCupertinoLocalizations.delegate,
+      //   DefaultWidgetsLocalizations.delegate,
+      // ],
+      // supportedLocales: const [Locale('vi')],
+      debugShowCheckedModeBanner: false,
+      title: appConfig.appTitle,
+      initialBinding: RootPageBinding(),
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarIconBrightness:
+                Brightness.dark, //<-- For Android SEE HERE (dark icons)
+            statusBarBrightness:
+                Brightness.light, //<-- For iOS SEE HERE (dark icons)
+          ),
+        ),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+
+        brightness: Brightness.light,
+        //primarySwatch: appBarWhiteColor,
+        primarySwatch: appBarColor,
+        textTheme: ehomeTextTheme,
+        fontFamily: 'Be Vietnam',
+        //cursorColor: Colors.red,
       ),
-      body: Center(
-          child: Obx(() => ListView.builder(
-              itemCount: controller.list.length,
-              itemBuilder: (context, index) {
-                return Text("${controller.list[index]}");
-              }))),
+      defaultTransition: Transition.native,
+      translations: MyTranslations(),
+      locale: const Locale('pt', 'BR'),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+          child: RootPage(
+            oneSignalAppId: appConfig.oneSignalAppId,
+            child: child,
+          ),
+        );
+      },
+      getPages: getpages.GetPages.getPages(),
     );
   }
-}
-
-class SampleBind extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut<ControllerX>(() => ControllerX());
-  }
-}
-
-class User {
-  User({this.name = 'Name', this.age = 0});
-  String name;
-  int age;
 }
 
 class ControllerX extends GetxController {
