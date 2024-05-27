@@ -11,4 +11,6 @@ class RoutePaths {
   static const String verifyCodePage = '${slash}verifyCodePage';
 
   static const String paymentResult = '${slash}paymentResult';
+
+  static const String performanceSeriesPage = '${slash}performanceSeriesPage';
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:animation_demo/blocs/flip_flop_game_bloc/flip_flop_game_bloc.dart';
 import 'package:animation_demo/firebase_options.dart';
 import 'package:animation_demo/validation_textfield/validation_textfield_bloc/validation_textfield_bloc.dart';
@@ -346,6 +347,12 @@ class OptionWidget extends StatelessWidget {
             label: RouteName.paintHolePage,
             onPressed: () async {
               context.goNamed(RouteName.paintHolePage);
+            },
+          ),
+          OptionButton(
+            label: RouteName.performanceSeriesPage,
+            onPressed: () async {
+              context.goNamed(RouteName.performanceSeriesPage);
             },
           ),
           // OptionButton(

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:animation_demo/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class RotateScaleAnimationPage extends StatefulWidget {
@@ -102,9 +101,10 @@ class _RotateScaleAnimationPageState extends State<RotateScaleAnimationPage>
                           return Transform(
                             alignment: Alignment.center,
                             transform: Matrix4.rotationZ(rotateAnimation.value),
-                            child: Assets.images.canhHoa.image(
-                              alignment: const Alignment(1, 1),
-                            ),
+                            // child: Assets.images.canhHoa.image(
+                            //   alignment: const Alignment(1, 1),
+                            // ),
+                            child: Text(''),
                           );
                         },
                       ),

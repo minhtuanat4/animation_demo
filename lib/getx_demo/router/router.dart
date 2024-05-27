@@ -6,6 +6,7 @@ import 'package:animation_demo/getx_demo/ui/second_page/controller/second_contro
 import 'package:animation_demo/getx_demo/ui/second_page/second_page.dart';
 import 'package:animation_demo/getx_demo/ui/third_page.dart';
 import 'package:animation_demo/getx_demo/ui/verify_code_page/verify_code_page.dart';
+import 'package:animation_demo/performance_series/off_stage_widget.dart';
 import 'package:get/get.dart';
 
 import 'route_path.dart';
@@ -68,6 +69,12 @@ class GetPages {
         name: RoutePaths.paymentResult,
         popGesture: false,
         page: () => const PaymentResult(),
+        transition: Transition.cupertino,
+      ),
+      GetPage(
+        name: RoutePaths.performanceSeriesPage,
+        popGesture: false,
+        page: () => const PerformanceSeriesPage(),
         transition: Transition.cupertino,
       ),
       // GetPage with default transitions
