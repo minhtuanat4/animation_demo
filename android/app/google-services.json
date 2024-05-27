@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:873201450154:android:5e0d1a1a0b7e8eaf9624d3",
+        "mobilesdk_app_id": "1:873201450154:android:c4bfb5a1f0a5efb79624d3",
         "android_client_info": {
           "package_name": "com.example.animation_demo"
         }
@@ -29,6 +29,13 @@
             {
               "client_id": "873201450154-26l4lc5s7ddfa7dc70ic2fi6kb6lfrrr.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "873201450154-3j0mnpl5auu4973vvorckr9n4e4tk2iv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mobile.vtc.smartAgent.alpha"
+              }
             }
           ]
         }

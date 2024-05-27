@@ -79,10 +79,6 @@ PODS:
   - fpjs_pro_plugin (1.5.0):
     - FingerprintPro (~> 2.1.8)
     - Flutter
-  - geocoding (1.0.5):
-    - Flutter
-  - geolocator_apple (1.2.0):
-    - Flutter
   - GoogleAppMeasurement (10.12.0):
     - GoogleAppMeasurement/AdIdSupport (= 10.12.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
@@ -166,8 +162,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - fpjs_pro_plugin (from `.symlinks/plugins/fpjs_pro_plugin/ios`)
-  - geocoding (from `.symlinks/plugins/geocoding/ios`)
-  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -210,10 +204,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   fpjs_pro_plugin:
     :path: ".symlinks/plugins/fpjs_pro_plugin/ios"
-  geocoding:
-    :path: ".symlinks/plugins/geocoding/ios"
-  geolocator_apple:
-    :path: ".symlinks/plugins/geolocator_apple/ios"
   onesignal_flutter:
     :path: ".symlinks/plugins/onesignal_flutter/ios"
   path_provider_foundation:
@@ -241,8 +231,6 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   fpjs_pro_plugin: c9fafa1af168859daeeacd0202d09dd0dc780339
-  geocoding: 32cfcdb16d38d907caaba65e2e42ad10d38bee58
-  geolocator_apple: 9157311f654584b9bb72686c55fc02a97b73f461
   GoogleAppMeasurement: 2d800fab85e7848b1e66a6f8ce5bca06c5aad892
   GoogleDataTransport: 57c22343ab29bc686febbf7cbb13bad167c2d8fe
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
@@ -258,4 +246,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 7c6fafea1fbf3ac8b4990dbf1a4686b7acd1aa8b
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.15.2

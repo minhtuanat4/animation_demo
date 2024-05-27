@@ -1,51 +1,10 @@
 import 'dart:async';
 
 import 'package:animation_demo/common/debug.dart';
-import 'package:animation_demo/common/definition.dart';
 import 'package:animation_demo/getx_demo/root_page.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 extension RootPageOneSignal on RootPageState {
-  Future<void> getLocation() async {
-    Debug.logMessage(message: 'Call location');
-    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return;
-    }
-    var permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.deniedForever) {
-      return;
-    }
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        // Permissions are denied forever, handle appropriately.
-        return;
-      }
-
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return;
-      }
-    }
-    final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    final placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    final addresses = placemarks[0];
-    locationName =
-        '${addresses.street} ${addresses.subLocality} ${addresses.locality} ${addresses.country}';
-
-    Debug.logMessage(message: '________Location: $locationName');
-  }
-
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState({required String? oneSignalAppId}) async {
     if (!mounted) {
@@ -115,10 +74,6 @@ extension RootPageOneSignal on RootPageState {
     unawaited(OneSignal.shared.disablePush(false));
 
     // Some examples of how to use Outcome Events public methods with OneSignal SDK
-    unawaited(oneSignalOutcomeEventsExamples());
-    if (!appConfig.linkGooglePayment) {
-      unawaited(getLocation());
-    }
   }
 
   Future<void> oneSignalInAppMessagingTriggerExamples() async {

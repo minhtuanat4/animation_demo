@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>873201450154-3j0mnpl5auu4973vvorckr9n4e4tk2iv.apps.googleusercontent.com</string>
+	<string>873201450154-l9eufhop8rjlo128f75flr324fdprkl3.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.873201450154-3j0mnpl5auu4973vvorckr9n4e4tk2iv</string>
+	<string>com.googleusercontent.apps.873201450154-l9eufhop8rjlo128f75flr324fdprkl3</string>
 	<key>API_KEY</key>
 	<string>AIzaSyA7IaFt75a0zK_0Oe4T8LWx2Pcuv3uFAoA</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.mobile.vtc.smartAgent.alpha</string>
+	<string>com.mobile.vtc.smartAgent</string>
 	<key>PROJECT_ID</key>
 	<string>animation-demo-3bc8b</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:873201450154:ios:22947dbb60924daa9624d3</string>
+	<string>1:873201450154:ios:47dd686786a6f2659624d3</string>
 </dict>
 </plist>

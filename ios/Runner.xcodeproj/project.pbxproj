@@ -149,6 +149,7 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				4B0D4F33BF4DB2A06D902BB5 /* [CP] Embed Pods Frameworks */,
 				2414013EA848F09544B965E7 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
+				42683A450B6BE20F6D51F484 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */,
 			);
 			buildRules = (
 			);
@@ -228,7 +229,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" ";
+			shellScript = "\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" \n";
 		};
 		32E11EC6EB31147E9DAC4E38 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -267,6 +268,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
+		};
+		42683A450B6BE20F6D51F484 /* FlutterFire: "flutterfire upload-crashlytics-symbols" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "FlutterFire: \"flutterfire upload-crashlytics-symbols\"";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" \n\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --build-phase --validate -ai \"1:873201450154:ios:47dd686786a6f2659624d3\"\n\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --build-phase -ai \"1:873201450154:ios:47dd686786a6f2659624d3\"\n${PODS_ROOT}/FirebaseCrashlytics/run\n";
 		};
 		4B0D4F33BF4DB2A06D902BB5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -582,10 +602,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mobile.vtc.smartAgent;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobile.vtcepos.ios.alpha;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = VTCPay_dev_06122022;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = VTCPay_Dev_27122023;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = VTCEpos_Dev_Alpha;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

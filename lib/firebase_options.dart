@@ -48,7 +48,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBSphT1eMQwJwMOSMEwiqjjxWYhf8P7uAg',
-    appId: '1:873201450154:android:5e0d1a1a0b7e8eaf9624d3',
+    appId: '1:873201450154:android:c4bfb5a1f0a5efb79624d3',
     messagingSenderId: '873201450154',
     projectId: 'animation-demo-3bc8b',
     storageBucket: 'animation-demo-3bc8b.appspot.com',
@@ -56,12 +56,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyA7IaFt75a0zK_0Oe4T8LWx2Pcuv3uFAoA',
-    appId: '1:873201450154:ios:22947dbb60924daa9624d3',
+    appId: '1:873201450154:ios:47dd686786a6f2659624d3',
     messagingSenderId: '873201450154',
     projectId: 'animation-demo-3bc8b',
     storageBucket: 'animation-demo-3bc8b.appspot.com',
-    iosClientId: '873201450154-3j0mnpl5auu4973vvorckr9n4e4tk2iv.apps.googleusercontent.com',
-    iosBundleId: 'com.mobile.vtc.smartAgent.alpha',
+    iosClientId: '873201450154-l9eufhop8rjlo128f75flr324fdprkl3.apps.googleusercontent.com',
+    iosBundleId: 'com.mobile.vtc.smartAgent',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

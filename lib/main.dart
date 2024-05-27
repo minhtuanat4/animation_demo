@@ -157,8 +157,8 @@ class OptionWidget extends StatelessWidget {
     try {
       final visitorId = await FpjsProPlugin.getVisitorId();
       final deviceData = await FpjsProPlugin.getVisitorData();
-      print('Visitor ID: ${visitorId}');
-      print('Device data: ${deviceData}');
+      print('Visitor ID: $visitorId');
+      print('Device data: $deviceData');
     } on PlatformException catch (e) {
       // process the error
       print('PlatformException ' + e.toString());
