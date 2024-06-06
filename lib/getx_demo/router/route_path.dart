@@ -13,4 +13,6 @@ class RoutePaths {
   static const String paymentResult = '${slash}paymentResult';
 
   static const String performanceSeriesPage = '${slash}performanceSeriesPage';
+
+  static const String persistentAppbarPage = '${slash}persistentAppbarPage';
 }
