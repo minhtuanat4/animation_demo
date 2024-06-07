@@ -50,19 +50,38 @@ class _PersistentAppbarPageState extends State<PersistentAppbarPage>
   Size sizeApp = Size(0, 0);
 
   final paddingHorizontal = 12.0;
+  final paddingVertical = 12.0;
   final paddingBetween = 30.0;
 
   double translateY = 0;
   double translateX = 0;
 
+  int smallPeices = 16;
+
+  int numberIcon = 6;
+
+  double spaceBetweenSmallIcon = 0;
+
   late AnimationController _controller;
 
   late Animation<double> _animations;
+
+  final completeValueListen = ValueNotifier<bool>(false);
 
   void init() {
     _controller =
         AnimationController(duration: Duration(milliseconds: 800), vsync: this);
     _animations = Tween<double>(begin: 0, end: 1).animate(_controller);
+  }
+
+  void listenFunc() {
+    _controller.addListener(() {
+      if (_controller.isCompleted) {
+        completeValueListen.value = true;
+      } else {
+        completeValueListen.value = false;
+      }
+    });
   }
 
   @override
@@ -80,18 +99,14 @@ class _PersistentAppbarPageState extends State<PersistentAppbarPage>
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
     final widthAppAfterPadding = (sizeApp.width - (paddingHorizontal * 2));
-    final smallIconWidth = widthAppAfterPadding / 11;
+    final smallIconWidth = widthAppAfterPadding / smallPeices;
+    spaceBetweenSmallIcon =
+        (widthAppAfterPadding - (smallIconWidth * numberIcon)) / 5;
     final bigIconWidth = widthAppAfterPadding / 8;
     smallSizedBoxSize = Size(smallIconWidth, smallIconWidth);
     bigSizedBoxSize = Size(bigIconWidth, bigIconWidth);
 
-    translateY = bigSizedBoxSize.height + paddingBetween;
-
-    // smallImageSize = getSizes(lstSmallIconKey[0]);
-    // bigImageSize = getSizes(lstBigIconKey[0]);
-    // for (var i = 0; i < lstSmallIconKey.length; i++) {
-    //   lstPositionSmallIcon[i] = getPositions(lstSmallIconKey[i]);
-    // }
+    translateY = smallSizedBoxSize.height + paddingBetween + paddingVertical;
 
     for (var i = 0; i < lstBigIconKey.length; i++) {
       lstPositionBiglIcon[i] = getPositions(lstBigIconKey[i]);
@@ -111,137 +126,118 @@ class _PersistentAppbarPageState extends State<PersistentAppbarPage>
         body: CustomScrollView(
           slivers: <Widget>[
             SliverToBoxAdapter(
-              child: Container(
-                // width: double.infinity,
-                height: smallSizedBoxSize.height,
-                color: Colors.blue.shade200,
-                margin: EdgeInsets.only(
-                  left: paddingHorizontal,
-                  right: paddingHorizontal,
-                  top: MediaQuery.of(context).padding.top,
-                ),
-                child: Stack(
-                  children:
-                      // [
-                      //   Positioned(
-                      //     left: 0,
-                      //     top: 0,
-                      //     // color: index % 2 == 0 ? Colors.red : Colors.black,
-                      //     width: 20, height: 20,
-
-                      //     child: Image(
-                      //       // key: index == 0 || index == 5
-                      //       //     ? null
-                      //       //     : lstSmallIconKey[index - 1],
-                      //       fit: BoxFit.contain,
-                      //       color: Colors.black,
-                      //       image: AssetImage(
-                      //         'assets/images/bottom_tabbar/scan_qr.png',
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ]
-
-                      List.generate(
-                    6,
-                    (index) => Positioned(
-                      left: smallSizedBoxSize.width * index * 2,
-                      // color: index % 2 == 0 ? Colors.red : Colors.black,
-                      width: smallSizedBoxSize.width,
-                      height: smallSizedBoxSize.height,
-
-                      child: Image(
-                        // key: index == 0 || index == 5
-                        //     ? null
-                        //     : lstSmallIconKey[index - 1],
-                        fit: BoxFit.contain,
-                        color: Colors.black,
-                        image: AssetImage(
-                          'assets/images/bottom_tabbar/scan_qr.png',
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Container(
-                margin: EdgeInsets.only(
-                    left:
-                        (smallSizedBoxSize.width * 4 * 2) + paddingHorizontal),
-                child: Container(
-                  color: Colors.red,
-                  child: GestureDetector(
-                    onTap: () {
-                      _controller
-                        ..reset()
-                        ..forward();
-                    },
-                    child: Text('Small'),
-                  ),
-                ),
-              ),
-            ),
-
-            /// BIG BIG BIG BIG
-            SliverToBoxAdapter(
-              child: AnimatedBuilder(
-                  animation: _animations,
-                  builder: (context, _) {
-                    return Transform.translate(
-                      offset: Offset(0, -translateY * _animations.value),
-                      child: Container(
-                        color: Colors.blue.shade200
-                            .withOpacity(1 - _animations.value),
-                        margin: EdgeInsets.only(
-                          left: paddingHorizontal,
-                          right: paddingHorizontal,
-                          top: paddingBetween,
-                        ),
-                        child: Transform.translate(
-                          offset: Offset(0, 0),
-                          child: Column(
+              child: Stack(
+                fit: StackFit.loose,
+                children: [
+                  AnimatedBuilder(
+                    animation: _animations,
+                    builder: (context, child) {
+                      return Container(
+                        color: Colors.amber.withOpacity(_animations.value),
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).padding.top,
+                            bottom: paddingVertical),
+                        child: Container(
+                          margin: EdgeInsets.only(
+                            left: paddingHorizontal,
+                            right: paddingHorizontal,
+                          ),
+                          height: smallSizedBoxSize.height,
+                          child: Stack(
                             children: [
-                              Container(
-                                // color: Colors.blue.shade700,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: List.generate(
-                                    lstString.length,
-                                    (index) => Transform.translate(
-                                      offset: Offset(0, 0),
-                                      child: Container(
-                                        color: index % 2 == 0
-                                            ? Colors.red
-                                            : Colors.black,
-                                        width: bigSizedBoxSize.width,
-                                        height: bigSizedBoxSize.height,
-                                        child: Image(
-                                          key: lstBigIconKey[index],
-                                          color: Colors.black,
-                                          fit: BoxFit.contain,
-                                          image: AssetImage(
-                                            'assets/images/bottom_tabbar/scan_qr.png',
-                                          ),
-                                        ),
-                                      ),
+                              Positioned(
+                                left: (smallSizedBoxSize.width +
+                                        spaceBetweenSmallIcon) *
+                                    1,
+                                width: smallSizedBoxSize.width,
+                                height: smallSizedBoxSize.height,
+                                child: GestureDetector(
+                                    onTap: () {
+                                      print('Object Big 0');
+                                    },
+                                    child: Container(
+                                      color: Colors.transparent,
+                                    )),
+                              ),
+                              Positioned(
+                                left: (smallSizedBoxSize.width +
+                                        spaceBetweenSmallIcon) *
+                                    2,
+                                width: smallSizedBoxSize.width,
+                                height: smallSizedBoxSize.height,
+                                child: GestureDetector(
+                                    onTap: () {
+                                      print('Object Big 1');
+                                    },
+                                    child: Container(
+                                      color: Colors.transparent,
+                                    )),
+                              ),
+                              Positioned(
+                                left: (smallSizedBoxSize.width +
+                                        spaceBetweenSmallIcon) *
+                                    3,
+                                width: smallSizedBoxSize.width,
+                                height: smallSizedBoxSize.height,
+                                child: GestureDetector(
+                                    onTap: () {
+                                      print('Object Big 2');
+                                    },
+                                    child: Container(
+                                      color: Colors.transparent,
+                                    )),
+                              ),
+                              Positioned(
+                                left: (smallSizedBoxSize.width +
+                                        spaceBetweenSmallIcon) *
+                                    4,
+                                width: smallSizedBoxSize.width,
+                                height: smallSizedBoxSize.height,
+                                child: GestureDetector(
+                                    onTap: () {
+                                      print('Object Big 3');
+                                    },
+                                    child: Container(
+                                      color: Colors.transparent,
+                                    )),
+                              ),
+                              Positioned(
+                                left: (1 - _animations.value) *
+                                    ((smallSizedBoxSize.width +
+                                                spaceBetweenSmallIcon) *
+                                            5 -
+                                        smallSizedBoxSize.width -
+                                        12),
+                                width: smallSizedBoxSize.width,
+                                height: smallSizedBoxSize.height,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('Object 0');
+                                  },
+                                  child: Image(
+                                    fit: BoxFit.contain,
+                                    color: Colors.black,
+                                    image: AssetImage(
+                                      'assets/images/bottom_tabbar/scan_qr.png',
                                     ),
                                   ),
                                 ),
                               ),
-                              Transform.translate(
-                                offset: Offset(0, 0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: List.generate(
-                                    lstString.length,
-                                    (index) => Expanded(
-                                      child: Text(
-                                        lstString[index],
-                                        textAlign: TextAlign.center,
-                                      ),
+                              Positioned(
+                                left: (smallSizedBoxSize.width +
+                                        spaceBetweenSmallIcon) *
+                                    5,
+                                width: smallSizedBoxSize.width,
+                                height: smallSizedBoxSize.height,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('Object 5');
+                                  },
+                                  child: Image(
+                                    fit: BoxFit.contain,
+                                    color: Colors.black,
+                                    image: AssetImage(
+                                      'assets/images/bottom_tabbar/scan_qr.png',
                                     ),
                                   ),
                                 ),
@@ -249,27 +245,271 @@ class _PersistentAppbarPageState extends State<PersistentAppbarPage>
                             ],
                           ),
                         ),
-                      ),
-                    );
-                  }),
-            ),
-
-            SliverToBoxAdapter(
-              child: Container(
-                margin: EdgeInsets.only(left: (lstPositionBiglIcon[2].dx)),
-                child: Container(
-                  color: Colors.red,
-                  child: GestureDetector(
-                    onTap: () {
-                      _controller
-                        ..reset()
-                        ..forward();
+                      );
                     },
-                    child: Text('BIG'),
+                    // child: Padding(
+                    //   padding: EdgeInsets.only(
+                    //       top: MediaQuery.of(context).padding.top,
+                    //       bottom: paddingVertical),
+                    //   child: Container(
+                    //     margin: EdgeInsets.only(
+                    //       left: paddingHorizontal,
+                    //       right: paddingHorizontal,
+                    //     ),
+                    //     height: smallSizedBoxSize.height,
+                    //     child: Stack(
+                    //       children: List.generate(
+                    //         6,
+                    //         (index) => Visibility(
+                    //           visible: index == 0 ? true : false,
+                    //           child: Positioned(
+                    //             left: (smallSizedBoxSize.width +
+                    //                     spaceBetweenSmallIcon) *
+                    //                 index,
+                    //             width: smallSizedBoxSize.width,
+                    //             height: smallSizedBoxSize.height,
+                    //             child: Image(
+                    //               fit: BoxFit.contain,
+                    //               color: Colors.black,
+                    //               image: AssetImage(
+                    //                 'assets/images/bottom_tabbar/scan_qr.png',
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top +
+                            smallSizedBoxSize.height +
+                            paddingVertical),
+                    child: AnimatedBuilder(
+                        animation: _animations,
+                        builder: (context, child) {
+                          return Container(
+                            color: _animations.value == 1
+                                ? Colors.transparent
+                                : Colors.blue.shade200
+                                    .withOpacity(1 - _animations.value),
+                            margin: EdgeInsets.only(
+                              left: paddingHorizontal,
+                              right: paddingHorizontal,
+                              top: paddingBetween,
+                            ),
+                            child: Transform.translate(
+                              offset:
+                                  Offset(0, -(translateY) * _animations.value),
+                              child: Transform.translate(
+                                offset: Offset(0, 0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: List.generate(
+                                        lstString.length,
+                                        (index) => Transform.translate(
+                                          offset: Offset(
+                                              ((smallSizedBoxSize.width +
+                                                              spaceBetweenSmallIcon) *
+                                                          (index + 1) +
+                                                      paddingHorizontal -
+                                                      (lstPositionBiglIcon[
+                                                                  index]
+                                                              .dx -
+                                                          bigSizedBoxSize
+                                                                  .width /
+                                                              2 +
+                                                          (bigSizedBoxSize
+                                                                      .width -
+                                                                  smallSizedBoxSize
+                                                                      .width) /
+                                                              2)) *
+                                                  _animations.value,
+                                              0),
+                                          child: Container(
+                                            // color: index % 2 == 0
+                                            //     ? Colors.red
+                                            //     : Colors.black,
+                                            width: (bigSizedBoxSize.width -
+                                                        smallSizedBoxSize
+                                                            .width) *
+                                                    (1 - _animations.value) +
+                                                smallSizedBoxSize.width,
+                                            height: (bigSizedBoxSize.height -
+                                                        smallSizedBoxSize
+                                                            .height) *
+                                                    (1 - _animations.value) +
+                                                smallSizedBoxSize.height,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                print('Object $index');
+                                              },
+                                              child: Image(
+                                                key: lstBigIconKey[index],
+                                                color: Colors.black,
+                                                fit: BoxFit.contain,
+                                                image: AssetImage(
+                                                  'assets/images/bottom_tabbar/scan_qr.png',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Transform.translate(
+                                      offset: Offset(0, 0),
+                                      child: Opacity(
+                                        opacity: 1 - _animations.value,
+                                        child: Container(
+                                          color: Colors.transparent,
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: List.generate(
+                                              lstString.length,
+                                              (index) => Expanded(
+                                                child: Text(
+                                                  lstString[index],
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                  )
+                ],
               ),
             ),
+
+            /// BIG BIG BIG BIG
+            // SliverToBoxAdapter(
+            //   child: AnimatedBuilder(
+            //     animation: _animations,
+            //     builder: (context, _) {
+            //       return Transform.translate(
+            //         offset: Offset(0, -(translateY) * _animations.value),
+            //         child: Container(
+            //           color: Colors.blue.shade200
+            //               .withOpacity(1 - _animations.value),
+            //           margin: EdgeInsets.only(
+            //             left: paddingHorizontal,
+            //             right: paddingHorizontal,
+            //             top: paddingBetween,
+            //           ),
+            //           child: Transform.translate(
+            //             offset: Offset(0, 0),
+            //             child: Column(
+            //               children: [
+            //                 Container(
+            //                   // color: Colors.blue.shade700,
+            //                   child: Row(
+            //                     mainAxisAlignment:
+            //                         MainAxisAlignment.spaceAround,
+            //                     children: List.generate(
+            //                       lstString.length,
+            //                       (index) => Container(
+            //                         // color: Colors.amber,
+            //                         child: Transform.translate(
+            //                           offset: Offset(
+            //                               ((smallSizedBoxSize.width +
+            //                                               spaceBetweenSmallIcon) *
+            //                                           (index + 1) +
+            //                                       paddingHorizontal -
+            //                                       (lstPositionBiglIcon[index]
+            //                                               .dx -
+            //                                           bigSizedBoxSize.width /
+            //                                               2 +
+            //                                           (bigSizedBoxSize.width -
+            //                                                   smallSizedBoxSize
+            //                                                       .width) /
+            //                                               2)) *
+            //                                   _animations.value,
+            //                               0),
+            //                           child: Container(
+            //                             // color: index % 2 == 0
+            //                             //     ? Colors.red
+            //                             //     : Colors.black,
+            //                             width: (bigSizedBoxSize.width -
+            //                                         smallSizedBoxSize.width) *
+            //                                     (1 - _animations.value) +
+            //                                 smallSizedBoxSize.width,
+            //                             height: (bigSizedBoxSize.height -
+            //                                         smallSizedBoxSize.height) *
+            //                                     (1 - _animations.value) +
+            //                                 smallSizedBoxSize.height,
+            //                             child: Image(
+            //                               key: lstBigIconKey[index],
+            //                               color: Colors.black,
+            //                               fit: BoxFit.contain,
+            //                               image: AssetImage(
+            //                                 'assets/images/bottom_tabbar/scan_qr.png',
+            //                               ),
+            //                             ),
+            //                           ),
+            //                         ),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 Transform.translate(
+            //                   offset: Offset(0, 0),
+            //                   child: Opacity(
+            //                     opacity: 1 - _animations.value,
+            //                     child: Row(
+            //                       crossAxisAlignment: CrossAxisAlignment.start,
+            //                       children: List.generate(
+            //                         lstString.length,
+            //                         (index) => Expanded(
+            //                           child: Text(
+            //                             lstString[index],
+            //                             textAlign: TextAlign.center,
+            //                           ),
+            //                         ),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+
+            // SliverToBoxAdapter(
+            //   child: Container(
+            //     margin: EdgeInsets.only(
+            //         left: (lstPositionBiglIcon[2].dx) -
+            //             bigSizedBoxSize.width / 2),
+            //     child: Container(
+            //       color: Colors.red,
+            //       child: GestureDetector(
+            //         onTap: () {
+            //           _controller
+            //             ..reset()
+            //             ..forward();
+            //         },
+            //         child: Text('BIG'),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             SliverToBoxAdapter(
               child: Container(
                   alignment: Alignment.center,
@@ -281,6 +521,16 @@ class _PersistentAppbarPageState extends State<PersistentAppbarPage>
                           ..forward();
                       },
                       child: Text('Start Animation'))),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(top: 20),
+                  child: GestureDetector(
+                      onTap: () {
+                        _controller.reverse();
+                      },
+                      child: Text('Revert Animation'))),
             ),
           ],
         ));
