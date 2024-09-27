@@ -14,7 +14,7 @@ extension ClickPikachuBox on PikachuMapState {
       pikachuObj = pikachu;
       matrixPikachu[pikachuObj!.point.x.toInt()][pikachuObj!.point.y.toInt()]
           .isPressed = true;
-      setState(() {});
+      rebuildMap();
       print('pikachu First ${pikachuObj!.point}');
       return;
     } else {
@@ -26,50 +26,58 @@ extension ClickPikachuBox on PikachuMapState {
         matrixPikachu[pikachuObj!.point.x.toInt()][pikachuObj!.point.y.toInt()]
             .isPressed = false;
 
-        setState(() {});
+        rebuildMap();
         pikachuObj = null;
         return;
       } else {
         final lstPoint = myPoint(
             pikachuObj!.point, pikachu.point, matrixPikachu, rowPi, columnPi);
+        matrixPikachu[lstPoint.last.x.toInt()][lstPoint.last.y.toInt()]
+            .isPressed = true;
+        rebuildMap();
+        Future.delayed(
+          const Duration(milliseconds: 50),
+          () {
+            if (lstPoint.isNotEmpty) {
+              pikachuPR.lineConnectedPikachu = LineConnectedPikachu(
+                lstPoint: lstPoint,
+                initialPoint: initialPoint,
+                heightPika: heightPika,
+                widthPika: widthPika,
+              );
+              _removePairPikachuValid(lstPoint.first, pikachuObj!.pikachuID,
+                  lstPoint.last, pikachu.pikachuID);
+              pikachuObj = null;
+              Future.delayed(
+                const Duration(milliseconds: 200),
+                () {
+                  pikachuPR.lineConnectedPikachu = null;
+                  matrixPikachu[pikachu.point.x.toInt()]
+                          [pikachu.point.y.toInt()]
+                      .isPressed = true;
+                  rebuildMap();
+                  if (isWinGame()) {
+                    noticeWinGame();
+                  } else {
+                    if (!hasMorePairPikachu()) {
+                      noticeChangePikaPosition();
+                    }
+                  }
+                },
+              );
 
-        if (lstPoint.isNotEmpty) {
-          _removePairPikachuValid(lstPoint.first, pikachuObj!.pikachuID,
-              lstPoint.last, pikachu.pikachuID);
-          pikachuPR.lineConnectedPikachu = LineConnectedPikachu(
-            lstPoint: lstPoint,
-            initialPoint: initialPoint,
-            heightPika: heightPika,
-            widthPika: widthPika,
-          );
-          pikachuObj = null;
-          Future.delayed(
-            const Duration(milliseconds: 200),
-            () {
-              pikachuPR.lineConnectedPikachu = null;
-              matrixPikachu[pikachu.point.x.toInt()][pikachu.point.y.toInt()]
-                  .isPressed = true;
-              setState(() {});
-              if (isWinGame()) {
-                noticeWinGame();
-              } else {
-                if (!hasMorePairPikachu()) {
-                  noticeChangePikaPosition();
-                }
-              }
-            },
-          );
+              return;
+            } else {
+              matrixPikachu[pikachuObj!.point.x.toInt()]
+                      [pikachuObj!.point.y.toInt()]
+                  .isPressed = false;
+              rebuildMap();
+              pikachuObj = null;
 
-          return;
-        } else {
-          matrixPikachu[pikachuObj!.point.x.toInt()]
-                  [pikachuObj!.point.y.toInt()]
-              .isPressed = false;
-          setState(() {});
-          pikachuObj = null;
-
-          return;
-        }
+              return;
+            }
+          },
+        );
       }
     }
   }

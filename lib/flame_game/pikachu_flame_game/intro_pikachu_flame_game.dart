@@ -74,6 +74,9 @@ class PikachuMapState extends State<PikachuMap>
   PikachuObj? pikachuObj;
 
   int randomLength = 0;
+
+  final rebuildMapNotifier = ValueNotifier<bool>(false);
+
   @override
   void initState() {
     pikachuPR = context.read<PikachuPR>();
@@ -88,11 +91,6 @@ class PikachuMapState extends State<PikachuMap>
     super.initState();
   }
 
-  @override
-  void setState(VoidCallback fn) {
-    super.setState(fn);
-  }
-
   Point _initPoint(Size sizeScreen) {
     final halfWidth = sizeScreen.width / 2 - widthPika / 2;
     final halfHeight = sizeScreen.height / 2 - heightPika / 2;
@@ -101,17 +99,14 @@ class PikachuMapState extends State<PikachuMap>
         halfHeight - (((rowPi - 2) / 2) * heightPika));
   }
 
+  void rebuildMap() {
+    rebuildMapNotifier.value = !rebuildMapNotifier.value;
+  }
+
   @override
   Widget build(BuildContext context) {
     print('randomLength ============== $randomLength');
-    // final size = MediaQuery.of(context).size;
-    // initialPoint = _initPoint(size);
-    // for (var i = 0; i < rowPi; i++) {
-    //   for (var j = 0; j < columnPi; j++) {
-    //     print(
-    //         ' ${matrixPikachu[i][j].point}  ${matrixPikachu[i][j].isActive}\n');
-    //   }
-    // }
+
     final size = MediaQuery.of(context).size;
     initialPoint = _initPoint(size);
     return Scaffold(
@@ -122,42 +117,49 @@ class PikachuMapState extends State<PikachuMap>
           children: [
             matrixPikachu.isEmpty
                 ? const SizedBox()
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (var rowIndex = 1; rowIndex <= rowPi - 2; rowIndex++)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List<Widget>.generate(
-                              growable: false, columnPi - 2, (index) {
-                            final colIndex = index + 1;
-                            final isActive =
-                                matrixPikachu[rowIndex][colIndex].isActive;
-                            final isPressed =
-                                matrixPikachu[rowIndex][colIndex].isPressed;
-                            return GestureDetector(
-                              onTap: () => clickPikachuBox(
-                                matrixPikachu[rowIndex][colIndex],
-                              ),
-                              child: SizedBox(
-                                height: widthPika,
-                                width: heightPika,
-                                child: Card(
-                                  color: isPressed && isActive
-                                      ? Colors.white60
-                                      : Colors.white12,
-                                  child: isActive
-                                      ? Image.asset(matrixPikachu[rowIndex]
-                                              [colIndex]
-                                          .assetImage)
-                                      : const SizedBox(),
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        )
-                    ],
-                  ),
+                : ValueListenableBuilder(
+                    valueListenable: rebuildMapNotifier,
+                    builder: (context, __, _) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          for (var rowIndex = 1;
+                              rowIndex <= rowPi - 2;
+                              rowIndex++)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List<Widget>.generate(
+                                  growable: false, columnPi - 2, (index) {
+                                final colIndex = index + 1;
+                                final isActive =
+                                    matrixPikachu[rowIndex][colIndex].isActive;
+                                final isPressed =
+                                    matrixPikachu[rowIndex][colIndex].isPressed;
+                                return GestureDetector(
+                                  onTap: () => clickPikachuBox(
+                                    matrixPikachu[rowIndex][colIndex],
+                                  ),
+                                  child: SizedBox(
+                                    height: widthPika,
+                                    width: heightPika,
+                                    child: Card(
+                                      color: isPressed && isActive
+                                          ? Colors.white60
+                                          : const Color.fromARGB(
+                                              31, 109, 109, 109),
+                                      child: isActive
+                                          ? Image.asset(matrixPikachu[rowIndex]
+                                                  [colIndex]
+                                              .assetImage)
+                                          : const SizedBox(),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            )
+                        ],
+                      );
+                    }),
             const LineConnectedPikachuWidget(),
             Align(
               alignment: Alignment.bottomCenter,
@@ -171,14 +173,6 @@ class PikachuMapState extends State<PikachuMap>
                 ),
               ),
             ),
-            // Positioned(
-            //     top: initialPoint.y.toDouble(),
-            //     left: initialPoint.x.toDouble(),
-            //     child: Container(
-            //       height: 40,
-            //       width: 40,
-            //       color: Colors.green,
-            //     ),)
           ],
         ),
       ),
