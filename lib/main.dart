@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:animation_demo/blocs/flip_flop_game_bloc/flip_flop_game_bloc.dart';
 import 'package:animation_demo/firebase_options.dart';
 import 'package:animation_demo/validation_textfield/validation_textfield_bloc/validation_textfield_bloc.dart';
@@ -313,48 +312,49 @@ class OptionWidget extends StatelessWidget {
               );
             },
           ),
-          OptionButton(
-            label: 'RotateScaleAnimationPage',
-            onPressed: () {
-              context.goNamed(RouteName.rotateScaleAnimationPage);
-            },
-          ),
-          OptionButton(
-            label: RouteName.drawProgressBar,
-            onPressed: () {
-              context.goNamed(RouteName.drawProgressBar);
-            },
-          ),
-          OptionButton(
-            label: RouteName.sqlitePage,
-            onPressed: () async {
-              context.goNamed(RouteName.sqlitePage);
-            },
-          ),
-          OptionButton(
-            label: RouteName.accountInfoHoang,
-            onPressed: () async {
-              context.goNamed(RouteName.accountInfoHoang);
-            },
-          ),
-          OptionButton(
-            label: RouteName.multiAnimation,
-            onPressed: () async {
-              context.goNamed(RouteName.multiAnimation);
-            },
-          ),
-          OptionButton(
-            label: RouteName.paintHolePage,
-            onPressed: () async {
-              context.goNamed(RouteName.paintHolePage);
-            },
-          ),
-          OptionButton(
-            label: RouteName.performanceSeriesPage,
-            onPressed: () async {
-              context.goNamed(RouteName.performanceSeriesPage);
-            },
-          ),
+          // OptionButton(
+          //   label: 'RotateScaleAnimationPage',
+          //   onPressed: () {
+          //     context.goNamed(RouteName.rotateScaleAnimationPage);
+          //   },
+          // ),
+          // OptionButton(
+          //   label: RouteName.drawProgressBar,
+          //   onPressed: () {
+          //     context.goNamed(RouteName.drawProgressBar);
+          //   },
+          // ),
+          // OptionButton(
+          //   label: RouteName.sqlitePage,
+          //   onPressed: () async {
+          //     context.goNamed(RouteName.sqlitePage);
+          //   },
+          // ),
+          // OptionButton(
+          //   label: RouteName.accountInfoHoang,
+          //   onPressed: () async {
+          //     context.goNamed(RouteName.accountInfoHoang);
+          //   },
+          // ),
+          // OptionButton(
+          //   label: RouteName.multiAnimation,
+          //   onPressed: () async {
+          //     context.goNamed(RouteName.multiAnimation);
+          //   },
+          // ),
+          // OptionButton(
+          //   label: RouteName.paintHolePage,
+          //   onPressed: () async {
+          //     context.goNamed(RouteName.paintHolePage);
+          //   },
+          // ),
+          // OptionButton(
+          //   label: RouteName.performanceSeriesPage,
+          //   onPressed: () async {
+          //     context.goNamed(RouteName.performanceSeriesPage);
+          //   },
+          // ),
+
           // OptionButton(
           //   label: 'Finger.com',
           //   onPressed: () {
@@ -399,30 +399,38 @@ class OptionWidget extends StatelessWidget {
           //     );
           //   },
           // ),
-          OptionButton(
-            label: 'PaintOptionPage',
-            onPressed: () {
-              context.goNamed(
-                RouteName.paintOptionPage,
-              );
-            },
-          ),
-          OptionButton(
-            label: RouteName.myFirstBasePage,
-            onPressed: () {
-              context.goNamed(
-                RouteName.myFirstBasePage,
-              );
-            },
-          ),
-          OptionButton(
-            label: RouteName.persistentAppbarPage,
-            onPressed: () {
-              context.goNamed(
-                RouteName.persistentAppbarPage,
-              );
-            },
-          ),
+          // OptionButton(
+          //   label: 'PaintOptionPage',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.paintOptionPage,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: RouteName.myFirstBasePage,
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.myFirstBasePage,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: RouteName.persistentAppbarPage,
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.persistentAppbarPage,
+          //     );
+          //   },
+          // ),
+          // OptionButton(
+          //   label: RouteName.persistentHeaderPage,
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.persistentHeaderPage,
+          //     );
+          //   },
+          // ),
           // OptionButton(
           //   label: 'FlutterHookExample',
           //   onPressed: () {

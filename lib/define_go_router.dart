@@ -12,6 +12,7 @@ import 'package:animation_demo/go_router_page/secure_setups/secure_setups_page.d
 import 'package:animation_demo/multi_animation/multi_animation_page.dart';
 import 'package:animation_demo/performance_series/off_stage_widget.dart';
 import 'package:animation_demo/persistent_appbar/persistent_appbar_page.dart';
+import 'package:animation_demo/persistent_appbar/persistent_header_page.dart';
 import 'package:animation_demo/render_object_page/render_object_page.dart';
 import 'package:animation_demo/scan_image_qr/scan_image_qr_page.dart';
 import 'package:animation_demo/tool_tip/tool_tip_demo.dart';
@@ -74,6 +75,7 @@ class RouteName {
   static const String myFirstBasePage = 'my-first-base-page';
   static const String performanceSeriesPage = 'performance-series-page';
   static const String persistentAppbarPage = 'persistent-appbar-page';
+  static const String persistentHeaderPage = 'persistent-header-page';
 }
 
 final GoRouter router = GoRouter(
@@ -320,6 +322,13 @@ final GoRouter router = GoRouter(
           name: RouteName.persistentAppbarPage,
           builder: (context, state) {
             return const PersistentAppbarPage();
+          },
+        ),
+        GoRoute(
+          path: RouteName.persistentHeaderPage,
+          name: RouteName.persistentHeaderPage,
+          builder: (context, state) {
+            return const PersistentHeaderPage();
           },
         ),
       ],

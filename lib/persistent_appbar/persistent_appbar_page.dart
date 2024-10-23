@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +94,7 @@ class _PersistentAppbarPageState extends State<PersistentAppbarPage>
     super.dispose();
   }
 
+  var testv;
   double delta = 100.0;
   @override
   void initState() {
@@ -109,6 +109,7 @@ class _PersistentAppbarPageState extends State<PersistentAppbarPage>
       //   _controller.reverse();
       // }
     });
+
     super.initState();
   }
 
@@ -368,108 +369,19 @@ class _PersistentAppbarPageState extends State<PersistentAppbarPage>
                       color: Colors.red,
                     ),
                   )),
-                  SliverToBoxAdapter(
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 200),
-                        child: GestureDetector(
-                            onTap: () {
-                              _controller
-                                ..reset()
-                                ..forward();
-                            },
-                            child: Text('Start Animation'))),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 20),
-                        child: GestureDetector(
-                            onTap: () {
-                              _controller.reverse();
-                            },
-                            child: Text('Revert Animation'))),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 20),
-                        child: GestureDetector(
-                            onTap: () {
-                              _controller.reverse();
-                            },
-                            child: Text('Revert Animation'))),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 20),
-                        child: GestureDetector(
-                            onTap: () {
-                              _controller.reverse();
-                            },
-                            child: Text('Revert Animation'))),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 20),
-                        child: GestureDetector(
-                            onTap: () {
-                              _controller.reverse();
-                            },
-                            child: Text('Revert Animation'))),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 20),
-                        child: GestureDetector(
-                            onTap: () {
-                              _controller.reverse();
-                            },
-                            child: Text('Revert Animation'))),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 20),
-                        child: GestureDetector(
-                            onTap: () {
-                              _controller.reverse();
-                            },
-                            child: Text('Revert Animation'))),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 20),
-                        child: GestureDetector(
-                            onTap: () {
-                              _controller.reverse();
-                            },
-                            child: Text('Revert Animation'))),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 20),
-                        child: GestureDetector(
-                            onTap: () {
-                              _controller.reverse();
-                            },
-                            child: Text('Revert Animation'))),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 20),
-                        child: GestureDetector(
-                            onTap: () {
-                              _controller.reverse();
-                            },
-                            child: Text('Revert Animation'))),
-                  ),
+                  for (var i = 0; i < 10; i++)
+                    SliverToBoxAdapter(
+                      child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: 50),
+                          child: GestureDetector(
+                              onTap: () {
+                                _controller
+                                  ..reset()
+                                  ..forward();
+                              },
+                              child: Text('Start Animation'))),
+                    ),
                   SliverToBoxAdapter(
                     child: Container(
                         alignment: Alignment.center,
