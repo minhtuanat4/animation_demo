@@ -1,6 +1,5 @@
 ///Color definitions
 
-import 'package:animation_demo/common/color_extension.dart';
 import 'package:flutter/material.dart';
 
 MaterialColor appBarColor = const MaterialColor(
@@ -38,8 +37,6 @@ MaterialColor appBarWhiteColor = const MaterialColor(
 final Color? darkBG = Colors.grey[800];
 const Color colorGrey = Color(0xff848484);
 const Color colorGrey700 = Color.fromARGB(255, 104, 98, 98);
-const Color colorYellow = Color(0xfffcaf17);
-final Color colorBlue1 = HexColor.fromHex('#3d4a96');
 const Color colorBlue = Color(0xff3d4a96);
 const Color colorBlue500 = Color(0xff3c6fd6);
 const Color colorCyan = Color(0xffc6e6f1);
@@ -49,6 +46,7 @@ const Color colorGreen = Color(0xff7eba2f);
 const Color colorPurple = Color(0xffab56c1);
 const Color colorBgBottom = Color(0xffEDF3F6);
 const Color colorSelectedBank = Color(0xffEDF3F6);
+const Color colorWhite = Color(0xFFFFFFFF);
 
 //Color VTCPay
 const Color colorPayBG = Color(0xffeff9ff);
@@ -62,16 +60,14 @@ const Color colorPayRed = Color(0xffff4444);
 const Color colorPayRed900 = Color(0xffb71c1c);
 const Color colorPayGreen = Color(0xff3fd53b);
 const Color colorPayOrange = Color(0xffff8a00);
-// const Color colorWhite = Colors.white;
 
-// Color Mudi
-final Color colorBgMudiWhite = HexColor.fromHex('#F8F8F8');
-const Color redColorButton = Color.fromRGBO(210, 30, 43, 1);
+// Epos
+const Color colorBluePos = Color(0xff0060AF);
+const Color colorYellowAccent = Color(0xffFFE768);
+const Color colorYellow = Color(0xffF0B639);
+const Color colorGradient1 = Color(0xff2252FA);
+const Color colorGradient2 = Color(0xff00AEEF);
+const Color colorBlackPos = Color(0xff3E3E3E);
+const Color colorGreyPos = Color(0xffD9D9D9);
 
-// Color event tet 2023
-final Color colorTextEvent2023 = HexColor.fromHex('#642819');
-
-final Color candyColorViolet = HexColor.fromHex('#723586');
-final Color candyColorPink = HexColor.fromHex('#ef7cb2');
-final Color candyColorBrown = HexColor.fromHex('#990d3e');
-final Color candyColorBorderAvatar = HexColor.fromHex('#d3294d');
+const Color colorGrey300 = Color.fromRGBO(224, 224, 224, 1);

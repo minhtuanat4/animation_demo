@@ -32,4 +32,23 @@ class UserManagement {
       );
     }
   }
+
+  Future<String?> getToken() async {
+    return await Utils.readData(
+      'token',
+    );
+  }
+
+  void setToken({String? data}) {
+    if (data == null) {
+      Utils.removeData(
+        'token',
+      );
+    } else {
+      Utils.saveData(
+        'token',
+        data,
+      );
+    }
+  }
 }
