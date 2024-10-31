@@ -145,131 +145,233 @@ class LeafItem extends SpriteComponent with HasGameRef {
 
 const double positionLand = 400;
 
-class LoginFirebasePage extends StatefulWidget {
-  const LoginFirebasePage({super.key});
+class LoginFirebasePage2 extends StatefulWidget {
+  const LoginFirebasePage2({super.key});
 
   @override
-  State<LoginFirebasePage> createState() => _LoginFirebasePageState();
+  State<LoginFirebasePage2> createState() => _LoginFirebasePage2State();
 }
 
-class _LoginFirebasePageState extends State<LoginFirebasePage>
+class _LoginFirebasePage2State extends State<LoginFirebasePage2>
     with EposPopup, TickerProviderStateMixin {
-  final accountController = TextEditingController();
-  final passController = TextEditingController();
-
   @override
   void dispose() {
-    accountController.dispose();
-    passController.dispose();
-    controllerRotate.dispose();
-    controller.dispose();
+    controllerRotateRopeOne.dispose();
+    controllerLantern.dispose();
+    controllerRotateRopeSecond.dispose();
     super.dispose();
   }
 
-  late AnimationController controllerRotate;
-  late Animation<num> animationRotate;
+  late AnimationController controllerRotateRopeOne;
+  late Animation<num> animationRotateRopeOne;
 
-  late AnimationController controller;
+  late AnimationController controllerRotateRopeSecond;
+  late Animation<num> animationRotateRopeSecond;
 
-  late Animation<Offset> animation;
+  late AnimationController controllerLantern;
+  late Animation<Offset> animationLantern;
 
   bool isDrop = false;
+
   @override
   void initState() {
-    controllerRotate =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
-    animationRotate =
-        Tween<num>(begin: -pi / 17, end: pi / 18).animate(controllerRotate);
-    controller =
+    controllerRotateRopeOne = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1000));
+    animationRotateRopeOne = Tween<num>(begin: -pi / 20, end: pi / 21)
+        .animate(controllerRotateRopeOne);
+    controllerRotateRopeSecond = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1000));
+    animationRotateRopeSecond = Tween<num>(begin: -pi / 8, end: pi / 9)
+        .animate(controllerRotateRopeSecond);
+    controllerLantern =
         AnimationController(vsync: this, duration: Duration(seconds: 2));
-    animation = Tween<Offset>(begin: Offset(-25, -10), end: Offset(20, 5))
-        .animate(controller);
-    controller
+    animationLantern =
+        Tween<Offset>(begin: Offset(-25, -10), end: Offset(20, 5))
+            .animate(controllerLantern);
+    controllerLantern
       ..forward()
       ..repeat(reverse: true);
-    controllerRotate
+    controllerRotateRopeSecond
+      ..forward()
+      ..repeat(reverse: true);
+    controllerRotateRopeOne
       ..forward()
       ..repeat(reverse: true);
     super.initState();
   }
 
   Offset offsetChange = Offset(0, 0);
-  final heightRope = 30.0;
+
+  final double heightRopeOne = 24.0;
+
+  final double heightRopeSecond = 30.0;
+
+  final double heightTailLantern = 12.0;
+
+  int conicPointOne = 6;
+  int conicPointSecond = 9;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
       body: Container(
         color: Colors.blueGrey,
-        padding: const EdgeInsets.all(24.0),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              AnimatedBuilder(
-                builder: (context, valueRotate) {
-                  return CustomPaint(
-                    size: Size(MediaQuery.sizeOf(context).width, heightRope),
-                    painter: PathPainter2(
-                      tan(animationRotate.value) *
-                          (heightRope - heightRope / 7),
+        alignment: Alignment.topCenter,
+        padding: const EdgeInsets.all(48.0),
+        child: SizedBox(
+          width: 50,
+          height: 122,
+          child: AnimatedBuilder(
+            builder: (context, valueRotate) {
+              return Column(
+                children: [
+                  CustomPaint(
+                    size: Size(50, heightRopeOne),
+                    painter: PathPainterLineOne(
+                      tan(animationRotateRopeOne.value) *
+                          (heightRopeOne - heightRopeOne / conicPointOne),
+                      conicPointOne,
                     ),
-                  );
-                },
-                animation: animationRotate,
-              ),
-              GestureDetector(
-                onPanUpdate: (details) {
-                  // setState(() {
-                  //   offsetChange += details.delta;
-                  // });
-                  print(offsetChange);
-                },
-                child: AnimatedBuilder(
-                  builder: (context, valueRotate) {
-                    return Transform.translate(
-                      offset: Offset(
-                          tan(animationRotate.value) *
-                              (heightRope - heightRope / 7),
-                          -5),
-                      child: AnimatedBuilder(
-                        builder: (
-                          context,
-                          value,
-                        ) {
-                          return Transform(
-                            alignment: Alignment.topCenter,
-                            transform: Matrix4.identity()
-                              ..setEntry(3, 2, 0.001)
-                              ..rotateX(animation.value.dy * pi / 180)
-                              ..rotateZ(
-                                -animationRotate.value.toDouble() * pi / 3,
-                              )
-                              ..rotateY(animation.value.dx * pi / 180),
-                            child: Transform.rotate(
-                              angle: -pi / 18,
-                              child: Container(
-                                height: 40,
-                                width: 40,
-                                child: Image(
-                                  image: AssetImage('assets/images/lixi.png'),
+                  ),
+                  Transform.translate(
+                    offset: Offset(
+                        tan(animationRotateRopeOne.value) *
+                            (heightRopeOne - heightRopeOne / conicPointOne),
+                        -5),
+                    child: AnimatedBuilder(
+                      builder: (context, value) {
+                        return Transform(
+                          alignment: Alignment.topCenter,
+                          transform: Matrix4.identity()
+                            ..setEntry(3, 2, 0.001)
+                            ..rotateX(animationLantern.value.dy * pi / 270)
+                            ..rotateZ(-animationRotateRopeOne.value.toDouble() *
+                                pi /
+                                3)
+                            ..rotateY(animationLantern.value.dx * pi / 270),
+                          child: Container(
+                            child: Column(
+                              // alignment: Alignment.topCenter,
+                              children: [
+                                Container(
+                                  // height: 50,
+                                  // width: 50,
+                                  child: Image(
+                                    image:
+                                        AssetImage('assets/images/denlong.png'),
+                                  ),
                                 ),
-                              ),
+                                AnimatedBuilder(
+                                  builder: (context, valueRotate) {
+                                    return Column(
+                                      children: [
+                                        CustomPaint(
+                                          size: Size(80, heightRopeSecond),
+                                          painter: PathPainterLineSecond(
+                                            tan(animationRotateRopeSecond
+                                                    .value) *
+                                                (heightRopeSecond -
+                                                    heightRopeSecond /
+                                                        conicPointSecond),
+                                            conicPointSecond,
+                                          ),
+                                        ),
+                                        Transform.rotate(
+                                          angle: -animationRotateRopeSecond
+                                              .value
+                                              .toDouble(),
+                                          alignment: Alignment.topCenter,
+                                          child: Transform.translate(
+                                            offset: Offset(
+                                                tan(animationRotateRopeSecond
+                                                        .value) *
+                                                    (heightRopeSecond -
+                                                        heightRopeSecond /
+                                                            conicPointSecond),
+                                                -2),
+                                            child: Container(
+                                              alignment: Alignment.topCenter,
+                                              height: heightTailLantern,
+                                              width: heightTailLantern,
+                                              child: Image(
+                                                image: AssetImage(
+                                                    'assets/images/day-denlong.png'),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                  animation: animationRotateRopeSecond,
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                        animation: animation,
-                      ),
-                    );
-                  },
-                  animation: animationRotate,
-                ),
-              ),
-            ],
+                          ),
+                        );
+                      },
+                      animation: animationLantern,
+                    ),
+                  ),
+                ],
+              );
+            },
+            animation: animationRotateRopeOne,
           ),
-        ]),
+        ),
       ),
     );
+  }
+}
+
+class PathPainterLineOne extends CustomPainter {
+  final double valueAnimation;
+  final int conicPoint;
+  PathPainterLineOne(this.valueAnimation, this.conicPoint);
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = Colors.orange
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+
+    Path path = Path();
+    path.moveTo(size.width / 2, 0);
+    path.conicTo(size.width / 2, size.height / conicPoint,
+        size.width / 2 + valueAnimation, size.height, 2);
+    // path.cubicTo(size.width / 2, 3 * size.height / 4, 3 * size.width / 4,
+    //     size.height / 4, size.width, size.height);
+    canvas.drawPath(path, paint);
+  }
+}
+
+class PathPainterLineSecond extends CustomPainter {
+  final double valueAnimation;
+  final int conicPoint;
+  PathPainterLineSecond(this.valueAnimation, this.conicPoint);
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = Colors.orange
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.0;
+
+    Path path = Path();
+    path.moveTo(size.width / 2, 0);
+    path.conicTo(size.width / 2, size.height / conicPoint,
+        size.width / 2 + valueAnimation, size.height, 2);
+    // path.cubicTo(size.width / 2, 3 * size.height / 4, 3 * size.width / 4,
+    //     size.height / 4, size.width, size.height);
+    canvas.drawPath(path, paint);
   }
 }
 
@@ -287,30 +389,6 @@ class PathPainter extends CustomPainter {
       ..color = Colors.red
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0;
-    canvas.drawPath(path, paint);
-  }
-}
-
-class PathPainter2 extends CustomPainter {
-  final double valueAnimation;
-  PathPainter2(this.valueAnimation);
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
-      ..color = Colors.red
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0;
-
-    Path path = Path();
-    path.moveTo(size.width / 2, 0);
-    path.conicTo(size.width / 2, size.height / 7,
-        size.width / 2 + valueAnimation, size.height, 2);
-    // path.cubicTo(size.width / 2, 3 * size.height / 4, 3 * size.width / 4,
-    //     size.height / 4, size.width, size.height);
     canvas.drawPath(path, paint);
   }
 }
