@@ -6,21 +6,23 @@ class EposButton extends StatelessWidget {
   final String title;
   final Color textColor;
   final double height;
-  final Color backgroundColor;
 
+  final Color backgroundColor;
+  final double width;
   const EposButton({
     required this.onOK,
     required this.title,
     required this.textColor,
     required this.height,
     required this.backgroundColor,
+    this.width = double.maxFinite,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.maxFinite,
+      width: width,
       height: height,
       child: ElevatedButton(
           onPressed: onOK,

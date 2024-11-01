@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:animation_demo/blocs/flip_flop_game_bloc/flip_flop_game_bloc.dart';
+import 'package:animation_demo/firebase_authenticate/bloc/bloc/auth_bloc.dart';
 import 'package:animation_demo/firebase_options.dart';
 import 'package:animation_demo/validation_textfield/validation_textfield_bloc/validation_textfield_bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -39,7 +40,6 @@ const _kTestingCrashlytics = true;
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -73,7 +73,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => FlipFlopGameBloc()),
-        BlocProvider(create: (_) => ValidationTextfieldBloc())
+        BlocProvider(create: (_) => ValidationTextfieldBloc()),
+        BlocProvider(create: (_) => AuthBloc())
       ],
       child: MaterialApp.router(
         title: 'Flutter Demo',
@@ -453,6 +454,14 @@ class OptionWidget extends StatelessWidget {
           //     );
           //   },
           // ),
+          OptionButton(
+            label: 'Login Page',
+            onPressed: () {
+              context.goNamed(
+                RouteName.loginFirebasePage,
+              );
+            },
+          ),
         ],
       ),
     );

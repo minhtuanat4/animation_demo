@@ -3,12 +3,18 @@ import 'package:animation_demo/animated_list/animated_list_page.dart';
 import 'package:animation_demo/base_page/my_first_base_page.dart';
 import 'package:animation_demo/custom_progress_indicator/custom_progress_indicator.dart';
 import 'package:animation_demo/draw_canvas/draw_progress_bar.dart';
+import 'package:animation_demo/firebase_authenticate/home_page.dart';
+import 'package:animation_demo/firebase_authenticate/info_page.dart';
+import 'package:animation_demo/firebase_authenticate/login_page.dart';
+import 'package:animation_demo/firebase_authenticate/register_page.dart';
 import 'package:animation_demo/flame_game/flip_flop_game/provider/pikachu_pr.dart';
 import 'package:animation_demo/flutter_test/home_test_page.dart';
+import 'package:animation_demo/getx_demo/getx_demo.dart';
 import 'package:animation_demo/go_router_page/account_info/account_detail_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_info_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_update_page.dart';
 import 'package:animation_demo/go_router_page/secure_setups/secure_setups_page.dart';
+import 'package:animation_demo/leaf_falling/leaf_falling.dart';
 import 'package:animation_demo/multi_animation/multi_animation_page.dart';
 import 'package:animation_demo/performance_series/off_stage_widget.dart';
 import 'package:animation_demo/persistent_appbar/persistent_appbar_page.dart';
@@ -76,6 +82,10 @@ class RouteName {
   static const String performanceSeriesPage = 'performance-series-page';
   static const String persistentAppbarPage = 'persistent-appbar-page';
   static const String persistentHeaderPage = 'persistent-header-page';
+  static const String loginFirebasePage = 'login-firebase-page';
+  static const String registerPage = 'register-page';
+  static const String infoPage = 'info-page';
+  static const String homePage = 'home-page';
 }
 
 final GoRouter router = GoRouter(
@@ -103,6 +113,29 @@ final GoRouter router = GoRouter(
           name: "animation-page",
           builder: (context, state) => const MyPageView(),
         ),
+
+        GoRoute(
+            path: RouteName.loginFirebasePage,
+            name: RouteName.loginFirebasePage,
+            builder: (context, state) => const LoginFirebasePage2(),
+            routes: [
+              GoRoute(
+                path: RouteName.registerPage,
+                name: RouteName.registerPage,
+                builder: (context, state) => const RegisterPage(),
+              ),
+              GoRoute(
+                  path: RouteName.infoPage,
+                  name: RouteName.infoPage,
+                  builder: (context, state) => const InfoPage(),
+                  routes: [
+                    GoRoute(
+                        path: RouteName.homePage,
+                        name: RouteName.homePage,
+                        builder: (context, state) => const HomePage()),
+                  ]),
+            ]),
+
         GoRoute(
           path: RouteName.barChartPage,
           name: RouteName.barChartPage,
