@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:animation_demo/common/debug.dart';
 import 'package:animation_demo/getx_demo/common/app_config.dart';
 import 'package:animation_demo/getx_demo/rootpage_onesignal.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -25,8 +24,6 @@ class RootPage extends StatefulWidget {
 }
 
 class RootPageState extends State<RootPage> {
-  final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
   bool isShowLoading = false;
 
   //One signal
@@ -45,40 +42,15 @@ class RootPageState extends State<RootPage> {
     appConfig = Get.find<AppConfig>();
 
     initPlatformState(oneSignalAppId: widget.oneSignalAppId);
-
-    initConnectivity();
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
 
   @override
   void dispose() {
-    _connectivitySubscription.cancel();
     super.dispose();
   }
 
   void setStateRootPage(Function fc) {
     setState(fc as void Function());
-  }
-
-// Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initConnectivity() async {
-    var result = ConnectivityResult.none;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      result = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {
-      Debug.logMessage(message: e.toString());
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) {
-      return Future.value();
-    }
-
-    return _updateConnectionStatus(result);
   }
 
   @override
@@ -89,19 +61,6 @@ class RootPageState extends State<RootPage> {
         const CircularIndicator(),
       ],
     );
-  }
-
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-    switch (result) {
-      case ConnectivityResult.wifi:
-      case ConnectivityResult.mobile:
-        // UserManagement().getTelcoModel(context: context);
-        break;
-      case ConnectivityResult.none:
-        break;
-      default:
-        break;
-    }
   }
 }
 

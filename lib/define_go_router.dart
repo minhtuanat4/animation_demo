@@ -105,8 +105,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: "/",
-      builder: (context, state) =>
-          const MyHomePage(title: 'Flutter Demo Home Page'),
+      builder: (context, state) => const MyHomePage(title: 'Demo Page'),
       routes: [
         GoRoute(
           path: "animation-page",

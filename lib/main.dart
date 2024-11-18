@@ -6,7 +6,7 @@ import 'package:animation_demo/firebase_options.dart';
 import 'package:animation_demo/validation_textfield/validation_textfield_bloc/validation_textfield_bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+// import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,11 +44,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  // PlatformDispatcher.instance.onError = (error, stack) {
+  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  //   return true;
+  // };
   ErrorWidget.builder = (details) {
     return Scaffold(
       appBar: AppBar(
@@ -305,14 +305,14 @@ class OptionWidget extends StatelessWidget {
           //     );
           //   },
           // ),
-          OptionButton(
-            label: 'Pikachu Game Ver 1.0',
-            onPressed: () {
-              context.goNamed(
-                RouteName.pikachuFlameGame,
-              );
-            },
-          ),
+          // OptionButton(
+          //   label: 'Pikachu Game Ver 1.0',
+          //   onPressed: () {
+          //     context.goNamed(
+          //       RouteName.pikachuFlameGame,
+          //     );
+          //   },
+          // ),
           // OptionButton(
           //   label: 'RotateScaleAnimationPage',
           //   onPressed: () {
@@ -455,7 +455,7 @@ class OptionWidget extends StatelessWidget {
           //   },
           // ),
           OptionButton(
-            label: 'Login Page',
+            label: 'Event 2024',
             onPressed: () {
               context.goNamed(
                 RouteName.loginFirebasePage,
