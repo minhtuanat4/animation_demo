@@ -289,14 +289,14 @@ class OptionWidget extends StatelessWidget {
           //     );
           //   },
           // ),
-          // OptionButton(
-          //   label: 'Custom Progress Indicator',
-          //   onPressed: () {
-          //     context.goNamed(
-          //       RouteName.customProgressIndicator,
-          //     );
-          //   },
-          // ),
+          OptionButton(
+            label: 'Custom Progress Indicator',
+            onPressed: () {
+              context.goNamed(
+                RouteName.customProgressIndicator,
+              );
+            },
+          ),
           // OptionButton(
           //   label: 'Flip Flop Game',
           //   onPressed: () {
@@ -408,14 +408,14 @@ class OptionWidget extends StatelessWidget {
           //     );
           //   },
           // ),
-          // OptionButton(
-          //   label: RouteName.myFirstBasePage,
-          //   onPressed: () {
-          //     context.goNamed(
-          //       RouteName.myFirstBasePage,
-          //     );
-          //   },
-          // ),
+          OptionButton(
+            label: RouteName.myFirstBasePage,
+            onPressed: () {
+              context.goNamed(
+                RouteName.myFirstBasePage,
+              );
+            },
+          ),
           // OptionButton(
           //   label: RouteName.persistentAppbarPage,
           //   onPressed: () {

@@ -5,11 +5,9 @@ import 'package:animation_demo/custom_progress_indicator/custom_progress_indicat
 import 'package:animation_demo/draw_canvas/draw_progress_bar.dart';
 import 'package:animation_demo/firebase_authenticate/home_page.dart';
 import 'package:animation_demo/firebase_authenticate/info_page.dart';
-import 'package:animation_demo/firebase_authenticate/login_page.dart';
 import 'package:animation_demo/firebase_authenticate/register_page.dart';
 import 'package:animation_demo/flame_game/flip_flop_game/provider/pikachu_pr.dart';
 import 'package:animation_demo/flutter_test/home_test_page.dart';
-import 'package:animation_demo/getx_demo/getx_demo.dart';
 import 'package:animation_demo/go_router_page/account_info/account_detail_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_info_page.dart';
 import 'package:animation_demo/go_router_page/account_info/account_update_page.dart';
