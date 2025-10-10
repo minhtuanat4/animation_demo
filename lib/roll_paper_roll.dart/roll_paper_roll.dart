@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/material.dart' as material;
 
 import 'main_holiday.dart';
 
-class RollPaperRoll extends FlameGame with HasTappables {
+class RollPaperRoll extends FlameGame with TapCallbacks {
   final Size sizeBg;
   static const _imageAssets = [
     'roll_paper_roll/home_view_1.jpg',
@@ -127,11 +128,10 @@ class RollPaperRoll extends FlameGame with HasTappables {
   }
 }
 
-class CustomSpriteAnimation extends SpriteAnimationComponent with Tappable {
+class CustomSpriteAnimation extends SpriteAnimationComponent with TapCallbacks {
   @override
-  bool onTapDown(TapDownInfo info) {
-    // TODO: implement onTapDown
-    return super.onTapDown(info);
+  void onTapDown(TapDownEvent event) {
+    super.onTapDown(event);
   }
 }
 
@@ -191,7 +191,7 @@ class GlowLight extends SpriteComponent {
 }
 
 class IconGame extends SpriteComponent
-    with Tappable, HasGameRef<RollPaperRoll> {
+    with TapCallbacks, HasGameRef<RollPaperRoll> {
   final Image imageIcon;
   final Vector2 sizeIcon;
   final Vector2 positionIcon;
@@ -240,11 +240,5 @@ class IconGame extends SpriteComponent
     // } else {
     //   angle -= dt;
     // }
-  }
-
-  @override
-  bool onTapUp(TapUpInfo info) {
-    print('object ---- ');
-    return true;
   }
 }

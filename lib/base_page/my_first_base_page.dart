@@ -72,26 +72,161 @@ class _MyFirstScreenState extends BaseState<MyFirstBasePage> {
 
   @override
   PreferredSizeWidget? appBar() {
-    return AppBar(
-      title: Text('MyFirstBasePage'),
-    );
+    return null;
+
+    // return AppBar(
+    //   // backgroundColor: Colors.pinkAccent.shade100,
+    //   shadowColor: Colors.red,
+    //   surfaceTintColor: Colors.red,
+    // );
   }
 
   @override
   Widget body() {
     printSomething('MyFirstScreen');
-    return SizedBox(
-      width: double.maxFinite,
-      height: double.maxFinite,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'MyFirstScreen',
+    return Container(
+      padding: EdgeInsets.only(top: 0),
+      color: Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.blue.shade400,
+                    Colors.white,
+                  ],
+                  stops: const [
+                    0.0,
+                    0.2,
+                  ],
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                Container(
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.all(12.0),
+                  margin:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.arrow_back_ios),
+                      Expanded(
+                        child: Text(
+                          'MyFirstScreen',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.amber, fontSize: 18),
+                        ),
+                      ),
+                      Icon(Icons.close)
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return Column(
+                              children: [
+                                Container(
+                                  color: Colors.green.shade100,
+                                  height: 20,
+                                  child: Center(
+                                    child: Text(
+                                      '',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.amber, fontSize: 30),
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  color: Colors.black,
+                                  height: 0,
+                                  thickness: 0.1,
+                                ),
+                              ],
+                            );
+                          },
+                          childCount: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+    // return ListView(
+    //   children: [
+    //     Container(
+    //       height: 200,
+    //       color: Colors.amber,
+    //       child: Center(
+    //         child: Text(
+    //           'MyFirstScreen',
+    //           textAlign: TextAlign.center,
+    //           style: TextStyle(color: Colors.amber, fontSize: 30),
+    //         ),
+    //       ),
+    //     ),
+    //     SizedBox(
+    //       child: Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           Text(
+    //             'MyFirstScreen',
+    //             textAlign: TextAlign.center,
+    //             style: TextStyle(color: Colors.amber, fontSize: 30),
+    //           )
+    //         ],
+    //       ),
+    //     ),
+    //   ],
+    // );
+  }
+}
+
+class ListHeader extends StatelessWidget {
+  const ListHeader({super.key, required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
+    return Container(
+      color: colorScheme.surface,
+      padding: const EdgeInsets.symmetric(horizontal: 0),
+      child: Material(
+        color: colorScheme.primaryContainer,
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.circular(8),
+        //   side: BorderSide(width: 7, color: colorScheme.outline),
+        // ),
+        child: Container(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          child: Text(
+            text,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.amber, fontSize: 30),
-          )
-        ],
+            style: theme.textTheme.bodyLarge!
+                .copyWith(color: colorScheme.onPrimaryContainer),
+          ),
+        ),
       ),
     );
   }

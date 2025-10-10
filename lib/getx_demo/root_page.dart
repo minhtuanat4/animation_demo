@@ -1,10 +1,5 @@
-import 'dart:async';
-
-import 'package:animation_demo/common/debug.dart';
 import 'package:animation_demo/getx_demo/common/app_config.dart';
-import 'package:animation_demo/getx_demo/rootpage_onesignal.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'controller/loading_controller.dart';
@@ -41,7 +36,7 @@ class RootPageState extends State<RootPage> {
 
     appConfig = Get.find<AppConfig>();
 
-    initPlatformState(oneSignalAppId: widget.oneSignalAppId);
+    // initPlatformState(oneSignalAppId: widget.oneSignalAppId);
   }
 
   @override

@@ -11,9 +11,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:fpjs_pro_plugin/fpjs_pro_plugin.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import 'common/user_management.dart';
 import 'define_go_router.dart';
@@ -40,7 +41,7 @@ const _kTestingCrashlytics = true;
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -120,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print('ready in 1...');
     await Future.delayed(const Duration(seconds: 1));
     print('go!');
-    FlutterNativeSplash.remove();
+    // FlutterNativeSplash.remove();
   }
 
   void _initFingerprint() async {
@@ -136,7 +137,8 @@ class _MyHomePageState extends State<MyHomePage> {
       return iosDeviceInfo.identifierForVendor; // unique ID on iOS
     } else if (Platform.isAndroid) {
       var androidDeviceInfo = await deviceInfo.androidInfo;
-      return androidDeviceInfo.androidId; // unique ID on Android
+
+      return ''; // unique ID on Android
     }
     return 'null';
   }
@@ -410,10 +412,38 @@ class OptionWidget extends StatelessWidget {
           // ),
           OptionButton(
             label: RouteName.myFirstBasePage,
-            onPressed: () {
-              context.goNamed(
-                RouteName.myFirstBasePage,
+            onPressed: () async {
+              // context.goNamed(
+              //   RouteName.myFirstBasePage,
+              // );
+
+              // SimpleBarcodeScanner.streamBarcode(
+              //   context,
+              //   barcodeAppBar: const BarcodeAppBar(
+              //     appBarTitle: 'Test',
+              //     centerTitle: false,
+              //     enableBackButton: true,
+              //     backButtonIcon: Icon(Icons.arrow_back_ios),
+              //   ),
+              //   isShowFlashIcon: true,
+              //   delayMillis: 2000,
+              // ).listen((event) {
+              //   print("Stream Barcode Result: $event");
+              // });
+              String? res = await SimpleBarcodeScanner.scanBarcode(
+                context,
+                barcodeAppBar: const BarcodeAppBar(
+                  appBarTitle: 'Test',
+                  centerTitle: false,
+                  enableBackButton: true,
+                  backButtonIcon: Icon(Icons.arrow_back_ios),
+                ),
+                isShowFlashIcon: true,
+                delayMillis: 500,
+                cameraFace: CameraFace.back,
+                scanFormat: ScanFormat.ONLY_BARCODE,
               );
+              print(res.toString());
             },
           ),
           // OptionButton(

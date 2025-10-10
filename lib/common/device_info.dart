@@ -32,7 +32,7 @@ class DeviceInfo {
       _deviceSerial = iosDeviceInfo!.identifierForVendor;
     } else {
       androidDeviceInfo ??= await DeviceInfoPlugin().androidInfo;
-      _deviceSerial = androidDeviceInfo!.androidId;
+      _deviceSerial = 'androidDeviceInfo!.androidId';
     }
     return _deviceSerial;
   }
