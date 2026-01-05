@@ -1,5 +1,5 @@
 import 'package:animation_demo/define_go_router.dart';
-import 'package:animation_demo/main.dart';
+import 'package:animation_demo/main_main_2.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

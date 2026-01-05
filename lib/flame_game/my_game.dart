@@ -54,9 +54,8 @@ class CollidableObject extends PositionComponent
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollision(intersectionPoints, other);
-
+  void onCollisionComplete(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is CollidableObject2) {
       final collidableObject2 =
           CollidableObject3(positionObj: const Offset(0, 200));

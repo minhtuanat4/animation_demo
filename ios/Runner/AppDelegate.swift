@@ -27,6 +27,7 @@ import Flutter
 //              result(nil)
 //          }
 //      }
+
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

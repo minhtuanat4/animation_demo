@@ -1,4 +1,4 @@
-import 'package:animation_demo/main.dart';
+import 'package:animation_demo/main_main_2.dart';
 import 'package:flutter/material.dart';
 
 List<double> lstSpace = [];

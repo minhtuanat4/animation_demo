@@ -41,7 +41,7 @@ import 'flame_game/pikachu_flame_game/provider/pikachu_pr.dart';
 import 'flutter_slidable_page/flutter_slidable_page.dart';
 import 'go_router_page/go_router_page.dart';
 import 'lifecycle_state/lifecycle_state_page.dart';
-import 'main.dart';
+import 'main_main_2.dart';
 import 'navigation_bar/navigation_bar_page.dart';
 import 'page_view/page_view.dart';
 import 'roll_paper_roll.dart/main_holiday.dart';
@@ -114,7 +114,7 @@ final GoRouter router = GoRouter(
         GoRoute(
             path: RouteName.loginFirebasePage,
             name: RouteName.loginFirebasePage,
-            builder: (context, state) => const LoginFirebasePage2(),
+            // builder: (context, state) => const LoginFirebasePage2(),
             routes: [
               GoRoute(
                 path: RouteName.registerPage,
@@ -133,11 +133,11 @@ final GoRouter router = GoRouter(
                   ]),
             ]),
 
-        GoRoute(
-          path: RouteName.barChartPage,
-          name: RouteName.barChartPage,
-          builder: (context, state) => const ColumnChartPage(),
-        ),
+        // GoRoute(
+        //   path: RouteName.barChartPage,
+        //   name: RouteName.barChartPage,
+        //   builder: (context, state) => const ColumnChartPage(),
+        // ),
         GoRoute(
           path: RouteName.myFirstBasePage,
           name: RouteName.myFirstBasePage,

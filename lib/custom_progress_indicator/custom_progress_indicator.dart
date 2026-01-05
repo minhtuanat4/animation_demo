@@ -3,25 +3,60 @@ import 'dart:io';
 import 'package:animation_demo/common/color_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart' as numberFormat;
 import 'package:provider/provider.dart';
 
 import '../resource/definition_color.dart';
 
-extension a on TextFormField {}
+enum KeyBoardState {
+  border,
+  focused,
+  error,
+}
 
 class KeyBoardController extends ChangeNotifier {
-  KeyBoardController({String? text});
+  KeyBoardController();
+  void init(String initial) {
+    _text = initial;
+    textController.text = initial;
+  }
 
-  late MethodChannel methodChannel;
+  MethodChannel? _methodChannel;
+  MethodChannel? get methodChannel => this._methodChannel;
+
+  set methodChannel(MethodChannel? value) {
+    this._methodChannel = value;
+    if (autoFocus) {
+      requestFocus();
+    }
+  }
+
+  bool autoFocus = false;
 
   final TextEditingController textController = TextEditingController();
 
+  String? Function(String?)? validator;
+
+  final focusNode = FocusNode();
+
+  KeyBoardState _keyBoardState = KeyBoardState.border;
+  KeyBoardState get keyBoardState => this._keyBoardState;
+
+  set keyBoardState(KeyBoardState value) {
+    this._keyBoardState = value;
+    notifyListeners();
+  }
+
   String _text = '';
-  String get text => this._text;
+  String get text => Platform.isIOS ? this._text : textController.text;
 
   set text(String value) {
-    this._text = value;
-    methodChannel.invokeMethod("text", {"text": value});
+    if (Platform.isIOS) {
+      this._text = value;
+      methodChannel?.invokeMethod("text", {"text": value});
+    } else {
+      textController.text = value;
+    }
   }
 
   String _readOnly = '';
@@ -29,7 +64,7 @@ class KeyBoardController extends ChangeNotifier {
 
   set readOnly(String value) {
     this._readOnly = value;
-    methodChannel.invokeMethod("readOnly", {"readOnly": value});
+    methodChannel?.invokeMethod("readOnly", {"readOnly": value});
   }
 
   String? _errorText;
@@ -40,15 +75,49 @@ class KeyBoardController extends ChangeNotifier {
     notifyListeners();
   }
 
-  String? currentErrorText = null;
+  double _paddingLeftErrorText = 12;
+  double get paddingLeftErrorText => this._paddingLeftErrorText;
 
-  void validate() {
-    errorText = currentErrorText;
-    methodChannel.invokeMethod("validate", {"errorText": errorText});
+  set paddingLeftErrorText(double value) {
+    this._paddingLeftErrorText = value;
+  }
+
+  bool isFocus = false;
+  bool validate() {
+    if (Platform.isIOS) {
+      if (validator == null) return true;
+      errorText = validator!(text);
+      keyBoardState = errorText == null
+          ? isFocus
+              ? KeyBoardState.focused
+              : KeyBoardState.border
+          : KeyBoardState.error;
+      methodChannel?.invokeMethod("validate", {"errorText": errorText});
+      return errorText == null;
+    } else {
+      return true;
+    }
+  }
+
+  void unFocus() {
+    if (Platform.isIOS) {
+      methodChannel?.invokeMethod("unFocus");
+    } else {
+      focusNode.unfocus();
+    }
+  }
+
+  void requestFocus() {
+    if (Platform.isIOS) {
+      methodChannel?.invokeMethod("requestFocus");
+    } else {
+      focusNode.requestFocus();
+    }
   }
 
   @override
   void dispose() {
+    focusNode.dispose();
     textController.dispose();
     super.dispose();
   }
@@ -142,17 +211,9 @@ class _CustomKeyboardFlutterState extends State<CustomKeyboardFlutter>
     overlayEntry = null;
   }
 
-  final showOption = ValueNotifier<bool>(false);
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    focusNode.addListener(() {
-      if (focusNode.hasFocus) {
-        // showOverlayDialog('Custom Keyboard Flutter');
-      } else {
-        // _hideOverlayDialog();
-      }
-    });
     super.initState();
   }
 
@@ -207,178 +268,476 @@ class _CustomKeyboardFlutterState extends State<CustomKeyboardFlutter>
   }
 }
 
-class CustomKeyboard extends StatefulWidget {
-  final String initial;
-  final Function(String)? onChanged;
-  final VoidCallback? onTap;
-  final Function(String)? onDone;
-  final String? Function(String?) validator;
-  final KeyBoardController? controller;
-  final InputDecoration? inputDecoration;
-  final double? borderRadius;
-  final double height;
-  final double? width;
-
-  const CustomKeyboard(
-      {super.key,
-      this.onChanged,
-      this.onTap,
-      this.onDone,
-      this.initial = '',
-      this.controller,
-      required this.validator,
-      this.inputDecoration,
-      this.borderRadius,
-      this.height = 44,
-      this.width});
-
+class FormatMoney extends TextInputFormatter {
   @override
-  State<CustomKeyboard> createState() => _CustomKeyboardState();
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.selection.baseOffset == 0) {
+      return newValue;
+    }
+    final newText = formatMoney(newValue.text.toInt());
+    return newValue.copyWith(
+        text: newText,
+        selection: TextSelection.collapsed(offset: newText.length));
+  }
 }
 
-class _CustomKeyboardState extends State<CustomKeyboard>
+extension NumberParsing on String {
+  int toInt() {
+    return int.parse(this);
+  }
+}
+
+String formatMoney(
+  int? number, {
+  String format = '#,###',
+  String locationlize = 'vi_VN',
+}) {
+  return number == null
+      ? '0'
+      : numberFormat.NumberFormat(format, locationlize)
+          .format(number)
+          .toString();
+}
+
+// ignore: must_be_immutable
+class NumberPadKeyboardCustom extends StatefulWidget {
+  final String initial;
+  final KeyBoardController controller;
+  final double height;
+  final double? width;
+  final VoidCallback? onTap;
+  final Function(String)? onDone;
+  final Function(String)? onChanged;
+  String? Function(String?)? validator;
+  final TextStyle? style;
+  final InputDecoration? inputDecoration;
+  final double? borderRadius;
+  final int maxLength;
+  final int minLines;
+  final double cursorWidth;
+  final bool autoFocus;
+  final bool readOnly;
+  final bool isFormatMoney;
+  final TextAlign textAlign;
+
+  NumberPadKeyboardCustom({
+    super.key,
+    this.initial = '',
+    required this.controller,
+    this.height = 44,
+    this.width,
+    this.onChanged,
+    this.onTap,
+    this.onDone,
+    this.validator,
+    this.style,
+    this.inputDecoration,
+    this.borderRadius,
+    this.maxLength = 100,
+    this.minLines = 1,
+    this.cursorWidth = 2,
+    this.isFormatMoney = false,
+    this.readOnly = false,
+    this.autoFocus = false,
+    this.textAlign = TextAlign.left,
+  });
+
+  @override
+  State<NumberPadKeyboardCustom> createState() =>
+      _NumberPadKeyboardCustomState();
+}
+
+class _NumberPadKeyboardCustomState extends State<NumberPadKeyboardCustom>
     with WidgetsBindingObserver {
-  late MethodChannel _channel;
+  MethodChannel? _channel;
   double borderRadius = 0;
+  late KeyBoardController controller;
+  final keyPrefixIcon = GlobalKey();
+
   @override
   void dispose() {
-    _channel.invokeMethod("removeView");
+    if (Platform.isIOS) {
+      _channel?.invokeMethod("removeView");
+    }
     super.dispose();
   }
 
   @override
   void initState() {
-    borderRadius = widget.height / 2;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.controller?.currentErrorText = widget.validator(null) ?? '';
-      print(widget.validator('55') ?? '');
-    });
-    borderRadius =
-        ((widget.borderRadius != null && widget.borderRadius! < borderRadius)
-            ? widget.borderRadius
-            : borderRadius)!;
+    controller = widget.controller;
+    if (Platform.isIOS) {
+      borderRadius = widget.height / 2;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (widget.inputDecoration?.prefixIcon != null) {
+          final _positioned =
+              keyPrefixIcon.currentContext?.findRenderObject() as RenderBox?;
+          if (widget.inputDecoration?.border == null &&
+              _positioned?.size.width != null) {
+            controller.paddingLeftErrorText =
+                (_positioned?.size.width ?? 12) + 8;
+          }
+        }
+      });
+      borderRadius =
+          ((widget.borderRadius != null && widget.borderRadius! < borderRadius)
+              ? widget.borderRadius
+              : borderRadius)!;
+    }
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    print('didChangeDependencies');
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(covariant NumberPadKeyboardCustom oldWidget) {
+    print('didUpdateWidget NumberPadKeyboardCustom ');
+    super.didUpdateWidget(oldWidget);
+  }
+
+  Widget prefixIcon() {
+    return widget.inputDecoration?.prefixIcon != null
+        ? Container(
+            key: keyPrefixIcon,
+            padding: const EdgeInsets.only(left: 12),
+            child: widget.inputDecoration?.prefixIcon,
+          )
+        : const SizedBox();
+  }
+
+  Widget suffixIcon() {
+    return widget.inputDecoration?.suffixIcon != null
+        ? Container(
+            padding: const EdgeInsets.only(left: 12),
+            child: widget.inputDecoration?.suffixIcon,
+          )
+        : const SizedBox();
+  }
+
+  BoxDecoration borderCustom(Color color) {
+    return BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.all(
+          Radius.circular(borderRadius),
+        ),
+        border: Border.all(
+          color: color,
+          width: widget.inputDecoration?.border?.borderSide.width ?? 1,
+        ));
+  }
+
+  BoxDecoration? getBoxBorder(KeyBoardState state) {
+    switch (state) {
+      case KeyBoardState.border:
+        return widget.inputDecoration?.border == null
+            ? null
+            : BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(borderRadius),
+                ),
+                border: Border.all(
+                  color: widget.inputDecoration?.border?.borderSide.color ??
+                      Colors.grey,
+                  width: widget.inputDecoration?.border?.borderSide.width ?? 1,
+                )
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey.shade200,
+                //     blurRadius: 1,
+                //     offset: Offset(0, 1), // Shadow position
+                //   ),
+                // ],
+                );
+
+      case KeyBoardState.focused:
+        return widget.inputDecoration?.focusedBorder != null
+            ? BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(borderRadius),
+                ),
+                border: Border.all(
+                  color:
+                      widget.inputDecoration?.focusedBorder?.borderSide.color ??
+                          Colors.blue,
+                  width:
+                      widget.inputDecoration?.focusedBorder?.borderSide.width ??
+                          1,
+                ))
+            : widget.inputDecoration?.border != null
+                ? borderCustom(Colors.blue)
+                : null;
+
+      case KeyBoardState.error:
+        return widget.inputDecoration?.errorBorder != null
+            ? BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(borderRadius),
+                ),
+                border: Border.all(
+                  color:
+                      widget.inputDecoration?.errorBorder?.borderSide.color ??
+                          Colors.red,
+                  width:
+                      widget.inputDecoration?.errorBorder?.borderSide.width ??
+                          1,
+                ))
+            : widget.inputDecoration?.border != null
+                ? borderCustom(Colors.red)
+                : null;
+
+      default:
+        return null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     const viewType = 'CustomKeyboard';
+    controller.validator = widget.validator;
+    controller.autoFocus = widget.autoFocus;
+    controller.init(widget.initial);
     return ChangeNotifierProvider(
       create: (BuildContext context) {
-        // widget.controller?.validator = widget.validator;
-        return widget.controller ?? KeyBoardController(text: widget.initial);
+        return controller;
       },
-      child: Platform.isAndroid
-          ? SizedBox(
-              width: widget.width ?? MediaQuery.sizeOf(context).width,
-              height: widget.height,
-              child: TextFormField(
-                controller: widget.controller?.textController,
-                scrollPadding: EdgeInsets.all(0),
-                onEditingComplete: () {
-                  print('Complete');
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                validator: (value) {
-                  return '';
-                },
-                keyboardType: TextInputType.number,
-                decoration: widget.inputDecoration ??
-                    InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: colorBluePos,
-                          width: 0.5,
-                        ),
-                      ),
-                    ),
-              ),
-            )
-          : Column(
+      child: Platform.isIOS
+          ? Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
                   width: widget.width ?? MediaQuery.sizeOf(context).width,
                   height: widget.height,
-                  child: UiKitView(
-                    viewType: viewType,
-                    onPlatformViewCreated: (int id) {
-                      _channel = MethodChannel('custom_keyboard_$id');
-                      widget.controller?.methodChannel = _channel;
-                      _channel.setMethodCallHandler((call) async {
-                        switch (call.method) {
-                          case "onChanged":
-                            final text = call.arguments as String;
-                            widget.controller?.text = text;
-                            setState(() {});
-                            widget.controller?.currentErrorText =
-                                widget.validator(text) ?? '';
-                            widget.validator(text);
-                            print('widget.controller?.currentErrorText ' +
-                                (widget.validator('55') ?? 'dasdas'));
-                            widget.onChanged?.call(text);
-                            break;
-                          case "onTap":
-                            widget.onTap?.call();
-                            break;
-                          case "onDone":
-                            widget.onDone?.call(call.arguments as String);
-                            break;
-                        }
-                      });
-                    },
-                    creationParams: {
-                      'readOnly': false,
-                      'maxLines': 1,
-                      'minLines': 1,
-                      'cursorWidth': 2,
-                      'isFormatMoney': false,
-                      'maxLength': 10,
-                      'backgroundColor': Colors.white.toHex(),
-                      'decoration': {
-                        'border': {
-                          'borderSide': {
-                            'width': widget.inputDecoration?.border?.borderSide
-                                    .width ??
-                                1,
-                            'color': widget
-                                    .inputDecoration?.border?.borderSide.color
-                                    .toHex() ??
-                                Colors.grey.toHex(),
-                          },
-                          'borderRadius': borderRadius,
+                  child: Stack(
+                    children: [
+                      Selector<KeyBoardController, KeyBoardState>(
+                        selector: (p0, p1) => p1.keyBoardState,
+                        builder: (context, keyBoardState, child) {
+                          return Container(
+                            decoration: getBoxBorder(keyBoardState),
+                          );
                         },
-                        'focusedBorder': {
-                          'borderSide': {
-                            'width': widget.inputDecoration?.focusedBorder
-                                    ?.borderSide.width ??
-                                1,
-                            'color': widget.inputDecoration?.focusedBorder
-                                    ?.borderSide.color
-                                    .toHex() ??
-                                Colors.grey.toHex(),
-                          },
-                          'borderRadius': borderRadius,
-                        },
-                        'errorBorder': {
-                          'borderSide': {
-                            'width': widget.inputDecoration?.errorBorder
-                                    ?.borderSide.width ??
-                                1,
-                            'color': widget.inputDecoration?.errorBorder
-                                    ?.borderSide.color
-                                    .toHex() ??
-                                Colors.grey.toHex(),
-                          },
-                          'borderRadius': borderRadius,
-                        },
-                      }
-                    },
-                    creationParamsCodec: const StandardMessageCodec(),
+                      ),
+                      Row(
+                        children: [
+                          prefixIcon(),
+                          Expanded(
+                            child: Builder(builder: (context) {
+                              final border = widget.inputDecoration?.border;
+                              final focusedBorder =
+                                  widget.inputDecoration?.focusedBorder;
+                              final errorBorder =
+                                  widget.inputDecoration?.errorBorder;
+                              return SizedBox(
+                                width: widget.width ??
+                                    MediaQuery.sizeOf(context).width,
+                                height: widget.height,
+                                child: UiKitView(
+                                  viewType: viewType,
+                                  onPlatformViewCreated: (int id) {
+                                    _channel =
+                                        MethodChannel('custom_keyboard_$id');
+                                    controller.methodChannel = _channel!;
+
+                                    _channel!
+                                        .setMethodCallHandler((call) async {
+                                      if (!mounted) {
+                                        return;
+                                      }
+                                      switch (call.method) {
+                                        case "onChanged":
+                                          final text = call.arguments as String;
+                                          controller.text = text;
+                                          widget.onChanged?.call(text);
+                                          controller.isFocus = true;
+                                          break;
+                                        case "onTap":
+                                          widget.onTap?.call();
+                                          controller.isFocus = true;
+                                          if (controller.keyBoardState ==
+                                              KeyBoardState.error) {
+                                            return;
+                                          }
+                                          controller.keyBoardState =
+                                              KeyBoardState.focused;
+
+                                          break;
+                                        case "onDone":
+                                          widget.onDone
+                                              ?.call(call.arguments as String);
+                                          controller.isFocus = false;
+                                          if (controller.keyBoardState ==
+                                              KeyBoardState.error) {
+                                            return;
+                                          }
+                                          controller.keyBoardState =
+                                              KeyBoardState.border;
+                                          break;
+                                      }
+                                    });
+                                  },
+                                  creationParams: {
+                                    'initial': widget.initial,
+                                    'readOnly': widget.readOnly,
+                                    'maxLines': 1,
+                                    'minLines': widget.minLines,
+                                    'textAlignment': widget.textAlign.name,
+                                    'autoFocus': widget.autoFocus,
+                                    'cursorWidth': widget.cursorWidth,
+                                    'isFormatMoney': widget.isFormatMoney,
+                                    'maxLength': widget.maxLength,
+                                    'backgroundColor': Colors.white.toHex(),
+                                    'style': {
+                                      'fontSize': widget.style?.fontSize,
+                                      'color': widget.style?.color?.toHex() ??
+                                          Colors.black.toHex(),
+                                      'letterSpacing':
+                                          widget.isFormatMoney ? 2 : 0,
+                                      'fontWeight':
+                                          (widget.style?.fontWeight?.index ??
+                                                      0) >
+                                                  FontWeight.w500.index
+                                              ? 'bold'
+                                              : 'normal',
+                                    },
+                                    'decoration': {
+                                      'contentPadding': {
+                                        'left': widget
+                                                .inputDecoration?.contentPadding
+                                                ?.resolve(TextDirection.ltr)
+                                                .left ??
+                                            12,
+                                        'top': widget
+                                                .inputDecoration?.contentPadding
+                                                ?.resolve(TextDirection.ltr)
+                                                .top ??
+                                            0,
+                                        'right': widget
+                                                .inputDecoration?.contentPadding
+                                                ?.resolve(TextDirection.ltr)
+                                                .right ??
+                                            12,
+                                        'bottom': widget
+                                                .inputDecoration?.contentPadding
+                                                ?.resolve(TextDirection.ltr)
+                                                .bottom ??
+                                            0,
+                                      },
+                                      'hintStyle': {
+                                        'fontSize': widget.inputDecoration
+                                                ?.hintStyle?.fontSize ??
+                                            14,
+                                        'color': widget.inputDecoration
+                                                ?.hintStyle?.color
+                                                ?.toHex() ??
+                                            Colors.grey.toHex(),
+                                        'fontStyle': widget.inputDecoration
+                                                    ?.hintStyle?.fontStyle ==
+                                                FontStyle.italic
+                                            ? 'italic'
+                                            : 'normal',
+                                      },
+                                      'hintText':
+                                          widget.inputDecoration?.hintText ??
+                                              '',
+                                      'border': {
+                                        'borderSide': {
+                                          'width': border == null ? 1 : 0,
+                                          'color': border?.borderSide.color
+                                                  .toHex() ??
+                                              Colors.grey.toHex(),
+                                          'underline': border == null,
+                                        },
+                                        'borderRadius': borderRadius,
+                                      },
+                                      'focusedBorder': {
+                                        'borderSide': {
+                                          'width': border == null &&
+                                                  focusedBorder == null
+                                              ? 2
+                                              : 0,
+                                          'color': widget
+                                                  .inputDecoration
+                                                  ?.focusedBorder
+                                                  ?.borderSide
+                                                  .color
+                                                  .toHex() ??
+                                              Colors.blue.toHex(),
+                                          'underline': border == null &&
+                                              focusedBorder == null,
+                                        },
+                                        'borderRadius': borderRadius,
+                                      },
+                                      'errorBorder': {
+                                        'borderSide': {
+                                          'width': border == null &&
+                                                  errorBorder == null
+                                              ? 2
+                                              : 0,
+                                          'color': widget
+                                                  .inputDecoration
+                                                  ?.errorBorder
+                                                  ?.borderSide
+                                                  .color
+                                                  .toHex() ??
+                                              Colors.red.toHex(),
+                                          'underline': border == null &&
+                                              errorBorder == null,
+                                        },
+                                        'borderRadius': borderRadius,
+                                      },
+                                    }
+                                  },
+                                  creationParamsCodec:
+                                      const StandardMessageCodec(),
+                                ),
+                              );
+                            }),
+                          ),
+                          suffixIcon(),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 ErrorTextWidget()
               ],
+            )
+          : SizedBox(
+              width: widget.width ?? MediaQuery.sizeOf(context).width,
+              child: TextFormField(
+                  textAlign: widget.textAlign,
+                  autofocus: widget.autoFocus,
+                  focusNode: controller.focusNode,
+                  readOnly: widget.readOnly,
+                  minLines: widget.minLines,
+                  maxLines: 1,
+                  cursorWidth: widget.cursorWidth,
+                  controller: controller.textController,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(widget.maxLength),
+                    FilteringTextInputFormatter.digitsOnly,
+                    if (widget.isFormatMoney) FormatMoney(),
+                  ],
+                  onChanged: widget.onChanged,
+                  style: widget.style,
+                  scrollPadding: EdgeInsets.all(0),
+                  onTap: widget.onTap,
+                  onEditingComplete: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    if (widget.onDone != null) {
+                      widget.onDone!(controller.text);
+                    }
+                  },
+                  validator: widget.validator,
+                  keyboardType: TextInputType.number,
+                  decoration: widget.inputDecoration),
             ),
     );
   }
@@ -389,19 +748,26 @@ class ErrorTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = context.watch<KeyBoardController>().errorText;
-    return data == null
-        ? const SizedBox()
-        : Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8, left: 8),
-              child: Text(
-                data,
-                style: TextStyle(color: Colors.red, fontSize: 12),
-              ),
-            ),
-          );
+    return Selector<KeyBoardController, String?>(
+        selector: (p0, p1) => p1.errorText,
+        builder: (context, errorText, __) {
+          final data = errorText;
+          final paddingLeftErrorText =
+              context.read<KeyBoardController>().paddingLeftErrorText;
+          return data == null
+              ? const SizedBox()
+              : Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(top: 2, left: paddingLeftErrorText),
+                    child: Text(
+                      data,
+                      style: TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
+                );
+        });
   }
 }
 
@@ -437,21 +803,16 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator>
     }
   }
 
-  final showDone = ValueNotifier<bool>(false);
+  final formKey = GlobalKey<FormState>();
 
-  // static const _channel = MethodChannel("custom_keyboard_channel");
-  final a = TextEditingController();
+  final showDone = ValueNotifier<bool>(false);
 
   final controller1 = KeyBoardController();
   final controller2 = KeyBoardController();
+
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   double keyboardHeight = 0;
@@ -465,227 +826,246 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator>
       ),
       body: GestureDetector(
         onTap: () {
+          print('GestureDetector');
           FocusScope.of(context).requestFocus(FocusNode());
+          // controller1.unFocus();
         },
-        // onTapDown: (v) {
-        //   resetSlide();
-        // },
         onVerticalDragDown: (v) {
           resetSlide();
         },
-        child: SizedBox(
+        child: Container(
+          color: Colors.transparent,
           height: MediaQuery.sizeOf(context).height,
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  // CustomKeyboardFlutter(),
-                  // const SizedBox(
-                  //   height: 12,
-                  // ),
-                  // CustomKeyboardFlutter(),
-                  // const SizedBox(
-                  //   height: 12,
-                  // ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          height: 100,
-                          width: 100,
-                        ),
-                        Expanded(
-                          child: CustomKeyboard(
-                            borderRadius: 25,
-                            inputDecoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 16),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                  width: 1,
+          child: Form(
+            key: formKey,
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              child: NumberPadKeyboardCustom(
+                                initial: '12312',
+                                isFormatMoney: true,
+                                autoFocus: true,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.blue,
-                                  width: 1,
+                                inputDecoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.phone_android,
+                                    color: Colors.grey,
+                                  ),
+                                  hintStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: 'Input here',
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 14),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.red,
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(25),
+                                controller: controller1,
+                                onChanged: (text) {
+                                  print("Keyboard1 changed: $text");
+                                },
+                                onTap: () => print("Keyboard1 tapped"),
+                                onDone: (text) {
+                                  print("Keyboard1 onDone: $text");
+                                  controller2.requestFocus();
+                                },
+                                validator: (value) {
+                                  if (value != null && value.isEmpty) {
+                                    return 'khong dc de trong';
+                                  } else if (value == '55') {
+                                    return 'yeah';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
-                            controller: controller1,
-                            onChanged: (text) =>
-                                print("Keyboard1 changed: $text"),
-                            onTap: () => print("Keyboard1 tapped"),
-                            onDone: (text) => print("Keyboard1 done: $text"),
-                            validator: (value) {
-                              return '';
-                            },
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CustomKeyboard(
-                      borderRadius: 25,
-                      inputDecoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.grey,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.red,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
+                        ],
                       ),
-                      controller: controller2,
-                      validator: (value) {
-                        if (value == '55') {
-                          return 'yeah';
-                        }
-                        return 'dasdasd';
-                      },
-                      onChanged: (text) {
-                        print("Keyboard2 changed: $text");
-                        setState(() {});
-                      },
-                      onTap: () => print("Keyboard2 tapped"),
-                      onDone: (text) => print("Keyboard2 done: $text"),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      // resetSlide();
-                      controller1.text = '20';
-                      // showOverlayDialog();
-                    },
-                    child: Text('Set1'),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      // resetSlide();
-                      controller2.text = '20';
-                      // showOverlayDialog();
-                    },
-                    child: Text('Set2'),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      // resetSlide();
-                      controller1.validate();
-
-                      // showOverlayDialog();
-                    },
-                    child: Text('Get'),
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                        itemBuilder: (_, index) {
-                          return SlideWidgetCustom(
-                            height: 80,
-                            firstChild: Padding(
-                              padding: const EdgeInsets.only(top: 4, left: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Minh Tuan'),
-                                  Text('1232312312312'),
-                                  Text('EVN Ha Noi'),
-                                ],
-                              ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: NumberPadKeyboardCustom(
+                        borderRadius: 25,
+                        inputDecoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1,
                             ),
-                            onEdit: () {},
-                            onDel: () {},
-                            key: lstKey[index],
-                            onSlideChange: (value) {
-                              if (value) {
-                                if (currentSlideChange != -1 &&
-                                    currentSlideChange != index) {
-                                  lstKey[currentSlideChange]
-                                      .currentState
-                                      ?.resetPosition();
-                                }
-                                currentSlideChange = index;
-                              }
-                            },
-                          );
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.red,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        controller: controller2,
+                        validator: (value) {
+                          if (value == '55') {
+                            return 'yeah';
+                          }
+                          return 'dasdasd';
                         },
-                        separatorBuilder: (_, index) {
-                          return const SizedBox(
-                            height: 12,
-                          );
+                        onChanged: (text) {
+                          print("Keyboard2 changed: $text");
                         },
-                        itemCount: lstKey.length),
-                  )
-                ],
-              ),
-              // MediaQuery.viewInsetsOf(context).bottom > 20
-              //     ? Positioned(
-              //         right: 0,
-              //         left: 0,
-              //         bottom: MediaQuery.viewInsetsOf(context).bottom,
-              //         child: Material(
-              //           child: Container(
-              //             padding: const EdgeInsets.symmetric(
-              //                 horizontal: 8, vertical: 4),
-              //             color: Colors.blue.shade50,
-              //             child: Row(
-              //               mainAxisAlignment: MainAxisAlignment.end,
-              //               children: [
-              //                 GestureDetector(
-              //                   onTap: () {
-              //                     print('object');
+                        onTap: () => print("Keyboard2 tapped"),
+                        onDone: (text) => print("Keyboard2 done: $text"),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        controller1.text = '20';
+                      },
+                      child: Text('Set1'),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        controller2.text = '20';
+                      },
+                      child: Text('Set2'),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // formKey.currentState?.validate();
+                      },
+                      child: Text('Validate 1'),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Validate');
+                        // keyForm.currentState?.validate();
+                        controller1.requestFocus();
+                      },
+                      child: Text('Validate 2'),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     print('Next Focus');
+                    //     // keyForm.currentState?.validate();
+                    //     controller1.requestFocus();
+                    //   },
+                    //   child: Text('Validate 2'),
+                    // ),
+                    // Expanded(
+                    //   child: ListView.separated(
+                    //       itemBuilder: (_, index) {
+                    //         return SlideWidgetCustom(
+                    //           height: 80,
+                    //           firstChild: Padding(
+                    //             padding: const EdgeInsets.only(top: 4, left: 8),
+                    //             child: Column(
+                    //               crossAxisAlignment: CrossAxisAlignment.start,
+                    //               children: [
+                    //                 Text('Minh Tuan'),
+                    //                 Text('1232312312312'),
+                    //                 Text('EVN Ha Noi'),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //           onEdit: () {},
+                    //           onDel: () {},
+                    //           key: lstKey[index],
+                    //           onSlideChange: (value) {
+                    //             if (value) {
+                    //               if (currentSlideChange != -1 &&
+                    //                   currentSlideChange != index) {
+                    //                 lstKey[currentSlideChange]
+                    //                     .currentState
+                    //                     ?.resetPosition();
+                    //               }
+                    //               currentSlideChange = index;
+                    //             }
+                    //           },
+                    //         );
+                    //       },
+                    //       separatorBuilder: (_, index) {
+                    //         return const SizedBox(
+                    //           height: 12,
+                    //         );
+                    //       },
+                    //       itemCount: lstKey.length),
+                    // )
+                  ],
+                ),
+                // MediaQuery.viewInsetsOf(context).bottom > 20
+                //     ? Positioned(
+                //         right: 0,
+                //         left: 0,
+                //         bottom: MediaQuery.viewInsetsOf(context).bottom,
+                //         child: Material(
+                //           child: Container(
+                //             padding: const EdgeInsets.symmetric(
+                //                 horizontal: 8, vertical: 4),
+                //             color: Colors.blue.shade50,
+                //             child: Row(
+                //               mainAxisAlignment: MainAxisAlignment.end,
+                //               children: [
+                //                 GestureDetector(
+                //                   onTap: () {
+                //                     print('object');
 
-              //                     FocusScope.of(context)
-              //                         .requestFocus(FocusNode());
-              //                   },
-              //                   child: Container(
-              //                     color: Colors.transparent,
-              //                     child: Text(
-              //                       'Xong',
-              //                       style: TextStyle(fontSize: 14),
-              //                     ),
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //       )
-              //     : const SizedBox(),
-            ],
+                //                     FocusScope.of(context)
+                //                         .requestFocus(FocusNode());
+                //                   },
+                //                   child: Container(
+                //                     color: Colors.transparent,
+                //                     child: Text(
+                //                       'Xong',
+                //                       style: TextStyle(fontSize: 14),
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ],
+                //             ),
+                //           ),
+                //         ),
+                //       )
+                //     : const SizedBox(),
+              ],
+            ),
           ),
         ),
       ),
