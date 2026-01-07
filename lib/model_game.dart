@@ -118,6 +118,7 @@ List<String> lstIcon = [
 List<String> lstEffect = [
   'event/event_tet2026/effect/paddle_collider.png',
   'event/event_tet2026/effect/boom.png',
+  'event/event_tet2026/effect/otc.png',
 ];
 
 enum MoleType {

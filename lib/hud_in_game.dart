@@ -273,6 +273,29 @@ class BackComponent extends SpriteComponent {
             )));
 }
 
+class TitleTextComponent extends TextComponent with HasGameReference<MoleGame> {
+  TitleTextComponent(Vector2 position) : super(position: position);
+  @override
+  FutureOr<void> onLoad() {
+    text = '';
+    anchor = Anchor.center;
+    textRenderer = TextPaint(
+      style: TextStyle(
+        fontSize: textSize[1],
+        color: Colors.white,
+        fontWeight: FontWeight.w900,
+      ),
+    );
+    return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    text = 'X${game.myWorld.countPerfect}';
+    super.update(dt);
+  }
+}
+
 class SubHubInGame extends PositionComponent with HasGameReference<MoleGame> {
   final Vector2 sizeParent;
   SubHubInGame(this.sizeParent) : super() {}
@@ -292,6 +315,7 @@ class SubHubInGame extends PositionComponent with HasGameReference<MoleGame> {
       add(Item(Vector2((size.x / 3 - 9) * i, 0), list[i],
           Vector2(size.x / 3 - 6, size.y)));
     }
+    add(TitleTextComponent(Vector2(size.x / 2, size.y + 28)));
     return super.onLoad();
   }
 
@@ -320,7 +344,7 @@ class SubHubInGame extends PositionComponent with HasGameReference<MoleGame> {
     canvas.drawRRect(
       shadowRRect,
       Paint()
-        ..color = Colors.black87
+        ..color = Colors.white
         ..maskFilter = MaskFilter.blur(
           BlurStyle.normal,
           blur,

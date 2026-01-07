@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 
 List<double> durations = [0.1, 0.8, 0.15, 0.15, 0.25, 1];
 List<double> ballDurations = [0.1, 0.8, 0.1, 2];
-List<double> iconDurations = [0.5, 0.4];
+List<double> iconDurations = [0.5, 0.5];
 List<double> randomDurations = [3, 1];
 List<double> textSize = [28, 24];
 Offset resolution = Offset(944, 2048);
@@ -374,7 +374,7 @@ class MoleWorld extends World
 
     final orders = List.filled(count, MoleType.normal);
     final randomBoom = Random().nextInt(10);
-    if (randomBoom < 6) {
+    if (randomBoom < 9) {
       orders[0] = MoleType.bomber;
     }
     final randomGold = Random().nextInt(10);
@@ -446,7 +446,7 @@ class TouchComponent extends PositionComponent {
     add(ScaleEffect.by(
         Vector2(2.1, 2.1),
         EffectController(
-          duration: 0.07,
+          duration: 0.05,
         ), onComplete: () {
       removeFromParent();
     }));
@@ -851,6 +851,8 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
   Vector2 boomEffectPosi = Vector2.all(0);
   Vector2 goldEffectPosi = Vector2.all(0);
 
+  bool onCollide = false;
+
   double minPositionY = 0;
   @override
   Future<void> onLoad() async {
@@ -880,7 +882,11 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
   @override
   void onRemove() {
     // onRemoveCall();
-    vase.setColor(Colors.black);
+    if (moleModel.type != MoleType.bomber ||
+        moleModel.type == MoleType.bomber && !onCollide) {
+      vase.setColor(Colors.black);
+    }
+
     vase.animalBackground?.removeFromParent();
     removeIcon();
 
@@ -924,14 +930,13 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
       if (!isEnableTap) {
         return;
       }
+      onCollide = true;
       final padddeEffectt = PaddleEffect(size);
       isEnableTap = false;
       // this.removeFromParent();
       game.addScore(moleModel.score);
       stopAim();
       setSpriteOnCollision();
-      // print('object  ${game.camera.localToGlobal(absolutePosition)}');
-      // print('object  ${absolutePosition}');
       game.myWorld.add(PalleComponent(absolutePosition, size, () {
         add(padddeEffectt);
         switch (moleModel.type) {
@@ -980,8 +985,10 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
           case MoleType.bomber:
             game.boomNotify.value = game.boomNotify.value + 1;
             game.myWorld.countPerfect = 0;
+            game.myWorld.add(OTCComponent(absolutePosition, vase));
             game.myWorld.add(
                 BoomComponent(size, boomEffectPosi, moleModel.score, vase));
+
             add(MoveEffect.to(Vector2(position.x, minPositionY),
                 EffectController(duration: durations[4] / 3), onComplete: () {
               onComplete();
@@ -1022,9 +1029,7 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
   _initAnimal() {
     double spaceWithTop = 24;
     final sizeX = sizeParent.x * 0.74;
-    // print(' resolution item  ${moleModel.resolution.dy} ${moleModel.resolution.dx}');
     final sizeY = sizeX * moleModel.resolution.dy / moleModel.resolution.dx;
-    // print('object : $index');
     size = Vector2(sizeX, sizeY);
     minPositionY = sizeParent.y / 2 - spaceWithTop / 2 + moleModel.margin;
     position.y = position.y + minPositionY;
@@ -1412,6 +1417,32 @@ class StaticBoomComponent extends SpriteComponent
   // }
 }
 
+class OTCComponent extends SpriteComponent {
+  final Vector2 positionParam;
+  final VaseComponent vase;
+
+  OTCComponent(this.positionParam, this.vase)
+      : super(
+            sprite: Sprite(Flame.images.fromCache(
+          'event/event_tet2026/effect/otc.png',
+        )));
+  @override
+  FutureOr<void> onLoad() {
+    anchor = Anchor.centerLeft;
+    angle = -pi / 18;
+    final sizeX = vase.size.x * 0.84;
+    size = Vector2(sizeX, sizeX * 137 / 178);
+    scale = Vector2.all(0.1);
+    position = positionParam + Vector2(0, 8);
+    add(ScaleEffect.to(Vector2(1.4, 1.1),
+        EffectController(duration: iconDurations[1], curve: Curves.elasticOut),
+        onComplete: () {
+      add(RemoveEffect());
+    }));
+    return super.onLoad();
+  }
+}
+
 class BoomComponent extends SpriteComponent with HasGameReference<MoleGame> {
   final Vector2 sizeParent;
   final Vector2 positionParam;
@@ -1433,19 +1464,19 @@ class BoomComponent extends SpriteComponent with HasGameReference<MoleGame> {
   FutureOr<void> onLoad() {
     final sizeX = sizeParent.x * 56 / 168;
     size = Vector2(sizeX, sizeX * 70 / 56);
-    position = Vector2(positionParam.x + sizeX / 2, positionParam.y - 10);
+    position =
+        Vector2(positionParam.x + sizeX / 4, positionParam.y - size.y / 1.7);
     startAim();
     return super.onLoad();
   }
 
   void startAim() {
-    add(ScaleEffect.by(
-        Vector2.all(2.3),
-        EffectController(
-            duration: iconDurations[1],
-            curve: Curves.elasticInOut), onComplete: () {
+    add(ScaleEffect.by(Vector2.all(2.3),
+        EffectController(duration: iconDurations[1], curve: Curves.elasticIn),
+        onComplete: () {
       add(RemoveEffect(onComplete: () {
         vase.shake();
+        vase.setColor(Colors.black);
         game.myWorld
             .add(BoomEffectComponent(sizeParent, absolutePosition, score));
       }));
