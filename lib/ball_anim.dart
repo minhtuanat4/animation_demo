@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:animation_demo/flame_main.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 const durationParam = 3000;
@@ -117,7 +118,7 @@ class _BallAnimState extends State<BallAnim>
     // _translateCtrol.forward();
     _zController.repeat(reverse: true);
     _shakeController.forward();
-
+    FlameAudio.play('ball2.wav', volume: 1.7);
     widget.game.myWorld.pauseResetTimer();
     super.initState();
   }

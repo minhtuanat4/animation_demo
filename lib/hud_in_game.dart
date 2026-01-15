@@ -8,6 +8,7 @@ import 'package:animation_demo/model_game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 class HudInGame extends PositionComponent with HasGameReference<MoleGame> {
@@ -273,25 +274,326 @@ class BackComponent extends SpriteComponent {
             )));
 }
 
-class TitleTextComponent extends TextComponent with HasGameReference<MoleGame> {
-  TitleTextComponent(Vector2 position) : super(position: position);
+class CountingPointComponent extends PositionComponent
+    with HasGameReference<MoleGame> {
+  final Vector2 sizeParent;
+
+  CountingPointComponent(
+    Vector2 position,
+    this.sizeParent,
+  ) : super(
+          anchor: Anchor.center,
+          position: position + Vector2(sizeParent.x / 4, sizeParent.y / 2 + 12),
+          size: Vector2(sizeParent.y * 1.5 * 360 / 213, sizeParent.y * 1.5),
+        );
+  double padding = 4;
+  double fontSize = 36;
+  double opacity = 0.2;
+  double durationEffect = 0.6;
+  Curve curveEffect = Curves.bounceOut;
+
+  double moveText = 12;
+  // bool isFlame = true;
+  TextComponent? txt1;
+  TextComponent? txt2;
+  SpriteComponent? flame;
+  late Timer countdown;
+  Timer? _timerForWaiting;
+  @override
+  Future<void> onLoad() async {
+    // isFlame = game.countPerfectNotify.value > 2;
+    // if (isFlame) {
+
+    // } else {
+    //   padding = 0;
+    // }
+    countdown = Timer(durationEffect);
+    final sizeFlameY = size.y / 1.5;
+    final sizeFlame = Vector2(sizeFlameY * 77 / 101, sizeFlameY);
+    flame = SpriteComponent(
+        anchor: Anchor.center,
+        position: Vector2(size.x / 2, size.y / 2 - 4),
+        size: sizeFlame,
+        sprite: Sprite(Flame.images.fromCache(
+          'event/event_tet2026/effect/flame.png',
+        )));
+    add(flame!
+      ..setOpacity(opacity)
+      ..position = flame!.position - Vector2(sizeFlame.x / 2 + padding, 0));
+    txt1 = TextComponent(
+      anchor: Anchor.center,
+      position: Vector2(size.x / 2, size.y / 2 - padding),
+      text: 'x${game.countPerfectNotify.value}',
+      textRenderer: TextPaint(
+        style: TextStyle(
+          fontSize: fontSize,
+          fontFamily: 'SVN',
+          fontWeight: FontWeight.bold,
+          letterSpacing: 3,
+          foreground: Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 5
+            ..color = HexColor.fromHex('#A0180B').withOpacity(opacity),
+        ),
+      ),
+    );
+    // ..scale = Vector2(1, 0.1)
+    // ..add(MoveEffect.by(Vector2(0, moveText),
+    //     EffectController(duration: durationEffect, curve: curveEffect)))
+    // ..add(ScaleEffect.to(
+    //   Vector2.all(1),
+    //   EffectController(duration: durationEffect, curve: curveEffect),
+    // ));
+
+    txt2 = TextComponent(
+      text: 'x${game.countPerfectNotify.value}',
+      textRenderer: TextPaint(
+        style: TextStyle(
+          letterSpacing: 3,
+          fontSize: fontSize,
+          fontFamily: 'SVN',
+          color: Colors.white.withOpacity(opacity),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+    add(txt1!
+      ..add(txt2!)
+      ..position = txt1!.position + Vector2(txt1!.size.x / 2 + padding, 0));
+
+    scale = Vector2(1.8, 1.4);
+    position = position + Vector2(0, moveText);
+
+    countdown.start();
+    add(MoveEffect.by(Vector2(0, -moveText),
+        EffectController(duration: durationEffect, curve: curveEffect)));
+    add(ScaleEffect.to(Vector2.all(1),
+        EffectController(duration: durationEffect, curve: curveEffect),
+        onComplete: () async {
+      _timerForWaiting = Timer(
+        0.3,
+        onTick: () {
+          add(ScaleEffect.to(
+            Vector2(0, 0),
+            EffectController(
+                duration: durationEffect * 1.5,
+                curve: Curves.easeInOutCubicEmphasized),
+            onComplete: () {
+              add(RemoveEffect());
+            },
+          ));
+        },
+      );
+    }));
+  }
+
+  @override
+  void update(double dt) {
+    countdown.update(dt);
+    _timerForWaiting?.update(dt);
+
+    if (countdown.isRunning()) {
+      double opacityEffect =
+          ((1 - opacity) * countdown.current / durationEffect + opacity)
+              .clamp(0, 1);
+
+      txt1?.textRenderer = getTextPaint1(opacityEffect);
+      txt2?.textRenderer = getTextPaint2(opacityEffect);
+      flame?.setOpacity(opacityEffect);
+    }
+    super.update(dt);
+  }
+
+  TextPaint getTextPaint2(double opacity) {
+    return TextPaint(
+      style: TextStyle(
+        letterSpacing: 3,
+        fontSize: fontSize,
+        fontFamily: 'SVN',
+        color: Colors.white.withOpacity(opacity),
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  TextPaint getTextPaint1(double opacity) {
+    return TextPaint(
+      style: TextStyle(
+        fontSize: fontSize,
+        fontFamily: 'SVN',
+        fontWeight: FontWeight.bold,
+        letterSpacing: 3,
+        foreground: Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 5
+          ..color = HexColor.fromHex('#A0180B').withOpacity(opacity),
+      ),
+    );
+  }
+}
+
+class CoolComponent extends SpriteComponent {
+  CoolComponent(Vector2 position, Vector2 size)
+      : super(
+          anchor: Anchor.center,
+          position: position,
+          size: Vector2(size.x, size.x / 2.63),
+          sprite: Sprite(
+            Flame.images.fromCache(
+              'event/event_tet2026/effect/cool_light.png',
+            ),
+          ),
+        );
+  double opacity = 0.5;
+  double durationEffect = 0.5;
+  Curve curveEffect = Curves.bounceOut;
+  double opacityEffect = 0;
   @override
   FutureOr<void> onLoad() {
-    text = '';
-    anchor = Anchor.center;
-    textRenderer = TextPaint(
-      style: TextStyle(
-        fontSize: textSize[1],
-        color: Colors.white,
-        fontWeight: FontWeight.w900,
-      ),
+    final ratio = 2.5;
+    setOpacity(opacityEffect);
+    scale = Vector2(1.6, 1.4);
+    position = position + Vector2(size.x / 2, 4);
+
+    add(MoveEffect.by(Vector2(0, -4),
+        EffectController(duration: durationEffect, curve: curveEffect)));
+    add(ScaleEffect.to(Vector2.all(0.9),
+        EffectController(duration: durationEffect, curve: curveEffect),
+        onComplete: () {
+      setOpacity(1);
+      // add(ScaleEffect.to(
+      //   Vector2(0.8, 0),
+      //   EffectController(
+      //       duration: durationEffect, curve: Curves.easeInOutCubicEmphasized),
+      //   onComplete: () {},
+      // ));
+    }));
+    add(
+      SpriteComponent(
+        position: Vector2(size.x / 2 + 4, size.y / 2 + 4),
+        anchor: Anchor.center,
+        size: Vector2(size.y / ratio * 2.42, size.y / ratio),
+        sprite: Sprite(
+          Flame.images.fromCache(
+            'event/event_tet2026/effect/cool.png',
+          ),
+        ),
+      )
+        ..setOpacity(opacity)
+        ..add(OpacityEffect.to(
+            1, EffectController(duration: durationEffect, curve: curveEffect))),
     );
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
-    text = 'X${game.myWorld.countPerfect}';
+    opacityEffect += dt / durationEffect / 1.5;
+    if (opacityEffect < 0.99) {
+      setOpacity(opacityEffect);
+    }
+    super.update(dt);
+  }
+}
+
+class PerfectComponent extends SpriteComponent with HasGameReference<MoleGame> {
+  PerfectComponent(Vector2 position, Vector2 size)
+      : super(
+          anchor: Anchor.center,
+          position: position,
+          size: Vector2(size.x, size.x / 2.55),
+          sprite: Sprite(
+            Flame.images.fromCache(
+              'event/event_tet2026/effect/perfect_light.png',
+            ),
+          ),
+        );
+  double opacity = 0.1;
+  double durationEffect = 0.6;
+  Curve curveEffect = Curves.bounceOut;
+  late Timer countdown;
+  Timer? _timerForWaiting;
+  @override
+  FutureOr<void> onLoad() {
+    FlameAudio.play('perfect4.mp3');
+    countdown = Timer(durationEffect);
+    final ratio = 2.3;
+
+    scale = Vector2(2, 1.8);
+    position = position + Vector2(size.x / 2, 10);
+    countdown.start();
+    add(MoveEffect.by(Vector2(0, -4),
+        EffectController(duration: durationEffect, curve: curveEffect)));
+    add(ScaleEffect.to(Vector2.all(1),
+        EffectController(duration: durationEffect, curve: curveEffect),
+        onComplete: () async {
+      _timerForWaiting = Timer(
+        0.3,
+        onTick: () {
+          add(ScaleEffect.to(
+            Vector2(0.8, 0),
+            EffectController(
+                duration: durationEffect * 1.5,
+                curve: Curves.easeInOutCubicEmphasized),
+            onComplete: () {
+              add(RemoveEffect());
+            },
+          ));
+        },
+      );
+    }));
+    final perfectX = size.y / ratio * 4.1;
+    add(
+      SpriteComponent(
+        position: Vector2(size.x / 2 + 4, size.y / 2 + 4),
+        anchor: Anchor.center,
+        size: Vector2(perfectX, size.y / ratio),
+        sprite: Sprite(
+          Flame.images.fromCache(
+            'event/event_tet2026/effect/perfect.png',
+          ),
+        ),
+      )
+        ..add(TextComponent(
+          anchor: Anchor.center,
+          position: Vector2(perfectX + 20, 4),
+          text: 'x${game.countPerfectNotify.value}',
+          textRenderer: TextPaint(
+            style: TextStyle(
+              letterSpacing: 1,
+              fontSize: 24,
+              fontFamily: 'SVN',
+              color: Colors.yellowAccent,
+              fontWeight: FontWeight.w900,
+              shadows: [
+                Shadow(
+                  offset: Offset(2.0, 2.0),
+                  blurRadius: 7.0,
+                  color: Colors.black38,
+                ),
+              ],
+            ),
+          ),
+        ))
+        ..setOpacity(opacity)
+        ..add(OpacityEffect.to(
+            1, EffectController(duration: durationEffect, curve: curveEffect))),
+    );
+    setOpacity(opacity);
+    // countdown.progress
+    return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    countdown.update(dt);
+    _timerForWaiting?.update(dt);
+
+    if (countdown.isRunning()) {
+      setOpacity(((1 - opacity) * countdown.current / durationEffect + opacity)
+          .clamp(0, 1));
+    }
+
     super.update(dt);
   }
 }
@@ -300,6 +602,9 @@ class SubHubInGame extends PositionComponent with HasGameReference<MoleGame> {
   final Vector2 sizeParent;
   SubHubInGame(this.sizeParent) : super() {}
   double borderRadius = 12;
+  PerfectComponent? perfectComp;
+  CountingPointComponent? countingComp;
+  // CoolComponent? coolComponent;
   @override
   FutureOr<void> onLoad() {
     anchor = Anchor.topCenter;
@@ -315,7 +620,34 @@ class SubHubInGame extends PositionComponent with HasGameReference<MoleGame> {
       add(Item(Vector2((size.x / 3 - 9) * i, 0), list[i],
           Vector2(size.x / 3 - 6, size.y)));
     }
-    add(TitleTextComponent(Vector2(size.x / 2, size.y + 28)));
+    // countingComp =
+    //     CountingPointComponent(Vector2(size.x / 4, size.y + 4), size);
+    // add(countingComp!);
+    // add(TitleTextComponent(Vector2(size.x / 2, size.y + 28)));
+    // add(CoolComponent(Vector2(0, size.y + 32), size));
+    // countingComp = CountingPointComponent(Vector2(size.x / 4, size.y), size);
+    // add(countingComp!);
+    // perfectComp = PerfectComponent(Vector2(0, size.y + 28), size);
+    // add(perfectComp!);
+    game.countPerfectNotify.addListener(() {
+      final count = game.countPerfectNotify.value;
+      perfectComp?.removeFromParent();
+      // coolComponent?.removeFromParent();
+      countingComp?.removeFromParent();
+      // if (count == 5) {
+      // coolComponent = CoolComponent(Vector2(0, size.y + 28), size);
+      // add(coolComponent!);
+      // } else
+      if (count >= 10) {
+        perfectComp = PerfectComponent(Vector2(0, size.y + 28), size);
+        add(perfectComp!);
+      } else if (count > 2) {
+        countingComp =
+            CountingPointComponent(Vector2(size.x / 4, size.y), size);
+        add(countingComp!);
+      }
+    });
+
     return super.onLoad();
   }
 

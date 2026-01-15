@@ -1,4 +1,5 @@
 import 'package:animation_demo/flame_main.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 class GameOver extends StatelessWidget {
@@ -8,6 +9,7 @@ class GameOver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FlameAudio.bgm.stop();
     const blackTextColor = Color.fromRGBO(0, 0, 0, 1.0);
     const whiteTextColor = Color.fromRGBO(255, 255, 255, 1.0);
 

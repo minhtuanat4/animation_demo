@@ -154,6 +154,7 @@ class _IntroGameState extends State<IntroGame> with TickerProviderStateMixin {
                     onBallExist: () {},
                     hasSecret: true,
                     totalTimePlay: 60,
+                    isRandomTime: true,
                   ),
                   overlayBuilderMap: {
                     'BallAnim': (_, game) => BallAnim(

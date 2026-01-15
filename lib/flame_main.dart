@@ -11,6 +11,7 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/parallax.dart';
 import 'package:flame/text.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 /// This example simply adds a rotating white square on the screen.
@@ -22,7 +23,7 @@ List<double> ballDurations = [0.1, 0.8, 0.1, 2];
 List<double> iconDurations = [0.5, 0.5];
 List<double> randomDurations = [3, 1];
 List<double> textSize = [28, 24];
-Offset resolution = Offset(944, 2048);
+Offset resolution = const Offset(944, 2048);
 int startRandomMode = 15;
 bool isRepeat = true;
 double ratioSizeChau = 4.65;
@@ -79,7 +80,7 @@ class MoleGame extends FlameGame
 
   Vector2 ballSize = Vector2.all(0);
 
-  Vector2 ballAnchor = Vector2.all(0);
+  // Vector2 ballAnchor = Vector2.all(0);
 
   double paddingTop = 0;
 
@@ -95,11 +96,14 @@ class MoleGame extends FlameGame
 
   final ValueNotifier<bool> startNotify = ValueNotifier<bool>(false);
 
+  final ValueNotifier<int> countPerfectNotify = ValueNotifier<int>(0);
+
   late ValueNotifier<String> timerNotify;
 
   int scoreItem = 0;
 
   int countClick = 0;
+
   void addScore(int delta) {
     final currentScore = scoreNotify.value + delta;
     if (currentScore <= 0) {
@@ -117,6 +121,26 @@ class MoleGame extends FlameGame
 
   bool isBallAppear = false;
 
+  final bool isRandomTime;
+
+  int randomTime = 0;
+  @override
+  void onDispose() {
+    Flame.images.clearCache();
+    FlameAudio.audioCache.clearAll();
+    super.onDispose();
+  }
+
+  @override
+  void lifecycleStateChange(AppLifecycleState state) {
+    super.lifecycleStateChange(state); // Always call the super method
+    if (state == AppLifecycleState.paused) {
+      FlameAudio.bgm.pause();
+    } else if (state == AppLifecycleState.resumed) {
+      FlameAudio.bgm.resume();
+    }
+  }
+
   @override
   void onRemove() {
     scoreNotify.dispose();
@@ -130,27 +154,53 @@ class MoleGame extends FlameGame
   final int totalTimePlay;
   final bool hasSecret;
   MoleGame({
-    super.children,
-    super.world,
-    super.camera,
     required this.onBallTapped,
     required this.onBallExist,
     required this.hasSecret,
     required this.totalTimePlay,
-  });
+    required this.isRandomTime,
+    super.children,
+    super.world,
+    super.camera,
+  }) {
+    if (isRandomTime) {
+      randomTime = startRandomMode;
+    }
+  }
 
   @override
   Future<void> onLoad() async {
     countBall = hasSecret ? 1 : 0;
     timerNotify = ValueNotifier<String>(totalTimePlay.toString());
     myWorld = MoleWorld(onBallTapped: onBallTapped);
-
+    final int index = rnd.nextInt(2) + 1;
     cameraComponent = CameraComponent.withFixedResolution(
       world: myWorld,
       width: size.x,
       height: size.y,
     )..viewfinder.anchor = Anchor.topLeft;
     await Flame.images.loadAll(imagePaths);
+    await FlameAudio.audioCache.loadAll([
+      'normal.mp3',
+      'gold.mp3',
+      'boom.mp3',
+      'ball.mp3',
+      // 'xtime.mp3',
+      // 'background1.mp3',
+      'background2.mp3',
+      'background3.mp3',
+
+      'ball2.wav',
+      'otc.mp3',
+      // 'perfect1.wav',
+      // 'perfect2.wav',
+      // 'perfect3.wav',
+      'perfect4.mp3',
+      // 'event2026/win.mp3',
+      // 'event2026/lose.mp3',
+    ]);
+
+    await FlameAudio.bgm.play('background${index + 1}.mp3', volume: 0.3);
     add(
       SpriteComponent(
         sprite: Sprite(
@@ -159,20 +209,12 @@ class MoleGame extends FlameGame
         size: size,
       ),
     );
-    overlays.add('HUDGame');
-    // if (countBall > 0) {
-    //   overlays.add('BallIntro');
-    // } else {
-    //   overlays.add('ReadyGame');
-    // }
+    overlays
+      ..add('HUDGame')
+      ..add('ReadyGame');
 
-    overlays.add('ReadyGame');
-    // overlays.add('BallBottom');
-
-    addAll([myWorld, cameraComponent]);
+    await addAll([myWorld, cameraComponent]);
     add(HudInGame(size));
-
-    // add(TextStatic(Vector2(size.x / 2 - 14 + 100, 80 + 28), 28));
   }
 }
 
@@ -200,15 +242,13 @@ class MoleWorld extends World
   double delayTime = 0.15;
   double delayTimer = 0.15;
 
-  int countPerfect = 0;
-  // final VoidCallback onBallExist;
   MoleWorld({
+    required this.onBallTapped,
     super.children,
     super.priority,
     super.key,
-    required this.onBallTapped,
-    // required this.onBallExist,
   });
+
   @override
   Future<void> onLoad() async {
     await Flame.device.fullScreen();
@@ -242,10 +282,10 @@ class MoleWorld extends World
   late WoodBarComponent row2;
   late WoodBarComponent row3;
   void pauseResetTimer() {
-    print(animals.toList().toString());
+    // print(animals.toList().toString());
     // final animalsTmp = animals
     //   ..removeWhere((e) => e.moleModel.type == MoleType.ball);
-    for (var element in animals) {
+    for (final element in animals) {
       element.removeFromParent();
     }
 
@@ -339,7 +379,8 @@ class MoleWorld extends World
           animal.size.x,
           animal.size.y,
         );
-        if (rect.contains(Offset(touchPoint.x, touchPoint.y))) {
+        if (animal.isEnableTap &&
+            rect.contains(Offset(touchPoint.x, touchPoint.y))) {
           game.countClick++;
           // Vibration.vibrate(duration: 200);
           animal.onCollision(animal.index);
@@ -459,14 +500,14 @@ class TouchComponent extends PositionComponent {
     final radius = size.x / 2;
 
     final paint = Paint()
-      ..shader = RadialGradient(
+      ..shader = const RadialGradient(
         center: Alignment.center,
         radius: 1,
-        colors: const [
+        colors: [
           Colors.white,
           Colors.transparent,
         ],
-        stops: const [0.18, 0.5],
+        stops: [0.18, 0.5],
       ).createShader(
         Rect.fromCircle(center: center, radius: radius),
       );
@@ -601,11 +642,6 @@ class VaseComponent extends SpriteComponent with HasGameReference<MoleGame> {
     );
     add(bottomLight!);
     add(vase2!);
-  }
-
-  @override
-  void onMount() {
-    super.onMount();
   }
 
   void shake() {
@@ -772,7 +808,7 @@ class AnimalTimer extends PositionComponent with HasGameReference<MoleGame> {
       addAnimal();
       removeFromParent();
     } else {
-      double duration =
+      final double duration =
           math.Random().nextDouble() * randomDurations[0] + randomDurations[1];
 
       countdown = Timer(duration, autoStart: true, onTick: () {
@@ -837,7 +873,7 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
 
   Timer? interval2;
 
-  bool isEnableTap = false;
+  bool isEnableTap = true;
 
   // AnimalBackground? animalBackground;
   bool isBallTapped = false;
@@ -854,6 +890,8 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
   bool onCollide = false;
 
   double minPositionY = 0;
+
+  PaddleEffect? padddeEffectt;
   @override
   Future<void> onLoad() async {
     // Load the sprite sheet
@@ -886,7 +924,8 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
         moleModel.type == MoleType.bomber && !onCollide) {
       vase.setColor(Colors.black);
     }
-
+    isEnableTap = false;
+    game.myWorld.animals.remove(this);
     vase.animalBackground?.removeFromParent();
     removeIcon();
 
@@ -931,86 +970,98 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
         return;
       }
       onCollide = true;
-      final padddeEffectt = PaddleEffect(size);
+
       isEnableTap = false;
       // this.removeFromParent();
       game.addScore(moleModel.score);
       stopAim();
       setSpriteOnCollision();
-      game.myWorld.add(PalleComponent(absolutePosition, size, () {
-        add(padddeEffectt);
-        switch (moleModel.type) {
-          case MoleType.normal:
-            game.normalNotify.value = game.normalNotify.value + 1;
-            game.myWorld.countPerfect++;
-            game.myWorld.add(StarComponent(absolutePosition));
-            // add(MoveEffect.by(Vector2(0, size.y / 2),
-            //     EffectController(duration: durations[4]), onComplete: () {
-            //   onComplete();
-            //   padddeEffectt.removeFromParent();
-            //   removeIcon();
-            //   this.removeFromParent();
-            //   randomAnimal();
-            // }));
-            add(MoveEffect.to(Vector2(position.x, minPositionY),
-                EffectController(duration: durations[4]), onComplete: () {
-              onComplete();
-              padddeEffectt.removeFromParent();
-              removeIcon();
-              this.removeFromParent();
-              randomAnimal();
-            }));
+      game.myWorld.add(PalleComponent(absolutePosition, size, () {}));
+      padddeEffectt?.show();
+      switch (moleModel.type) {
+        case MoleType.normal:
+          if (game.countPerfectNotify.value < 10) {
+            FlameAudio.play('normal.mp3');
+          }
 
-            break;
-          case MoleType.gold:
-            game.goldNotify.value = game.goldNotify.value + 1;
-            game.myWorld.countPerfect++;
-            final sizeParam = this.size;
+          game.normalNotify.value = game.normalNotify.value + 1;
+          game.countPerfectNotify.value++;
+          game.myWorld.add(StarComponent(absolutePosition));
+          add(MoveEffect.to(
+              Vector2(position.x, minPositionY),
+              EffectController(
+                  duration: durations[4] *
+                      (1 - (position.y / minPositionY).clamp(0.1, 1))),
+              onComplete: () {
+            onComplete();
+            padddeEffectt?.hide();
+            // removeIcon();
+            randomAnimal();
+            this.removeFromParent();
+          }));
 
-            game.myWorld.add(GoldComponent(
-                sizeParam,
-                goldEffectPosi,
-                Vector2(moleModel.dimension.dx, moleModel.dimension.dy),
-                moleModel.score));
+          break;
+        case MoleType.gold:
+          if (game.countPerfectNotify.value < 10) {
+            FlameAudio.play('gold.mp3', volume: 0.7);
+          }
 
-            add(MoveEffect.to(Vector2(position.x, minPositionY),
-                EffectController(duration: durations[4]), onComplete: () {
-              onComplete();
-              padddeEffectt.removeFromParent();
-              removeIcon();
-              this.removeFromParent();
-              randomAnimal();
-            }));
-            break;
-          case MoleType.bomber:
-            game.boomNotify.value = game.boomNotify.value + 1;
-            game.myWorld.countPerfect = 0;
-            game.myWorld.add(OTCComponent(absolutePosition, vase));
-            game.myWorld.add(
-                BoomComponent(size, boomEffectPosi, moleModel.score, vase));
+          game.goldNotify.value = game.goldNotify.value + 1;
+          game.countPerfectNotify.value++;
+          final sizeParam = this.size;
+          game.myWorld.add(GoldComponent(
+              sizeParam,
+              goldEffectPosi,
+              Vector2(moleModel.dimension.dx, moleModel.dimension.dy),
+              moleModel.score));
 
-            add(MoveEffect.to(Vector2(position.x, minPositionY),
-                EffectController(duration: durations[4] / 3), onComplete: () {
-              onComplete();
-              padddeEffectt.removeFromParent();
-              removeIcon();
-              this.removeFromParent();
-              randomAnimal();
-            }));
+          add(MoveEffect.to(
+              Vector2(position.x, minPositionY),
+              EffectController(
+                  duration: durations[4] *
+                      (1 - (position.y / minPositionY).clamp(0.1, 1))),
+              onComplete: () {
+            onComplete();
+            padddeEffectt?.hide();
+            // removeIcon();
+            randomAnimal();
+            this.removeFromParent();
+          }));
+          break;
+        case MoleType.bomber:
+          game.boomNotify.value = game.boomNotify.value + 1;
+          game.countPerfectNotify.value = 0;
 
-            break;
-          default:
-        }
-      }));
+          game.myWorld.add(OTCComponent(absolutePosition, vase));
+          game.myWorld
+              .add(BoomComponent(size, boomEffectPosi, moleModel.score, vase));
 
+          add(MoveEffect.to(Vector2(position.x, minPositionY),
+              EffectController(duration: durations[4] / 3), onComplete: () {
+            onComplete();
+            padddeEffectt?.hide();
+            // removeIcon();
+            randomAnimal();
+            this.removeFromParent();
+          }));
+
+          break;
+        default:
+      }
       // final paddle = PalleComponent(size, () {});
       // add(paddle);
     } else {
       // for (var element in game.myWorld.animals) {
       //   element.removeFromParent();
       // }
+      if (!isEnableTap) {
+        return;
+      }
+
+      isEnableTap = false;
       vase.animalBackground?.removeFromParent();
-      game.myWorld.countPerfect++;
+
+      game.countPerfectNotify.value++;
       this.removeFromParent();
       game.overlays.add('BallAnim');
 
@@ -1021,13 +1072,13 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
       game.onBallTapped(positionBall, size);
       game.ballPosition = positionBall;
       game.ballSize = size;
-      game.ballAnchor = Vector2(size.x * anchor.x, size.y * anchor.y);
+      // game.ballAnchor = Vector2(size.x * anchor.x, size.y * anchor.y);
       game.myWorld.isBallTapped = true;
     }
   }
 
   _initAnimal() {
-    double spaceWithTop = 24;
+    const double spaceWithTop = 24;
     final sizeX = sizeParent.x * 0.74;
     final sizeY = sizeX * moleModel.resolution.dy / moleModel.resolution.dx;
     size = Vector2(sizeX, sizeY);
@@ -1054,6 +1105,8 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
         break;
       default:
     }
+    padddeEffectt = PaddleEffect(size);
+    add(padddeEffectt!);
     // add(RectangleComponent.relative(
     //   Vector2(1, 1),
     //   parentSize: size,
@@ -1078,8 +1131,6 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
       onComplete: () {
         onComplete();
         removeIcon();
-
-        this.removeFromParent();
         if (isAuto) {
           vase.add(AnimalTimer(
             this,
@@ -1091,6 +1142,7 @@ class Animal extends SpriteComponent with HasGameReference<MoleGame> {
             moleModel,
           ));
         }
+        this.removeFromParent();
       },
     );
 
@@ -1254,15 +1306,15 @@ class StaticGoldComponent extends SpriteComponent
     final radius = size.x / 2;
     final center = Offset(size.x / 2, size.y / 1.8);
     final paint = Paint()
-      ..shader = RadialGradient(
+      ..shader = const RadialGradient(
         center: Alignment.center,
         radius: 0.7,
-        colors: const [
+        colors: [
           Color.fromARGB(255, 255, 234, 0),
           Color.fromARGB(255, 224, 208, 26),
           Color.fromARGB(0, 233, 222, 140),
         ],
-        stops: const [0.05, 0.2, 0.5],
+        stops: [0.05, 0.2, 0.5],
       ).createShader(
         Rect.fromCircle(center: center, radius: radius),
       );
@@ -1330,15 +1382,15 @@ class GoldComponent extends SpriteComponent with HasGameReference<MoleGame> {
     final radius = size.x / 2;
     final center = Offset(size.x / 2, size.y / 1.85);
     final paint = Paint()
-      ..shader = RadialGradient(
+      ..shader = const RadialGradient(
         center: Alignment.center,
         radius: 0.6,
-        colors: const [
+        colors: [
           Color.fromARGB(255, 255, 234, 0),
           Color.fromARGB(255, 224, 208, 26),
           Color.fromARGB(0, 233, 222, 140),
         ],
-        stops: const [0.05, 0.2, 0.5],
+        stops: [0.05, 0.2, 0.5],
       ).createShader(
         Rect.fromCircle(center: center, radius: radius),
       );
@@ -1428,6 +1480,7 @@ class OTCComponent extends SpriteComponent {
         )));
   @override
   FutureOr<void> onLoad() {
+    FlameAudio.play('otc.mp3', volume: 0.7);
     anchor = Anchor.centerLeft;
     angle = -pi / 18;
     final sizeX = vase.size.x * 0.84;
@@ -1477,6 +1530,8 @@ class BoomComponent extends SpriteComponent with HasGameReference<MoleGame> {
       add(RemoveEffect(onComplete: () {
         vase.shake();
         vase.setColor(Colors.black);
+        game.myWorld.add(TextMoveAnim(absolutePosition, score,
+            color: const Color.fromARGB(255, 232, 0, 0)));
         game.myWorld
             .add(BoomEffectComponent(sizeParent, absolutePosition, score));
       }));
@@ -1578,9 +1633,16 @@ class PaddleEffect extends SpriteComponent with HasGameReference<MoleGame> {
   @override
   FutureOr<void> onLoad() {
     position = Vector2((sizeParent.x - size.x) / 2, -size.y / 2);
-    return super.onLoad();
+    hide();
   }
 
+  void show() {
+    setColor(Colors.black);
+  }
+
+  void hide() {
+    setColor(Colors.transparent);
+  }
   // @override
   // void render(Canvas canvas) {
   //   super.render(canvas);
@@ -1606,6 +1668,7 @@ class BoomEffectComponent extends SpriteAnimationComponent
   double stepTime = 0.15;
   @override
   Future<void> onLoad() async {
+    FlameAudio.play('boom.mp3');
     animation = SpriteAnimation.fromFrameData(
       game.images.fromCache('event/event_tet2026/effect/boom.png'),
       SpriteAnimationData.sequenced(
@@ -1626,10 +1689,7 @@ class BoomEffectComponent extends SpriteAnimationComponent
         ),
       ),
       OpacityEffect.fadeOut(EffectController(duration: stepTime * 2),
-          onComplete: () {
-        game.myWorld.add(TextMoveAnim(absolutePosition, scoreText,
-            color: const Color.fromARGB(255, 232, 0, 0)));
-      }),
+          onComplete: () {}),
       RemoveEffect(onComplete: () {}),
     ]);
     add(effect2);
@@ -1655,7 +1715,7 @@ class TextSizeAnim extends TextComponent with HasGameReference<MoleGame> {
 
     textRenderer = TextPaint(
       style: TextStyle(
-        fontSize: 28.0,
+        fontSize: 28,
         fontFamily: fontGame,
         fontWeight: FontWeight.bold,
       ),
@@ -1677,7 +1737,7 @@ class TextMoveAnim extends TextComponent with HasGameReference<MoleGame> {
           position: position,
           priority: 4,
         );
-  late Timer countdown;
+  Timer? countdown;
   double time = 0.8;
   @override
   Future<void> onLoad() async {
@@ -1706,12 +1766,12 @@ class TextMoveAnim extends TextComponent with HasGameReference<MoleGame> {
       removeFromParent();
     }));
 
-    countdown.start();
+    countdown?.start();
   }
 
   @override
   void update(double dt) {
-    countdown.update(dt);
+    countdown?.update(dt);
     super.update(dt);
   }
 
@@ -1720,13 +1780,14 @@ class TextMoveAnim extends TextComponent with HasGameReference<MoleGame> {
     textRenderer = TextPaint(
       style: TextStyle(
         fontSize: textSize[0] +
-            (textSize[1] - textSize[0]) * countdown.current +
+            (textSize[1] - textSize[0]) * (countdown?.current ?? 0) +
             (1 - time),
         color: color,
         fontWeight: FontWeight.bold,
         fontFamily: 'DVN',
       ),
     );
+
     super.render(canvas);
   }
 }
@@ -1811,23 +1872,23 @@ class BlingComponent extends SpriteComponent with HasGameReference<MoleGame> {
   BlingComponent(
     this.sizeParent,
   ) : super();
-  late Timer interval;
+  Timer? interval;
   @override
   Future<void> onLoad() async {
-    double intervalDuration = game.myWorld.random.nextDouble() * 3 + 3.0;
+    final double intervalDuration = game.myWorld.random.nextDouble() * 3 + 3.0;
 
-    double randomSize = game.myWorld.random.nextInt(10) + 8;
+    final double randomSize = game.myWorld.random.nextInt(10) + 8;
     size = Vector2.all(randomSize);
 
-    sprite = await Sprite(
-        Flame.images.fromCache('event/event_tet2026/icon/bling.png'));
+    sprite =
+        Sprite(Flame.images.fromCache('event/event_tet2026/icon/bling.png'));
     randomPosition(randomSize);
 
     interval = Timer(
       intervalDuration,
       onTick: () => {
         _toTransparent(randomSize),
-        interval.pause(),
+        interval?.pause(),
       },
       autoStart: true,
       repeat: true,
@@ -1847,7 +1908,7 @@ class BlingComponent extends SpriteComponent with HasGameReference<MoleGame> {
   _toFullColor() {
     final toFullColor =
         OpacityEffect.to(1, EffectController(duration: 0.5), onComplete: () {
-      interval.resume();
+      interval?.resume();
     });
     add(toFullColor);
   }
@@ -1864,13 +1925,13 @@ class BlingComponent extends SpriteComponent with HasGameReference<MoleGame> {
   }
 
   void fixedUpdate(double dt) {
-    interval.update(dt);
+    interval?.update(dt);
   }
 
   void randomPosition(double randomSize) {
-    double randomX =
+    final double randomX =
         game.myWorld.random.nextDouble() * (sizeParent.x - randomSize / 2);
-    double randomY =
+    final double randomY =
         game.myWorld.random.nextDouble() * (sizeParent.y - randomSize * 2) +
             randomSize;
     position = Vector2(randomX, randomY);

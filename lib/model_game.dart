@@ -119,6 +119,12 @@ List<String> lstEffect = [
   'event/event_tet2026/effect/paddle_collider.png',
   'event/event_tet2026/effect/boom.png',
   'event/event_tet2026/effect/otc.png',
+  'event/event_tet2026/effect/perfect_light.png',
+  'event/event_tet2026/effect/perfect.png',
+  'event/event_tet2026/effect/cool.png',
+  'event/event_tet2026/effect/cool_light.png',
+  'event/event_tet2026/effect/xtime_light.png',
+  'event/event_tet2026/effect/flame.png',
 ];
 
 enum MoleType {

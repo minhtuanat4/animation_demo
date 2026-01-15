@@ -1,4 +1,7 @@
 PODS:
+  - audioplayers_darwin (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - device_info_plus (0.0.1):
     - Flutter
   - FingerprintPro (2.9.0)
@@ -227,6 +230,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/darwin`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
@@ -268,6 +272,8 @@ SPEC REPOS:
     - PromisesSwift
 
 EXTERNAL SOURCES:
+  audioplayers_darwin:
+    :path: ".symlinks/plugins/audioplayers_darwin/darwin"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_analytics:
@@ -300,14 +306,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/vibration/ios"
 
 SPEC CHECKSUMS:
-  device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
+  audioplayers_darwin: 4027b33a8f471d996c13f71cb77f0b1583b5d923
+  device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
   FingerprintPro: 0d3e5957cd165ff4065853c3b7089c118656a234
   Firebase: 07150e75d142fb9399f6777fa56a187b17f833a0
-  firebase_analytics: 696667487b533eb1648d809d829186da67d67b30
-  firebase_auth: 2aaf696eaafa1659bd0723a189a021688591aa66
-  firebase_core: 473743a68e72b1a854abc9d129862621092aa047
-  firebase_crashlytics: cb878642cce6139b42891da90a0745b2e748d216
-  firebase_database: 562b3c3aa73a54f25ac1f8463e9d19d3ea60165a
+  firebase_analytics: 3ff822ee2e90f95b61f0da300df20b378d380fbb
+  firebase_auth: 3f7820b22557dd4a1b024f4d86947d1a0ff8a10f
+  firebase_core: e477125798fc37cd4ab43ca6a8536bf7e0929c00
+  firebase_crashlytics: 6043ce85800f96e53f15ee5051f9cfad10cce73d
+  firebase_database: 37ea2144bf40525d3ae4df40f70ae4bc3db715a5
   FirebaseAnalytics: 0270389efbe3022b54ec4588862dabec3477ee98
   FirebaseAppCheckInterop: 6a1757cfd4067d8e00fccd14fcc1b8fd78cfac07
   FirebaseAuth: a66c1e14ec58f41d154a4b41ce1a23ea00ad4805
@@ -319,23 +326,23 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 913cf60d0400ebd5d6b63a28b290372ab44590dd
   FirebaseSessions: dbd14adac65ce996228652c1fc3a3f576bdf3ecc
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  fpjs_pro_plugin: 85f682d99e728903dd8aaa7e6c9fb016ee4f0688
+  fpjs_pro_plugin: 02a3f874ae4fe3b68525bc6b79668ab2c78d249a
   GoogleAppMeasurement: 2d800fab85e7848b1e66a6f8ce5bca06c5aad892
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   leveldb-library: cc8b8f8e013647a295ad3f8cd2ddf49a6f19be19
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
-  onesignal_flutter: 3a2b51f9262c851166a882a553d71a8ccec4e29c
+  onesignal_flutter: f69ff09eeaf41cea4b7a841de5a61e79e7fd9a5a
   OneSignalXCFramework: 7112f3e89563e41ebc23fe807788f11985ac541c
-  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
-  permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
-  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
-  simple_barcode_scanner: f1217b91fbad5848d37fa6d794f443416fd3e44d
-  sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
-  vibration: 69774ad57825b11c951ee4c46155f455d7a592ce
+  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
+  simple_barcode_scanner: bb2603ae5228a007bd066e9f955911858ae55755
+  sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
+  vibration: 3797858f8cbf53d841e189ef8bd533d96e4ca93c
 
 PODFILE CHECKSUM: 9a22507846c3cf846a0248ceb904d0e334c2a24a
 

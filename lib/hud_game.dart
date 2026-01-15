@@ -28,10 +28,13 @@ class _HUDGameState extends State<HUDGame> with TickerProviderStateMixin {
 
   bool isFirstTime = true;
 
-  int ballTime = startRandomMode + 10;
-
-  _randomBallTime() {
-    ballTime = Random().nextInt(10) + (startRandomMode + 7);
+  int ballTime = 10;
+  void _randomBallTime() {
+    if (widget.game.randomTime >= 15) {
+      ballTime = Random().nextInt(10) + (widget.game.randomTime);
+    } else {
+      ballTime = Random().nextInt(15) + (widget.game.randomTime + 5);
+    }
   }
 
   @override
